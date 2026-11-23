@@ -1,5 +1,5 @@
 -- ==============================================================================
--- Girish Das - Personal Portfolio Supabase Database Schema
+-- Girish Das - Performance Marketer & Growth Strategist Portfolio Schema
 -- Run this in your Supabase SQL Editor: https://supabase.com/dashboard/project/_/sql
 -- ==============================================================================
 
@@ -16,22 +16,23 @@ DROP TABLE IF EXISTS site_profile CASCADE;
 DROP TABLE IF EXISTS posts CASCADE;
 
 -- -----------------------------------------------------------------------------
--- TABLE: site_profile (Bio, Hero Headline, Socials, Resume)
+-- TABLE: site_profile (Bio, Hero Headline, Socials, Avatar, Resume)
 -- -----------------------------------------------------------------------------
 CREATE TABLE site_profile (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name TEXT NOT NULL DEFAULT 'Girish Das',
+    avatar_url TEXT DEFAULT '', -- Drop your photo URL here!
     nav_logo TEXT NOT NULL DEFAULT 'GIRISH DAS',
     status_badge TEXT NOT NULL DEFAULT 'Open to opportunities',
     headline_intro TEXT NOT NULL DEFAULT 'Hi, I''m Girish Das. I build',
-    headline_highlight TEXT NOT NULL DEFAULT 'scalable web systems & intelligent software',
-    bio TEXT NOT NULL DEFAULT 'Full-stack engineer passionate about craft, architecture, and delivering high-impact digital experiences that people love using.',
-    email TEXT NOT NULL DEFAULT 'girishdas@example.com',
-    resume_url TEXT DEFAULT '/resume.pdf',
+    headline_highlight TEXT NOT NULL DEFAULT 'HIGH-ROI DIGITAL GROWTH & PAID ADS',
+    bio TEXT NOT NULL DEFAULT 'Performance Marketer & Digital Growth Strategist scaling multi-channel paid acquisition across Meta, Google, and TikTok. I engineer high-converting landing pages, optimize ROAS, and scale ad budgets profitably.',
+    email TEXT NOT NULL DEFAULT 'girishdas@gmail.com',
+    resume_url TEXT DEFAULT '#',
     github_url TEXT DEFAULT 'https://github.com/yestorick',
     linkedin_url TEXT DEFAULT 'https://linkedin.com/in/girishdas',
     twitter_url TEXT DEFAULT 'https://x.com/girishdas',
-    footer_tagline TEXT NOT NULL DEFAULT 'Open for contract opportunities, high-growth engineering teams, and collaborative product builds.',
+    footer_tagline TEXT NOT NULL DEFAULT 'Available for full-time growth leadership roles, performance marketing contracts, or high-scale paid acquisition audits.',
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -40,16 +41,16 @@ CREATE TABLE site_profile (
 -- -----------------------------------------------------------------------------
 CREATE TABLE right_now (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    building_title TEXT NOT NULL DEFAULT 'Rankgate GMB & AI Automation',
-    building_desc TEXT NOT NULL DEFAULT 'Autonomous review generation and QR funnel platform',
-    learning TEXT NOT NULL DEFAULT 'Next.js 15 Server Actions & Supabase Vector',
-    reading TEXT NOT NULL DEFAULT 'Designing Data-Intensive Applications',
+    building_title TEXT NOT NULL DEFAULT 'Scalable Paid Acquisition Funnels',
+    building_desc TEXT NOT NULL DEFAULT 'Managing multi-channel ad spend & high-intent CRO landing pages',
+    learning TEXT NOT NULL DEFAULT 'AI-driven creative testing & cookieless attribution models (GA4 + CAPI)',
+    reading TEXT NOT NULL DEFAULT 'Breakthrough Advertising by Eugene Schwartz',
     based_in TEXT NOT NULL DEFAULT 'Bengaluru, India',
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- -----------------------------------------------------------------------------
--- TABLE: experiences (Career & Education timeline)
+-- TABLE: experiences (Career & Growth track record)
 -- -----------------------------------------------------------------------------
 CREATE TABLE experiences (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -62,23 +63,29 @@ CREATE TABLE experiences (
 );
 
 -- -----------------------------------------------------------------------------
--- TABLE: tech_stack (Categorized Skills & Tools)
+-- TABLE: tech_stack (Paid Channels, Tracking, CRO, Marketing Ops)
 -- -----------------------------------------------------------------------------
 CREATE TABLE tech_stack (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    category TEXT NOT NULL, -- 'Languages', 'Frontend', 'Backend & data', 'Tools'
+    category TEXT NOT NULL, -- 'Paid Channels & Ads', 'Analytics & Tracking', 'CRO & Funnels', 'Marketing Tools & Ops'
     color TEXT NOT NULL DEFAULT 'blue', -- 'blue', 'mint', 'yellow', 'purple'
     skills TEXT[] NOT NULL DEFAULT '{}',
     order_index INT NOT NULL DEFAULT 0
 );
 
 -- -----------------------------------------------------------------------------
--- TABLE: projects (Recent Work & Case Studies)
+-- TABLE: projects (Recent Work & In-Depth Case Studies)
 -- -----------------------------------------------------------------------------
 CREATE TABLE projects (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    slug TEXT NOT NULL UNIQUE,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
+    content TEXT NOT NULL, -- Detailed Case Study in Markdown
+    client TEXT,
+    role TEXT,
+    duration TEXT,
+    metrics TEXT[] NOT NULL DEFAULT '{}',
     tags TEXT[] NOT NULL DEFAULT '{}',
     color TEXT NOT NULL DEFAULT 'yellow', -- 'yellow', 'mint', 'purple'
     image_url TEXT,
@@ -90,11 +97,11 @@ CREATE TABLE projects (
 );
 
 -- -----------------------------------------------------------------------------
--- TABLE: favorites (Books, Music, Films & Shows, Tools I love)
+-- TABLE: favorites (Books, Podcasts, Films & Shows, Tools I love)
 -- -----------------------------------------------------------------------------
 CREATE TABLE favorites (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    category TEXT NOT NULL, -- 'Books', 'Music', 'Films & shows', 'Tools I love'
+    category TEXT NOT NULL, -- 'Books', 'Podcasts', 'Films & shows', 'Tools I love'
     icon TEXT NOT NULL DEFAULT 'book', -- 'book', 'music', 'film', 'tool'
     color TEXT NOT NULL DEFAULT 'peach', -- 'peach', 'blue', 'purple', 'mint'
     title TEXT NOT NULL,
@@ -103,7 +110,7 @@ CREATE TABLE favorites (
 );
 
 -- -----------------------------------------------------------------------------
--- TABLE: posts (Blog Articles with Markdown Content)
+-- TABLE: posts (Marketing Blog Articles with Markdown Content)
 -- -----------------------------------------------------------------------------
 CREATE TABLE posts (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -150,129 +157,224 @@ CREATE POLICY "Admins have full access to favorites" ON favorites FOR ALL USING 
 CREATE POLICY "Admins have full access to posts" ON posts FOR ALL USING (auth.role() = 'authenticated');
 
 -- -----------------------------------------------------------------------------
--- SEED DATA (Default Initial Content for Girish Das matching design)
+-- SEED DATA (Performance Marketer Persona for Girish Das)
 -- -----------------------------------------------------------------------------
-INSERT INTO site_profile (name, nav_logo, status_badge, headline_intro, headline_highlight, bio, email, resume_url, github_url, linkedin_url, twitter_url, footer_tagline)
+INSERT INTO site_profile (name, avatar_url, nav_logo, status_badge, headline_intro, headline_highlight, bio, email, resume_url, github_url, linkedin_url, twitter_url, footer_tagline)
 VALUES (
     'Girish Das',
+    '',
     'GIRISH DAS',
     'Open to opportunities',
     'Hi, I''m Girish Das. I build',
-    'scalable web systems & intelligent software',
-    'Full-stack engineer passionate about software craft, performant architecture, and shipping production applications with high velocity and clean design.',
-    'girishdas@example.com',
+    'HIGH-ROI DIGITAL GROWTH & PAID ADS',
+    'Performance Marketer & Digital Growth Strategist scaling multi-channel paid acquisition across Meta, Google, and TikTok. I engineer high-converting landing pages, optimize ROAS, and scale ad budgets profitably.',
+    'girishdas@gmail.com',
     '#',
     'https://github.com/yestorick',
     'https://linkedin.com/in/girishdas',
     'https://x.com/girishdas',
-    'Feel free to reach out for high-impact roles, engineering contracts, or collaborative technical projects.'
+    'Available for full-time growth leadership roles, performance marketing contracts, or high-scale paid acquisition audits.'
 );
 
 INSERT INTO right_now (building_title, building_desc, learning, reading, based_in)
 VALUES (
-    'Rankgate GMB & AI Automation',
-    'Autonomous customer review generation and QR routing engine',
-    'Next.js 15 App Router & Supabase Postgres',
-    'Designing Data-Intensive Applications',
+    'Scalable Paid Acquisition Funnels',
+    'Managing multi-channel ad spend & high-intent CRO landing pages',
+    'AI-driven creative testing & cookieless attribution models (GA4 + CAPI)',
+    'Breakthrough Advertising by Eugene Schwartz',
     'Bengaluru, India'
 );
 
 INSERT INTO experiences (role, company, description, period, order_index)
 VALUES 
-    ('Senior Full-Stack Engineer', 'Apex Systems', 'Leading core backend architecture and reactive micro-frontends with high throughput and sub-100ms API latency.', '2024 - Now', 1),
-    ('Software Engineer', 'Nova Cloud Labs', 'Engineered distributed serverless pipelines, automated CI/CD workflows, and integrated real-time analytics.', '2022 - 2024', 2),
-    ('Full-Stack Developer & B.Tech CS', 'Tech Institute', 'Built cloud services, distributed database integrations, and open-source developer tooling.', '2019 - 2022', 3);
+    ('Lead Performance Marketer', 'GrowthScale Media', 'Managing $150K+/month paid media spend across Meta, Google Ads & TikTok; scaled client revenue by 320% with 4.5x average ROAS.', '2024 - Now', 1),
+    ('Senior Digital Marketing Specialist', 'OmniDigital Agency', 'Spearheaded full-funnel paid search & paid social campaigns, built high-converting landing pages, and implemented GA4 server-side tracking.', '2022 - 2024', 2),
+    ('Digital Marketing & Acquisition Associate', 'Vanguard Growth Labs', 'Conducted rigorous A/B creative testing, audience segmentation, and email nurture workflows with a 42% decrease in blended CAC.', '2020 - 2022', 3);
 
 INSERT INTO tech_stack (category, color, skills, order_index)
 VALUES 
-    ('Languages', 'blue', ARRAY['TypeScript', 'JavaScript', 'Python', 'Go', 'SQL'], 1),
-    ('Frontend', 'mint', ARRAY['React', 'Next.js', 'Tailwind CSS', 'Redux', 'HTML5/CSS3'], 2),
-    ('Backend & data', 'yellow', ARRAY['Node.js', 'Supabase', 'PostgreSQL', 'FastAPI', 'MongoDB'], 3),
-    ('Tools', 'purple', ARRAY['Git & GitHub', 'Docker', 'Vercel', 'Linux', 'Figma', 'Postman'], 4);
+    ('Paid Channels & Ads', 'blue', ARRAY['Meta Ads (FB/IG)', 'Google Search & PMax', 'TikTok Ads', 'YouTube Ads', 'LinkedIn Ads'], 1),
+    ('Analytics & Tracking', 'mint', ARRAY['Google Analytics 4', 'Google Tag Manager', 'Meta Conversions API', 'Looker Studio', 'Triple Whale'], 2),
+    ('CRO & Funnels', 'yellow', ARRAY['Unbounce', 'Webflow', 'Shopify Plus', 'Optimizely', 'Hotjar', 'VWO'], 3),
+    ('Marketing Tools & Ops', 'purple', ARRAY['Klaviyo', 'HubSpot', 'Zapier Automation', 'SEMrush & Ahrefs', 'Canva Pro', 'PostHog'], 4);
 
-INSERT INTO projects (title, description, tags, color, live_url, github_url, featured, order_index)
+INSERT INTO projects (slug, title, description, content, client, role, duration, metrics, tags, color, live_url, featured, order_index)
 VALUES 
-    ('Rankgate GMB', 'Autonomous Google Business Profile review engine with one-tap QR code routing and intelligent keyword optimization.', ARRAY['Next.js', 'FastAPI', 'MongoDB', 'Gemini AI'], 'yellow', 'https://rickgmb.vercel.app', 'https://github.com/yestorick/review-gmb-dev', true, 1),
-    ('DevPulse Studio', 'Developer analytics workbench visualizing git commits, PR velocity, and test coverage across distributed teams.', ARRAY['TypeScript', 'Supabase', 'Postgres', 'Tailwind'], 'mint', 'https://girishdas.vercel.app', 'https://github.com/yestorick', true, 2),
-    ('AgentMesh Orchestrator', 'Multi-agent coordination system enabling autonomous code review, linting, and automated cloud deployments.', ARRAY['Python', 'FastAPI', 'Docker', 'Vercel'], 'purple', 'https://girishdas.vercel.app', 'https://github.com/yestorick', true, 3);
+    (
+        'scaling-d2c-brand-meta-tiktok',
+        'Scaling D2C E-Commerce Brand from $30K to $180K/mo',
+        'Multi-channel paid social acquisition blitz on Meta & TikTok paired with dynamic landing page CRO that lowered CAC by 38%.',
+        '# Scaling D2C E-Commerce Brand from $30K to $180K/mo
+
+## Overview & The Challenge
+The brand had strong product-market fit with organic word-of-mouth but was stuck at ~$30,000 in monthly revenue. Prior agency campaigns were suffering from high customer acquisition costs (CAC > $65) and rapid ad creative fatigue on Meta within 7 to 10 days.
+
+### Core Objectives:
+- Expand top-of-funnel (TOF) audience reach on Meta and launch TikTok Ads from scratch.
+- Lower blended CAC from $65 down to under $42.
+- Build a systematic creative testing pipeline capable of finding 2-3 winning hooks weekly.
+- Achieve a minimum 3.8x blended Return on Ad Spend (ROAS).
+
+---
+
+## Strategic Approach & Execution
+
+### 1. High-Velocity Creative Testing Engine
+Instead of relying on static product mockups, we deployed a structured creative matrix:
+- **Hook Variations**: Tested 5 distinct emotional hooks per video.
+- **Format Diversification**: Rolled out authentic creator UGC, TikTok native style 9:16 vertical videos, and high-contrast motion graphic carousels.
+- **Micro-Budget Sandbox**: Tested 15-20 creative iterations weekly in dynamic creative ad sets (DCT) before promoting winners to high-budget Advantage+ Shopping Campaigns (ASC).
+
+### 2. Full-Funnel Retargeting & Offer Architecture
+- **Middle of Funnel (MOF)**: Retargeted video viewers (75%+ watch time) and social engagers with social proof carousels.
+- **Bottom of Funnel (BOF)**: Dynamic product catalog ads (DPA) targeting 30-day website visitors with tiered bundle discounts.
+
+### 3. Conversion Rate Optimization (CRO)
+- Added sticky "Add to Cart" CTA on mobile viewports.
+- Integrated transparent customer review badges directly below the main hero image.
+- Implemented 1-click checkout with Shop Pay and Apple Pay, reducing checkout abandonment by 24%.
+
+---
+
+## Measurable Results
+- **+491% Growth in Monthly Revenue** (from $31,200 to $184,500)
+- **4.8x Blended ROAS**
+- **-38% Customer Acquisition Cost (CAC)**',
+        'D2C Apparel & Lifestyle Brand',
+        'Lead Growth & Paid Media Strategist',
+        '4 Months',
+        ARRAY['4.8x Blended ROAS', '-38% Customer CAC', '+310% Net Monthly Revenue'],
+        ARRAY['Meta Ads', 'TikTok Ads', 'Shopify CRO', 'Triple Whale'],
+        'yellow',
+        'https://girishdas.vercel.app',
+        true,
+        1
+    ),
+    (
+        'b2b-saas-google-search-scale',
+        'B2B SaaS Google Search & High-Intent Pipeline Scaling',
+        'Restructured paid search architecture with negative keyword sculpting and dedicated comparison landing pages, lifting qualified demo requests by 190%.',
+        '# B2B SaaS Google Search & High-Intent Pipeline Scaling
+
+## The Challenge
+A Series A B2B software company was burning $25,000/month on Google Ads with little to show: cost per sales-qualified lead (SQL) exceeded $480, and the sales team reported over 70% of inbound demo requests were tire-kickers.
+
+---
+
+## The Strategic Solution
+1. **High-Intent Keyword Sculpting**: Stripped away broad generic keywords and focused on competitor alternatives and high-intent software evaluation queries.
+2. **Dedicated Comparison Landing Pages**: Deployed distraction-free Unbounce landing pages with head-to-head feature matrices and G2 social proof.
+3. **Offline Conversion Tracking**: Fed CRM sales-qualified opportunities back into Google Smart Bidding algorithms.
+
+---
+
+## Measurable Results
+- **+190% Qualified Leads**
+- **3.4x Pipeline Value**
+- **62% Lower Cost Per Demo**',
+        'Cloud Security & Compliance SaaS',
+        'Search Engine Marketing Lead',
+        '3 Months',
+        ARRAY['+190% Qualified Leads', '3.4x Pipeline Value', '62% Lower Cost Per Demo'],
+        ARRAY['Google Search', 'High-Intent Keywords', 'Unbounce CRO', 'GA4'],
+        'mint',
+        'https://girishdas.vercel.app',
+        true,
+        2
+    ),
+    (
+        'omnichannel-growth-creative-engine',
+        'Omnichannel Paid Media & Creative Testing Engine',
+        'Designed a cross-channel paid funnel synchronizing Meta, YouTube, and retargeting ads with automated email workflows, generating over $500K in tracked sales.',
+        '# Omnichannel Paid Media & Creative Testing Engine
+
+## Overview
+Engineered an omnichannel paid acquisition engine synchronizing YouTube Ads, Meta retargeting, and Klaviyo automated email flows.
+
+## Results
+- **$500K+ Ad Spend Managed**
+- **28 Winning Creative Hooks Discovered**
+- **4.1x Blended ROAS Sustained**',
+        'EdTech & Digital Learning Platform',
+        'Growth Marketing Director',
+        '6 Months',
+        ARRAY['$500K+ Ad Spend Managed', '28 Winning Creative Hooks', '4.1x Blended ROAS'],
+        ARRAY['Omnichannel', 'A/B Testing', 'CAPI & GTM', 'Klaviyo'],
+        'purple',
+        'https://girishdas.vercel.app',
+        true,
+        3
+    );
 
 INSERT INTO favorites (category, icon, color, title, subtitle, order_index)
 VALUES 
-    ('Books', 'book', 'peach', 'Designing Data-Intensive Applications', 'Martin Kleppmann', 1),
-    ('Music', 'music', 'blue', 'Random Access Memories', 'Daft Punk • Electronic', 2),
-    ('Films & shows', 'film', 'purple', 'Interstellar', 'Christopher Nolan • 2014', 3),
-    ('Tools I love', 'tool', 'mint', 'VS Code & Supabase', 'Developer Stack & Database', 4);
+    ('Books', 'book', 'peach', 'Breakthrough Advertising', 'Eugene Schwartz • Direct Response Bible', 1),
+    ('Podcasts', 'music', 'blue', 'Marketing Against The Grain', 'Kipp Bodnar & Kieran Flanagan • HubSpot Growth', 2),
+    ('Films & shows', 'film', 'purple', 'Moneyball', 'Bennett Miller • Data-Driven Strategy', 3),
+    ('Tools I love', 'tool', 'mint', 'Meta Ads Manager & GA4', 'Paid Acquisition & Cookieless Attribution Stack', 4);
 
 INSERT INTO posts (title, slug, excerpt, content, read_time, published_at, published)
 VALUES 
     (
-        'Building Resilient Serverless APIs with Next.js and Supabase',
-        'building-resilient-serverless-apis',
-        'How to design fault-tolerant database connections, handle cold starts gracefully, and structure production PostgreSQL queries with Supabase.',
-        '# Building Resilient Serverless APIs with Next.js and Supabase
+        'How to Scale Meta Ads Past $50,000/Month Without ROAS Fatigue',
+        'how-to-scale-meta-ads-past-50k',
+        'The exact Advantage+ campaign architecture, creative testing pipeline, and budget pacing framework to scale paid social profitably.',
+        '# How to Scale Meta Ads Past $50,000/Month Without ROAS Fatigue
 
-Serverless functions have transformed how we build and scale modern web applications. However, handling database connection pooling and cold starts requires careful architectural choices.
+Every media buyer has hit the dreaded scaling wall: you increase daily budgets by 30%, and your CPA spikes by 80%. Here is the exact framework to break through.
 
-## The Challenge with Connection Limits
+## 1. Separate Testing from Scaling (The Two-Account Sandbox)
+Never test new creative concepts directly inside your primary scaling campaigns. 
 
-Traditional relational databases like PostgreSQL expect persistent connections. In serverless environments, sudden spikes can exhaust connection limits quickly.
+Use a dedicated Testing Campaign:
+- Dynamic Creative Ad Sets (DCT): 3 creatives, 2 copy variations, 2 headlines.
+- Run at a fixed budget until you gather statistically significant conversion metrics.
+- Extract the winning post ID and promote it into your Advantage+ Shopping Campaign (ASC).
 
-### Supabase Connection Pooling
-
-Supabase provides built-in Supavisor connection pooling out of the box. By configuring transaction mode and utilizing the Supabase JavaScript client with session re-use, our serverless routes execute reliably without connection exhaustion:
-
-```typescript
-import { createClient } from "@supabase/supabase-js";
-
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-```
-
-## Zero-Downtime Fallback Design
-
-By implementing graceful fallback layers, our client applications remain fast and resilient even during network hiccups or cold boots.
-
-Stay tuned for more deep dives into cloud architecture!
-',
+## 2. Creative Angle Diversification
+Most advertisers create 10 ads that all pitch the same benefit. To scale to six figures, you need distinct emotional angles:
+- The Pain Point / Problem Solver
+- The Competitor Alternative
+- The Social Proof / Viral Trend
+- The Value / Bundle Economics',
         '5 min read',
         CURRENT_DATE - INTERVAL '3 days',
         true
     ),
     (
-        'The Neo-Brutalist Design Philosophy: Why Functionality & Bold Borders Win',
-        'neo-brutalist-design-philosophy',
-        'Exploring why tactile drop-shadows, high-contrast borders, and joyful pastel palettes make digital interfaces more memorable.',
-        '# The Neo-Brutalist Design Philosophy
+        'The Cookieless Future: Setting Up Meta CAPI and GA4 Server-Side Attribution',
+        'cookieless-attribution-capi-ga4',
+        'Step-by-step blueprint to implement server-side tracking via Google Tag Manager and overcome browser cookie degradation.',
+        '# The Cookieless Future: Setting Up Meta CAPI and GA4 Server-Side Attribution
 
-Neo-brutalism blends raw HTML brutalism with playful typography, vibrant pastel hues, and tactile offset drop-shadows.
+Client-side browser tracking is dying. Safari ITP, Firefox tracking protection, and ad blockers routinely block 20% to 35% of client-side pixels.
 
-## Key Design Principles
-
-1. **High Contrast Borders**: 2px to 3px solid black borders provide immediate visual definition.
-2. **Tactile Shadows**: Hard-edge offsets (e.g., `4px 4px 0px #000`) communicate physical depth without muddy blurs.
-3. **Intentional Color Blocking**: Gentle pastels (mint, lavender, peach, soft yellow) keep the visual hierarchy clear and approachable.
-
-Interfaces should feel fun, responsive, and tactile.
-',
-        '4 min read',
-        CURRENT_DATE - INTERVAL '10 days',
+## Why Server-Side Tracking Is Essential
+With Server-Side Google Tag Manager (sGTM) and Meta Conversions API:
+- Events originate directly from your cloud server, invisible to ad blockers.
+- First-party cookies are set via your custom domain, extending cookie lifetime from 24 hours to up to 1 year.
+- Customer data parameters are securely enriched, dramatically improving Meta Event Match Quality (EMQ).',
+        '6 min read',
+        CURRENT_DATE - INTERVAL '11 days',
         true
     ),
     (
-        'Scaling Real-Time Agent Workflows on the Edge',
-        'scaling-real-time-agent-workflows',
-        'Lessons learned deploying autonomous agent loops, streaming LLM completions, and orchestrating serverless tasks on Vercel.',
-        '# Scaling Real-Time Agent Workflows on the Edge
+        'Landing Page Anatomy: 7 CRO Tweaks That Doubled Conversion Rates',
+        'landing-page-cro-tweaks',
+        'Proven direct-response layout patterns and micro-copy changes that increase page conversion velocity on mobile viewports.',
+        '# Landing Page Anatomy: 7 CRO Tweaks That Doubled Conversion Rates
 
-Building AI agent workflows requires fast token streaming, structured JSON parsing, and deterministic prompt guarantees.
+Generating traffic is only half the battle. If your landing page converts at 1.5% instead of 3.0%, you are paying double for every single customer.
 
-## Dynamic Prompt Construction
+## 1. Above-The-Fold Clarity
+Visitors decide whether to stay within 3 seconds. Your hero section must answer 3 fundamental questions immediately:
+- What is this?
+- How does it improve my life or business?
+- What do I do next?
 
-We ensure that all agent outputs adhere strictly to schema expectations while keeping response latency under 1.5 seconds across global regions.
-',
-        '6 min read',
-        CURRENT_DATE - INTERVAL '21 days',
+## 2. Eliminate Navigation Distractions
+Remove traditional top navigation bars on paid landing pages to eliminate traffic leaks.',
+        '4 min read',
+        CURRENT_DATE - INTERVAL '19 days',
         true
     );

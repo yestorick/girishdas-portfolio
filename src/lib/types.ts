@@ -1,6 +1,7 @@
 export interface SiteProfile {
   id?: string;
   name: string;
+  avatar_url?: string;
   nav_logo: string;
   status_badge: string;
   headline_intro: string;
@@ -43,8 +44,14 @@ export interface TechStackGroup {
 
 export interface Project {
   id?: string;
+  slug: string;
   title: string;
   description: string;
+  content: string; // Full Case Study in Markdown
+  client?: string;
+  role?: string;
+  duration?: string;
+  metrics?: string[]; // e.g. ["4.8x ROAS", "-38% CAC", "+310% Revenue"]
   tags: string[];
   color: 'yellow' | 'mint' | 'purple' | string;
   image_url?: string;
@@ -52,6 +59,7 @@ export interface Project {
   github_url?: string;
   featured?: boolean;
   order_index: number;
+  created_at?: string;
 }
 
 export interface FavoriteItem {

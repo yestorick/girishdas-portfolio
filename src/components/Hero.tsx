@@ -1,5 +1,5 @@
 import { SiteProfile, RightNow } from '@/lib/types';
-import { ArrowRight, Compass, FileText, Mail } from 'lucide-react';
+import { ArrowRight, Compass, FileText, Mail, Sparkles } from 'lucide-react';
 
 interface HeroProps {
   profile: SiteProfile;
@@ -12,12 +12,37 @@ export default function Hero({ profile, rightNow }: HeroProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
         {/* Left Column: Intro & Headline */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Status Badge */}
-          <div>
-            <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-[#BBF7D0] border-2 border-black shadow-brutal-sm">
-              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-              {profile.status_badge || 'Open to opportunities'}
-            </span>
+          {/* Avatar Photo + Status Badge Container (Integrated Circular Shape) */}
+          <div className="flex items-center gap-3.5 flex-wrap">
+            {/* Circular Photo Frame on the Left */}
+            <div className="relative shrink-0">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-black shadow-brutal bg-[#FDE68A] overflow-hidden flex items-center justify-center">
+                {profile.avatar_url ? (
+                  <img
+                    src={profile.avatar_url}
+                    alt={profile.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#FDE68A] to-[#FFC4B0] text-black font-extrabold text-lg sm:text-xl font-display tracking-tight">
+                    <span>GD</span>
+                  </div>
+                )}
+              </div>
+              {/* Online pulsing dot badge on circle corner */}
+              <span className="absolute bottom-0.5 right-0.5 w-4 h-4 rounded-full bg-emerald-500 border-2 border-black shadow-brutal-sm" />
+            </div>
+
+            {/* Status Pill Badge directly attached to right of circle */}
+            <div className="space-y-1">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#BBF7D0] border-2 border-black shadow-brutal-sm text-black">
+                <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+                {profile.status_badge || 'Open to opportunities'}
+              </span>
+              <p className="text-[11px] font-bold text-slate-600 tracking-wide uppercase pl-1">
+                Performance & Digital Marketer
+              </p>
+            </div>
           </div>
 
           {/* Main Headline */}
@@ -64,7 +89,7 @@ export default function Hero({ profile, rightNow }: HeroProps) {
               <div className="w-7 h-7 rounded-lg bg-white border-2 border-black flex items-center justify-center shadow-brutal-sm">
                 <Compass className="w-4 h-4 text-black" />
               </div>
-              <h2 className="font-extrabold text-base tracking-wide uppercase">Right now</h2>
+              <h2 className="font-extrabold text-base tracking-wide uppercase font-display">Right now</h2>
             </div>
 
             {/* List of current status */}

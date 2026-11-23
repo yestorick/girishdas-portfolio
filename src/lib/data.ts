@@ -11,108 +11,221 @@ import {
 
 export const DEFAULT_PROFILE: SiteProfile = {
   name: 'Girish Das',
+  avatar_url: '', // User can paste an image URL or upload to Supabase
   nav_logo: '[GIRISH DAS]',
   status_badge: 'Open to opportunities',
   headline_intro: "Hi, I'm Girish Das. I build",
-  headline_highlight: 'SCALABLE WEB & AI SYSTEMS',
-  bio: 'Full-stack software engineer crafting responsive, fast, and resilient web applications with modern architectures.',
+  headline_highlight: 'HIGH-ROI DIGITAL GROWTH & PAID ADS',
+  bio: 'Performance Marketer & Digital Growth Strategist scaling multi-channel paid acquisition across Meta, Google, and TikTok. I engineer high-converting landing pages, optimize ROAS, and scale ad budgets profitably.',
   email: 'girishdas@gmail.com',
   resume_url: '#',
   github_url: 'https://github.com/yestorick',
   linkedin_url: 'https://linkedin.com/in/girishdas',
   twitter_url: 'https://x.com/girishdas',
-  footer_tagline: 'Feel free to reach out for high-impact roles, engineering contracts, or collaborative technical projects.',
+  footer_tagline: 'Available for full-time growth leadership roles, performance marketing contracts, or high-scale paid acquisition audits.',
 };
 
 export const DEFAULT_RIGHT_NOW: RightNow = {
-  building_title: 'Rankgate GMB & AI SaaS',
-  building_desc: 'One-tap review routing and QR engine',
-  learning: 'Next.js 15 App Router & Supabase Postgres',
-  reading: 'Designing Data-Intensive Applications',
+  building_title: 'Scalable Paid Acquisition Funnels',
+  building_desc: 'Managing multi-channel ad spend & high-intent CRO landing pages',
+  learning: 'AI-driven creative testing & cookieless attribution models (GA4 + CAPI)',
+  reading: 'Breakthrough Advertising by Eugene Schwartz',
   based_in: 'Bengaluru, India',
 };
 
 export const DEFAULT_EXPERIENCES: Experience[] = [
   {
-    role: 'Senior Full-Stack Engineer',
-    company: 'Apex Systems',
-    description: 'Leading core web architecture, micro-frontends, and high-throughput real-time APIs.',
+    role: 'Lead Performance Marketer',
+    company: 'GrowthScale Media',
+    description: 'Managing $150K+/month paid media spend across Meta, Google Ads & TikTok; scaled client revenue by 320% with 4.5x average ROAS.',
     period: '2024 - Now',
     order_index: 1,
   },
   {
-    role: 'Software Engineer',
-    company: 'Nova Cloud Labs',
-    description: 'Engineered distributed serverless pipelines, automated CI/CD workflows, and database layers.',
+    role: 'Senior Digital Marketing Specialist',
+    company: 'OmniDigital Agency',
+    description: 'Spearheaded full-funnel paid search & paid social campaigns, built high-converting landing pages, and implemented GA4 server-side tracking.',
     period: '2022 - 2024',
     order_index: 2,
   },
   {
-    role: 'Full-Stack Developer & CS Fellow',
-    company: 'Tech Institute',
-    description: 'Graduated with Distinction; developed open-source tools and cloud storage integrations.',
-    period: '2019 - 2021',
+    role: 'Digital Marketing & Acquisition Associate',
+    company: 'Vanguard Growth Labs',
+    description: 'Conducted rigorous A/B creative testing, audience segmentation, and email nurture workflows with a 42% decrease in blended CAC.',
+    period: '2020 - 2022',
     order_index: 3,
   },
 ];
 
 export const DEFAULT_TECH_STACK: TechStackGroup[] = [
   {
-    category: 'Languages',
+    category: 'Paid Channels & Ads',
     color: 'blue',
-    skills: ['TypeScript', 'JavaScript', 'Python', 'Go', 'SQL'],
+    skills: ['Meta Ads (FB/IG)', 'Google Search & PMax', 'TikTok Ads', 'YouTube Ads', 'LinkedIn Ads'],
     order_index: 1,
   },
   {
-    category: 'Frontend',
+    category: 'Analytics & Tracking',
     color: 'mint',
-    skills: ['React', 'Next.js', 'Tailwind CSS', 'Redux', 'HTML5/CSS3'],
+    skills: ['Google Analytics 4', 'Google Tag Manager', 'Meta Conversions API', 'Looker Studio', 'Triple Whale'],
     order_index: 2,
   },
   {
-    category: 'Backend & data',
+    category: 'CRO & Funnels',
     color: 'yellow',
-    skills: ['Node.js', 'Supabase', 'PostgreSQL', 'FastAPI', 'MongoDB'],
+    skills: ['Unbounce', 'Webflow', 'Shopify Plus', 'Optimizely', 'Hotjar', 'VWO'],
     order_index: 3,
   },
   {
-    category: 'Tools',
+    category: 'Marketing Tools & Ops',
     color: 'purple',
-    skills: ['Git & GitHub', 'Docker', 'Vercel', 'Linux', 'Figma', 'Postman'],
+    skills: ['Klaviyo', 'HubSpot', 'Zapier Automation', 'SEMrush & Ahrefs', 'Canva Pro', 'PostHog'],
     order_index: 4,
   },
 ];
 
 export const DEFAULT_PROJECTS: Project[] = [
   {
-    title: 'Rankgate GMB',
-    description: 'Autonomous Google Business Profile review engine with one-tap QR routing and intelligent keyword optimization.',
-    tags: ['Next.js', 'FastAPI', 'MongoDB', 'Gemini AI'],
+    slug: 'scaling-d2c-brand-meta-tiktok',
+    title: 'Scaling D2C E-Commerce Brand from $30K to $180K/mo',
+    description: 'Multi-channel paid social acquisition blitz on Meta & TikTok paired with dynamic landing page CRO that lowered CAC by 38%.',
+    client: 'D2C Apparel & Lifestyle Brand',
+    role: 'Lead Growth & Paid Media Strategist',
+    duration: '4 Months',
+    metrics: ['4.8x Blended ROAS', '-38% Customer CAC', '+310% Net Monthly Revenue'],
+    tags: ['Meta Ads', 'TikTok Ads', 'Shopify CRO', 'Triple Whale'],
     color: 'yellow',
-    live_url: 'https://rickgmb.vercel.app',
-    github_url: 'https://github.com/yestorick/review-gmb-dev',
+    live_url: 'https://girishdas.vercel.app',
     featured: true,
     order_index: 1,
+    content: `# Scaling D2C E-Commerce Brand from $30K to $180K/mo
+
+## Overview & The Challenge
+The brand had strong product-market fit with organic word-of-mouth but was stuck at ~$30,000 in monthly revenue. Prior agency campaigns were suffering from high customer acquisition costs (CAC > $65) and rapid ad creative fatigue on Meta within 7 to 10 days.
+
+### Core Objectives:
+- Expand top-of-funnel (TOF) audience reach on Meta and launch TikTok Ads from scratch.
+- Lower blended CAC from $65 down to under $42.
+- Build a systematic creative testing pipeline capable of finding 2-3 winning hooks weekly.
+- Achieve a minimum 3.8x blended Return on Ad Spend (ROAS).
+
+---
+
+## Strategic Approach & Execution
+
+### 1. High-Velocity Creative Testing Engine
+Instead of relying on static product mockups, we deployed a structured creative matrix:
+- **Hook Variations**: Tested 5 distinct emotional hooks per video (Problem-Agitate, UGC Unboxing, Founder Story, Us vs. Them Comparison, and Before/After).
+- **Format Diversification**: Rolled out authentic creator UGC (User-Generated Content), TikTok native style 9:16 vertical videos, and high-contrast motion graphic carousels.
+- **Micro-Budget Sandbox**: Tested 15-20 creative iterations weekly in dynamic creative ad sets (DCT) before promoting winners to high-budget Advantage+ Shopping Campaigns (ASC).
+
+### 2. Full-Funnel Retargeting & Offer Architecture
+- **Middle of Funnel (MOF)**: Retargeted video viewers (75%+ watch time) and social engagers with social proof carousels and influencer testimonials.
+- **Bottom of Funnel (BOF)**: Dynamic product catalog ads (DPA) targeting 30-day website visitors with tiered bundle discounts and free shipping thresholds.
+
+### 3. Conversion Rate Optimization (CRO)
+Traffic alone doesn't scale without a leak-proof funnel. We redesigned the product detail page (PDP):
+- Added sticky "Add to Cart" CTA on mobile viewports.
+- Integrated transparent customer review badges directly below the main hero image.
+- Implemented 1-click checkout with Shop Pay and Apple Pay, reducing checkout abandonment by 24%.
+
+### 4. Cookieless Tracking & Attribution Setup
+Configured Meta Conversions API (CAPI) via Google Tag Manager Server-Side container, maintaining a 9.2/10 Event Match Quality (EMQ) score to circumvent iOS 14.5+ attribution drop-off.
+
+---
+
+## Measurable Results
+
+| Metric | Before Intervention | After 120 Days | Improvement |
+| :--- | :--- | :--- | :--- |
+| **Monthly Revenue** | $31,200 | $184,500 | **+491% Growth** |
+| **Blended ROAS** | 2.1x | **4.8x** | **+128% Efficiency** |
+| **Customer CAC** | $66.40 | **$41.15** | **-38% Cost Reduction** |
+| **Conversion Rate** | 1.8% | **3.4%** | **+88% Lift** |
+
+---
+
+## Key Takeaways
+1. **Creative is the new targeting**: High-converting creative hooks combined with broad audience targeting consistently outperformed narrow interest stacks.
+2. **Post-click experience drives the sale**: Aligning the ad's exact promise directly with the landing page above-the-fold headline doubled conversion velocity.`,
   },
   {
-    title: 'DevPulse Studio',
-    description: 'Developer analytics workbench visualizing git commits, PR velocity, and test coverage across distributed teams.',
-    tags: ['TypeScript', 'Supabase', 'Postgres', 'Tailwind'],
+    slug: 'b2b-saas-google-search-scale',
+    title: 'B2B SaaS Google Search & High-Intent Pipeline Scaling',
+    description: 'Restructured paid search architecture with negative keyword sculpting and dedicated comparison landing pages, lifting qualified demo requests by 190%.',
+    client: 'Cloud Security & Compliance SaaS',
+    role: 'Search Engine Marketing Lead',
+    duration: '3 Months',
+    metrics: ['+190% Qualified Leads', '3.4x Pipeline Value', '62% Lower Cost Per Demo'],
+    tags: ['Google Search', 'High-Intent Keywords', 'Unbounce CRO', 'GA4'],
     color: 'mint',
     live_url: 'https://girishdas.vercel.app',
-    github_url: 'https://github.com/yestorick',
     featured: true,
     order_index: 2,
+    content: `# B2B SaaS Google Search & High-Intent Pipeline Scaling
+
+## The Challenge
+A Series A B2B software company was burning $25,000/month on Google Ads with little to show: cost per sales-qualified lead (SQL) exceeded $480, and the sales team reported over 70% of inbound demo requests were tire-kickers or students looking for free templates.
+
+---
+
+## The Strategic Solution
+
+### 1. High-Intent Keyword Sculpting
+- Stripped away broad generic keywords (e.g. "cloud software", "compliance guide").
+- Rebuilt campaigns strictly around **high-commercial intent terms**:
+  - Direct Competitor Alternatives (e.g., *"[Competitor] alternative"*, *"[Competitor] pricing"*).
+  - Software evaluation queries (e.g., *"SOC 2 automated compliance platform"*).
+- Deployed an extensive 600+ negative keyword list to eliminate non-buyers (e.g., *jobs, salary, open source, pdf, free, tutorial*).
+
+### 2. Bespoke "Us vs. Them" Comparison Landing Pages
+Rather than routing traffic to the generic homepage, every competitor ad landed on a dedicated, distraction-free Unbounce landing page featuring:
+- Head-to-head feature comparison matrix.
+- Verified G2 & Trustpilot rating chips.
+- Interactive ROI calculator showcasing time saved.
+- Multi-step frictionless demo booking form connected via Calendly & HubSpot.
+
+### 3. Smart Bidding with Value-Based Conversion Tracking
+Configured offline conversion import (OCI) between HubSpot CRM and Google Ads. Instead of optimizing for cheap form fills, Google's Smart Bidding algorithm was fed actual **Sales-Qualified Opportunities**, focusing budget on high-contract-value buyers.
+
+---
+
+## Measurable Results
+- **+190% Increase in Qualified Demo Bookings**
+- **62% Reduction in Cost Per Qualified Demo** (from $480 down to $182)
+- **$1.4M in New Attributed Pipeline Value** within 90 days.`,
   },
   {
-    title: 'AgentMesh Orchestrator',
-    description: 'Multi-agent coordination system enabling autonomous code review, linting, and automated cloud deployments.',
-    tags: ['Python', 'FastAPI', 'Docker', 'Vercel'],
+    slug: 'omnichannel-growth-creative-engine',
+    title: 'Omnichannel Paid Media & Creative Testing Engine',
+    description: 'Designed a cross-channel paid funnel synchronizing Meta, YouTube, and retargeting ads with automated email workflows, generating over $500K in tracked sales.',
+    client: 'EdTech & Digital Learning Platform',
+    role: 'Growth Marketing Director',
+    duration: '6 Months',
+    metrics: ['$500K+ Ad Spend Managed', '28 Winning Creative Hooks', '4.1x Blended ROAS'],
+    tags: ['Omnichannel', 'A/B Testing', 'CAPI & GTM', 'Klaviyo'],
     color: 'purple',
     live_url: 'https://girishdas.vercel.app',
-    github_url: 'https://github.com/yestorick',
     featured: true,
     order_index: 3,
+    content: `# Omnichannel Paid Media & Creative Testing Engine
+
+## The Strategy
+To overcome ad fatigue and rising ad costs, we built an integrated growth engine orchestrating **Meta, YouTube Ads, and Klaviyo lifecycle retention**.
+
+### Key Pillars:
+1. **Video Hook Optimization**: Tested 100+ creative angles; identified 28 evergreen video hooks that maintained high ROAS across 180+ days.
+2. **Channel-Specific Messaging**:
+   - YouTube Ads for long-form authority building & deep educational proof.
+   - Meta & Instagram for rapid visual urgency, testimonials, and dynamic retargeting.
+3. **Lifecycle Synergy**: Integrated Klaviyo abandoned checkout SMS & email sequences, recovering an additional 18.5% of unconverted paid traffic.
+
+---
+
+## Key Results
+- Managed over **$500,000** in multi-channel paid media budget.
+- Delivered a sustained **4.1x blended ROAS** across all quarters.
+- Decreased overall customer payback period from 65 days to 28 days.`,
   },
 ];
 
@@ -121,103 +234,116 @@ export const DEFAULT_FAVORITES: FavoriteItem[] = [
     category: 'Books',
     icon: 'book',
     color: 'peach',
-    title: 'Designing Data-Intensive Applications',
-    subtitle: 'Martin Kleppmann',
+    title: 'Breakthrough Advertising',
+    subtitle: 'Eugene Schwartz • The Direct Response Bible',
     order_index: 1,
   },
   {
-    category: 'Music',
+    category: 'Podcasts',
     icon: 'music',
     color: 'blue',
-    title: 'Random Access Memories',
-    subtitle: 'Daft Punk • Electronic',
+    title: 'Marketing Against The Grain',
+    subtitle: 'Kipp Bodnar & Kieran Flanagan • HubSpot Growth',
     order_index: 2,
   },
   {
     category: 'Films & shows',
     icon: 'film',
     color: 'purple',
-    title: 'Interstellar',
-    subtitle: 'Christopher Nolan • 2014',
+    title: 'Moneyball',
+    subtitle: 'Bennett Miller • Data-Driven Strategy',
     order_index: 3,
   },
   {
     category: 'Tools I love',
     icon: 'tool',
     color: 'mint',
-    title: 'VS Code & Supabase',
-    subtitle: 'Developer Stack & Cloud Database',
+    title: 'Meta Ads Manager & GA4',
+    subtitle: 'Paid Acquisition & Cookieless Attribution Stack',
     order_index: 4,
   },
 ];
 
 export const DEFAULT_POSTS: BlogPost[] = [
   {
-    title: 'Building Resilient Serverless APIs with Next.js and Supabase',
-    slug: 'building-resilient-serverless-apis',
-    excerpt: 'How to design fault-tolerant database connections, handle cold starts gracefully, and structure production PostgreSQL queries with Supabase.',
-    content: `# Building Resilient Serverless APIs with Next.js and Supabase
+    title: 'How to Scale Meta Ads Past $50,000/Month Without ROAS Fatigue',
+    slug: 'how-to-scale-meta-ads-past-50k',
+    excerpt: 'The exact Advantage+ campaign architecture, creative testing pipeline, and budget pacing framework to scale paid social profitably.',
+    content: `# How to Scale Meta Ads Past $50,000/Month Without ROAS Fatigue
 
-Serverless functions have transformed how we build and scale modern web applications. However, handling database connection pooling and cold starts requires careful architectural choices.
+Every media buyer has hit the dreaded "scaling wall": you increase daily budgets by 30%, and your CPA spikes by 80%. Here is the exact framework to break through.
 
-## The Challenge with Connection Limits
+## 1. Separate Testing from Scaling (The Two-Account Sandbox)
+Never test new creative concepts directly inside your primary scaling campaigns. 
 
-Traditional relational databases like PostgreSQL expect persistent connections. In serverless environments, sudden traffic spikes can exhaust connection limits quickly.
+Use a dedicated **Testing Campaign**:
+- **Dynamic Creative Ad Sets (DCT)**: 3 creatives, 2 copy variations, 2 headlines.
+- Run at a fixed budget until you gather statistically significant conversion metrics (minimum 50 purchases).
+- Extract the winning post ID (with all accumulated likes and comments) and promote it into your **Advantage+ Shopping Campaign (ASC)**.
 
-### Supabase Connection Pooling
+## 2. Creative Angle Diversification
+Most advertisers create 10 ads that all pitch the same benefit. To scale to six figures, you need distinct emotional angles:
+- **Angle A**: The Pain Point / Problem Solver (focus on current frustration).
+- **Angle B**: The Competitor Alternative (why other solutions fail).
+- **Angle C**: The Social Proof / Viral Trend (UGC reactions).
+- **Angle D**: The Value / Bundle Economics (financial upside).
 
-Supabase provides built-in Supavisor connection pooling out of the box. By configuring transaction mode and utilizing the Supabase JavaScript client with session re-use, our serverless routes execute reliably without connection exhaustion:
+## 3. Monitor Blended Metrics (MER)
+In the post-iOS 14.5 landscape, in-platform ROAS is often under-reported by 15-25%. Focus on your **Marketing Efficiency Ratio (MER)**:
 
-\`\`\`typescript
-import { createClient } from "@supabase/supabase-js";
-
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+\`\`\`
+MER = Total Store Revenue / Total Paid Ad Spend
 \`\`\`
 
-## Zero-Downtime Fallback Design
-
-By implementing graceful fallback layers, our client applications remain fast and resilient even during network hiccups or cold boots.
-
-Stay tuned for more deep dives into cloud architecture!`,
+If your MER remains healthy above 3.5x, continue scaling aggregate budget regardless of in-platform reporting delays.`,
     read_time: '5 min read',
     published_at: '2026-11-20',
     published: true,
   },
   {
-    title: 'The Neo-Brutalist Design Philosophy: Why Bold Borders & High Contrast Win',
-    slug: 'neo-brutalist-design-philosophy',
-    excerpt: 'Exploring why tactile drop-shadows, high-contrast borders, and joyful pastel palettes make digital interfaces more memorable.',
-    content: `# The Neo-Brutalist Design Philosophy
+    title: 'The Cookieless Future: Setting Up Meta CAPI and GA4 Server-Side Attribution',
+    slug: 'cookieless-attribution-capi-ga4',
+    excerpt: 'Step-by-step blueprint to implement server-side tracking via Google Tag Manager and overcome browser cookie degradation.',
+    content: `# The Cookieless Future: Setting Up Meta CAPI and GA4 Server-Side Attribution
 
-Neo-brutalism blends raw HTML brutalism with playful typography, vibrant pastel hues, and tactile offset drop-shadows.
+Client-side browser tracking is dying. Safari ITP, Firefox tracking protection, and ad blockers routinely block 20% to 35% of client-side pixels.
 
-## Key Design Principles
+## Why Server-Side Tracking Is Essential
+With Server-Side Google Tag Manager (sGTM) and Meta Conversions API:
+- Events originate directly from your cloud server, invisible to ad blockers.
+- First-party cookies are set via your custom domain (\`metrics.yourdomain.com\`), extending cookie lifetime from 24 hours to up to 1 year.
+- Customer data parameters (hashed email, phone, IP address) are securely enriched, dramatically improving Meta Event Match Quality (EMQ).
 
-1. **High Contrast Borders**: 2px solid black borders provide immediate visual definition.
-2. **Tactile Shadows**: Hard-edge offsets (e.g., \`4px 4px 0px #000\`) communicate physical depth without muddy blurs.
-3. **Intentional Color Blocking**: Gentle pastels (mint, lavender, peach, soft yellow) keep the visual hierarchy clear and approachable.
-
-Interfaces should feel fun, responsive, and tactile.`,
-    read_time: '4 min read',
-    published_at: '2026-11-13',
+## Implementation Checklist
+1. Deploy a server-side GTM container on a custom subdomain.
+2. Forward Web GTM events to the server endpoint via the GA4 client.
+3. Configure the official Meta CAPI tag on the server container.
+4. Pass deduplicated \`event_id\` headers between browser and server to eliminate double-counting.`,
+    read_time: '6 min read',
+    published_at: '2026-11-12',
     published: true,
   },
   {
-    title: 'Scaling Real-Time Agent Workflows on the Edge',
-    slug: 'scaling-real-time-agent-workflows',
-    excerpt: 'Lessons learned deploying autonomous agent loops, streaming LLM completions, and orchestrating serverless tasks on Vercel.',
-    content: `# Scaling Real-Time Agent Workflows on the Edge
+    title: 'Landing Page Anatomy: 7 CRO Tweaks That Doubled Conversion Rates',
+    slug: 'landing-page-cro-tweaks',
+    excerpt: 'Proven direct-response layout patterns and micro-copy changes that increase page conversion velocity on mobile viewports.',
+    content: `# Landing Page Anatomy: 7 CRO Tweaks That Doubled Conversion Rates
 
-Building AI agent workflows requires fast token streaming, structured JSON parsing, and deterministic prompt guarantees.
+Generating traffic is only half the battle. If your landing page converts at 1.5% instead of 3.0%, you are paying double for every single customer.
 
-## Dynamic Prompt Construction
+## 1. Above-The-Fold Clarity
+Visitors decide whether to stay within 3 seconds. Your hero section must answer 3 fundamental questions immediately:
+- What is this?
+- How does it improve my life or business?
+- What do I do next?
 
-We ensure that all agent outputs adhere strictly to schema expectations while keeping response latency under 1.5 seconds across global regions.`,
-    read_time: '6 min read',
-    published_at: '2026-11-02',
+## 2. Eliminate Navigation Distractions
+Remove the traditional top navigation bar on paid landing pages. Every external link (e.g., "About Us", "Press", "Careers") is a leak where paid ad dollars escape without converting.
+
+## 3. High-Contrast Neo-Brutalist CTAs
+Buttons should look physically clickable. Solid black borders, tactile drop shadows, and high-contrast color pills out-perform subtle ghost buttons by over 28% in mobile A/B testing.`,
+    read_time: '4 min read',
+    published_at: '2026-11-04',
     published: true,
   },
 ];
@@ -284,6 +410,25 @@ export async function getProjects(): Promise<Project[]> {
     return data;
   } catch {
     return DEFAULT_PROJECTS;
+  }
+}
+
+export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  if (!isSupabaseConfigured || !supabase) {
+    return DEFAULT_PROJECTS.find((p) => p.slug === slug) || null;
+  }
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .eq('slug', slug)
+      .maybeSingle();
+    if (error || !data) {
+      return DEFAULT_PROJECTS.find((p) => p.slug === slug) || null;
+    }
+    return data;
+  } catch {
+    return DEFAULT_PROJECTS.find((p) => p.slug === slug) || null;
   }
 }
 

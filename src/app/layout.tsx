@@ -1,14 +1,29 @@
 import type { Metadata, Viewport } from 'next';
+import { Plus_Jakarta_Sans, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['600', '700'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
-  title: 'Girish Das — Full-Stack Engineer & Builder',
-  description: 'Personal portfolio, engineering projects, experience, and writings of Girish Das.',
+  title: 'Girish Das — Performance Marketer & Digital Growth Strategist',
+  description: 'Personal portfolio, paid media case studies, growth funnels, and marketing notes of Girish Das.',
   authors: [{ name: 'Girish Das' }],
   metadataBase: new URL('https://girishdas.vercel.app'),
   openGraph: {
-    title: 'Girish Das — Full-Stack Engineer & Builder',
-    description: 'Personal portfolio, engineering projects, experience, and writings of Girish Das.',
+    title: 'Girish Das — Performance Marketer & Digital Growth Strategist',
+    description: 'Personal portfolio, paid media case studies, growth funnels, and marketing notes of Girish Das.',
     url: 'https://girishdas.vercel.app',
     siteName: 'Girish Das Portfolio',
     locale: 'en_US',
@@ -16,8 +31,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Girish Das — Full-Stack Engineer & Builder',
-    description: 'Personal portfolio, engineering projects, experience, and writings of Girish Das.',
+    title: 'Girish Das — Performance Marketer & Digital Growth Strategist',
+    description: 'Personal portfolio, paid media case studies, growth funnels, and marketing notes of Girish Das.',
   },
 };
 
@@ -33,8 +48,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className="bg-[#FAF8F5] text-[#0F0F10] antialiased selection:bg-[#FDE68A] selection:text-black">
+    <html lang="en" className={`scroll-smooth ${plusJakarta.variable} ${spaceGrotesk.variable}`}>
+      <body className="bg-[#FAF8F5] text-[#0F0F10] font-sans antialiased selection:bg-[#FDE68A] selection:text-black">
         {children}
       </body>
     </html>
