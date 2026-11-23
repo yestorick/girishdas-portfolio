@@ -21,10 +21,10 @@ export default function Hero({ profile, rightNow }: HeroProps) {
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-black leading-[1.15]">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-black leading-tight sm:leading-snug">
             {profile.headline_intro}{' '}
-            <span className="relative inline-block mt-1 sm:mt-0">
-              <span className="bg-[#FDE68A] px-2.5 py-0.5 border-2 border-black rounded-lg shadow-brutal-sm">
+            <span className="inline-block my-1 sm:my-0">
+              <span className="bg-[#FDE68A] px-3 py-1 border-2 border-black rounded-lg shadow-brutal-sm">
                 {profile.headline_highlight}
               </span>
             </span>
@@ -46,25 +46,13 @@ export default function Hero({ profile, rightNow }: HeroProps) {
               <ArrowRight className="w-4 h-4" />
             </a>
 
-            {profile.resume_url && profile.resume_url !== '#' ? (
-              <a
-                href={profile.resume_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="neo-btn inline-flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full text-sm font-semibold shadow-brutal hover:bg-slate-50"
-              >
-                <FileText className="w-4 h-4" />
-                <span>Download résumé</span>
-              </a>
-            ) : (
-              <a
-                href={`mailto:${profile.email}`}
-                className="neo-btn inline-flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full text-sm font-semibold shadow-brutal hover:bg-slate-50"
-              >
-                <Mail className="w-4 h-4" />
-                <span>Contact direct</span>
-              </a>
-            )}
+            <a
+              href={profile.resume_url && profile.resume_url !== '#' ? profile.resume_url : '#contact'}
+              className="neo-btn inline-flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full text-sm font-semibold shadow-brutal hover:bg-slate-50"
+            >
+              <FileText className="w-4 h-4" />
+              <span>Download résumé</span>
+            </a>
           </div>
         </div>
 
