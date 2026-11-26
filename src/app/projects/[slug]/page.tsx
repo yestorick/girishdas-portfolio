@@ -2,31 +2,30 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { getProfile, getProjectBySlug, getProjects } from '@/lib/data';
-import { ArrowLeft, Calendar, ExternalLink, ImageIcon } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import MarkdownContent from '@/components/MarkdownContent';
+import { getProfile, getProjectBySlug } from '@/lib/data';
+import { ArrowLeft, ExternalLink, Calendar, ImageIcon } from 'lucide-react';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  const projects = await getProjects();
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
-}
-
-const isSelfPortfolioUrl = (url?: string) => {
+const isSelfPortfolioUrl = (url?: string, websiteUrl?: string) => {
   if (!url) return true;
-  return (
+  if (
     url === '#' ||
     url.includes('girishdas.vercel.app') ||
     url.includes('hellorick.vercel.app')
-  );
+  ) {
+    return true;
+  }
+  if (websiteUrl) {
+    const cleanHost = websiteUrl.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+    if (cleanHost && url.includes(cleanHost)) return true;
+  }
+  return false;
 };
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
@@ -40,9 +39,11 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
     notFound();
   }
 
+  const showExternal =
+    project.live_url &&
+    !isSelfPortfolioUrl(project.live_url, profile.website_url);
   const completionDate = project.completion_date || project.duration || 'Completed';
   const madeByLabel = project.made_by || 'Made by me';
-  const showExternal = project.live_url && !isSelfPortfolioUrl(project.live_url);
 
   return (
     <div className="min-h-dvh flex flex-col bg-[#FBF9F5]">
@@ -63,7 +64,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           className="inline-flex items-center gap-2 text-xs font-semibold text-[#57534E] hover:text-[#1C1917] mb-6 transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
-          <span>Back to My projects</span>
+          <span>Back to {profile.projects_heading || 'My projects'}</span>
         </Link>
 
         {/* Simple Clean Project Title & Meta (Zero Distracting Block Boxes) */}
@@ -79,7 +80,9 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <span>{completionDate}</span>
             </span>
 
-            <span aria-hidden="true" className="text-[#A8A29E]">•</span>
+            <span aria-hidden="true" className="text-[#A8A29E]">
+              •
+            </span>
 
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#E4F1E7] border border-[#1E5631]/25 text-[#1E5631]">
               {madeByLabel}
@@ -87,7 +90,9 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
             {project.tags && project.tags.length > 0 && (
               <>
-                <span aria-hidden="true" className="text-[#A8A29E]">•</span>
+                <span aria-hidden="true" className="text-[#A8A29E]">
+                  •
+                </span>
                 <span className="text-xs text-[#57534E]">
                   {project.tags.join(' · ')}
                 </span>
@@ -96,7 +101,9 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
             {showExternal && (
               <>
-                <span aria-hidden="true" className="text-[#A8A29E]">•</span>
+                <span aria-hidden="true" className="text-[#A8A29E]">
+                  •
+                </span>
                 <a
                   href={project.live_url}
                   target="_blank"
@@ -140,100 +147,11 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
         {/* Clean Unboxed Write-Up: How I Completed This Project & Screenshots */}
         <article className="border-t border-[#1C1917]/10 pt-8 text-[#1C1917] leading-relaxed">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              h1: ({ children }) => (
-                <h2 className="text-xl sm:text-2xl font-bold text-[#1C1917] mt-6 first:mt-0 mb-3 font-display">
-                  {children}
-                </h2>
-              ),
-              h2: ({ children }) => (
-                <h2 className="text-lg sm:text-xl font-bold text-[#1C1917] mt-8 mb-3 font-display">
-                  {children}
-                </h2>
-              ),
-              h3: ({ children }) => (
-                <h3 className="text-base sm:text-lg font-bold text-[#1C1917] mt-6 mb-2 font-display">
-                  {children}
-                </h3>
-              ),
-              p: ({ children }) => (
-                <p className="text-sm sm:text-base text-[#44403C] my-4 leading-relaxed max-w-[68ch]">
-                  {children}
-                </p>
-              ),
-              ul: ({ children }) => (
-                <ul className="list-disc list-inside space-y-1.5 my-4 text-sm sm:text-base text-[#44403C]">
-                  {children}
-                </ul>
-              ),
-              ol: ({ children }) => (
-                <ol className="list-decimal list-inside space-y-1.5 my-4 text-sm sm:text-base text-[#44403C]">
-                  {children}
-                </ol>
-              ),
-              img: ({ src, alt }) => (
-                <span className="block my-6">
-                  <img
-                    src={src || ''}
-                    alt={alt || 'Project screenshot'}
-                    loading="lazy"
-                    className="w-full h-auto rounded-xl border border-[#1C1917]/15 bg-white"
-                  />
-                  {alt && (
-                    <span className="block mt-2 text-xs text-[#78716C] text-center">
-                      {alt}
-                    </span>
-                  )}
-                </span>
-              ),
-              table: ({ children }) => (
-                <div
-                  tabIndex={0}
-                  role="region"
-                  aria-label="Project results table"
-                  className="overflow-x-auto my-6 border border-[#1C1917]/20 rounded-xl bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#C84B31]"
-                >
-                  <table className="w-full min-w-[460px] text-left text-xs sm:text-sm border-collapse">
-                    {children}
-                  </table>
-                </div>
-              ),
-              thead: ({ children }) => (
-                <thead className="bg-[#F5F2EB] text-[#1C1917] font-bold border-b border-[#1C1917]/15">
-                  {children}
-                </thead>
-              ),
-              tbody: ({ children }) => (
-                <tbody className="divide-y divide-[#1C1917]/10 bg-white">{children}</tbody>
-              ),
-              tr: ({ children }) => <tr className="divide-x divide-[#1C1917]/10">{children}</tr>,
-              th: ({ children }) => (
-                <th scope="col" className="px-4 py-3 font-bold whitespace-nowrap">
-                  {children}
-                </th>
-              ),
-              td: ({ children }) => <td className="px-4 py-3 text-[#44403C]">{children}</td>,
-              code: ({ children }) => (
-                <code className="bg-[#F5F2EB] text-[#1C1917] px-1.5 py-0.5 rounded text-xs sm:text-sm font-mono border border-[#1C1917]/10">
-                  {children}
-                </code>
-              ),
-              pre: ({ children }) => (
-                <pre className="bg-[#18181B] text-stone-100 p-4 rounded-xl overflow-x-auto text-xs sm:text-sm font-mono my-4">
-                  {children}
-                </pre>
-              ),
-              blockquote: ({ children }) => (
-                <blockquote className="border-l-2 border-[#C84B31] pl-4 italic my-4 text-sm text-[#44403C]">
-                  {children}
-                </blockquote>
-              ),
-            }}
-          >
-            {project.content}
-          </ReactMarkdown>
+          <MarkdownContent
+            content={project.content}
+            imageAltFallback="Project screenshot"
+            tableAriaLabel="Project results table"
+          />
 
           {/* Optional Additional Screenshots Gallery from Supabase `screenshots` array */}
           {project.screenshots && project.screenshots.length > 0 && (

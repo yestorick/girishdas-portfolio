@@ -7,6 +7,10 @@ interface FooterProps {
 }
 
 export default function Footer({ profile }: FooterProps) {
+  const hasExternalResume = Boolean(
+    profile.resume_url && profile.resume_url !== '#'
+  );
+
   return (
     <footer
       id="contact"
@@ -15,12 +19,11 @@ export default function Footer({ profile }: FooterProps) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="space-y-5 max-w-2xl">
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight font-display">
-            Let&apos;s connect.
+            {profile.footer_heading || "Let's connect."}
           </h2>
 
           <p className="text-sm sm:text-base text-stone-300 leading-relaxed">
-            {profile.footer_tagline ||
-              'Always open to connecting with hiring teams, marketers, and founders about performance marketing roles and digital projects.'}
+            {profile.footer_tagline}
           </p>
 
           {/* Highlighted Email CTA Button */}
@@ -71,13 +74,25 @@ export default function Footer({ profile }: FooterProps) {
                 <span>X / Twitter</span>
               </a>
             )}
-            <Link
-              href="/resume"
-              className="hover:text-white transition-colors inline-flex items-center gap-1.5 py-1"
-            >
-              <FileText className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Résumé</span>
-            </Link>
+            {hasExternalResume ? (
+              <a
+                href={profile.resume_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors inline-flex items-center gap-1.5 py-1"
+              >
+                <FileText className="w-3.5 h-3.5" aria-hidden="true" />
+                <span>Résumé</span>
+              </a>
+            ) : (
+              <Link
+                href="/resume"
+                className="hover:text-white transition-colors inline-flex items-center gap-1.5 py-1"
+              >
+                <FileText className="w-3.5 h-3.5" aria-hidden="true" />
+                <span>Résumé</span>
+              </Link>
+            )}
           </div>
 
           <div className="flex items-center gap-4">

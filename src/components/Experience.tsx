@@ -5,9 +5,14 @@ import { Briefcase, FileText } from 'lucide-react';
 interface ExperienceProps {
   experiences: ExperienceType[];
   resumeUrl?: string;
+  heading?: string;
 }
 
-export default function Experience({ experiences, resumeUrl }: ExperienceProps) {
+export default function Experience({
+  experiences,
+  resumeUrl,
+  heading = 'Experience',
+}: ExperienceProps) {
   const hasExternalResume = Boolean(resumeUrl && resumeUrl !== '#');
 
   return (
@@ -19,7 +24,7 @@ export default function Experience({ experiences, resumeUrl }: ExperienceProps) 
             <Briefcase className="w-4 h-4 text-[#1C1917]" aria-hidden="true" />
           </div>
           <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1C1917] font-display">
-            Experience
+            {heading}
           </h2>
         </div>
 
@@ -65,7 +70,6 @@ export default function Experience({ experiences, resumeUrl }: ExperienceProps) 
                 </p>
               </div>
 
-              {/* Date Pill: Highlight current role cleanly */}
               <div className="self-start sm:self-center shrink-0">
                 <span
                   className={`inline-block px-3.5 py-1 text-xs font-semibold rounded-full border ${

@@ -2,22 +2,14 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { getProfile, getPostBySlug, getPosts } from '@/lib/data';
+import MarkdownContent from '@/components/MarkdownContent';
+import { getProfile, getPostBySlug } from '@/lib/data';
 import { ArrowLeft, Clock, Calendar } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 interface PostPageProps {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  const posts = await getPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
 }
 
 export default async function BlogPostPage({ params }: PostPageProps) {
@@ -39,8 +31,11 @@ export default async function BlogPostPage({ params }: PostPageProps) {
         statusBadge={profile.status_badge}
       />
 
-      <main id="main-content" tabIndex={-1} className="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-12 focus:outline-none">
-        {/* Back Link */}
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-12 focus:outline-none"
+      >
         <Link
           href="/blog"
           className="inline-flex items-center gap-2 text-xs font-semibold text-[#57534E] hover:text-[#1C1917] mb-8 transition-colors"
@@ -73,60 +68,26 @@ export default async function BlogPostPage({ params }: PostPageProps) {
           )}
         </div>
 
+        {/* Optional Cover Image */}
+        {post.cover_image && (
+          <figure className="mb-8">
+            <img
+              src={post.cover_image}
+              alt={`${post.title} cover image`}
+              fetchPriority="high"
+              loading="eager"
+              className="w-full aspect-video object-cover rounded-xl border border-[#1C1917]/15 bg-[#F5F2EB]"
+            />
+          </figure>
+        )}
+
         {/* Post Markdown Body */}
         <article className="neo-card-static bg-white rounded-2xl p-6 sm:p-10 text-[#1C1917] leading-relaxed">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              h1: ({ children }) => (
-                <h2 className="text-xl sm:text-2xl font-extrabold text-[#1C1917] mt-6 first:mt-0 mb-4 border-b border-[#1C1917]/10 pb-2 font-display">
-                  {children}
-                </h2>
-              ),
-              h2: ({ children }) => (
-                <h2 className="text-lg sm:text-xl font-bold text-[#1C1917] mt-7 mb-3 font-display">
-                  {children}
-                </h2>
-              ),
-              h3: ({ children }) => (
-                <h3 className="text-base sm:text-lg font-bold text-[#1C1917] mt-5 mb-2 font-display">
-                  {children}
-                </h3>
-              ),
-              p: ({ children }) => (
-                <p className="text-sm sm:text-base text-[#44403C] my-4 leading-relaxed max-w-[65ch]">
-                  {children}
-                </p>
-              ),
-              ul: ({ children }) => (
-                <ul className="list-disc list-inside space-y-1.5 my-4 text-sm sm:text-base text-[#44403C]">
-                  {children}
-                </ul>
-              ),
-              ol: ({ children }) => (
-                <ol className="list-decimal list-inside space-y-1.5 my-4 text-sm sm:text-base text-[#44403C]">
-                  {children}
-                </ol>
-              ),
-              code: ({ children }) => (
-                <code className="bg-[#F5F2EB] text-[#1C1917] px-1.5 py-0.5 rounded text-xs sm:text-sm font-mono border border-[#1C1917]/10">
-                  {children}
-                </code>
-              ),
-              pre: ({ children }) => (
-                <pre className="bg-[#18181B] text-stone-100 p-4 rounded-xl overflow-x-auto text-xs sm:text-sm font-mono my-4 border border-[#292524]">
-                  {children}
-                </pre>
-              ),
-              blockquote: ({ children }) => (
-                <blockquote className="border-l-4 border-[#C84B31] bg-[#FBF9F5] p-3.5 rounded-r-lg italic my-4 text-sm text-[#44403C]">
-                  {children}
-                </blockquote>
-              ),
-            }}
-          >
-            {post.content}
-          </ReactMarkdown>
+          <MarkdownContent
+            content={post.content}
+            imageAltFallback="Article illustration"
+            tableAriaLabel="Article data table"
+          />
         </article>
 
         {/* Bottom links */}

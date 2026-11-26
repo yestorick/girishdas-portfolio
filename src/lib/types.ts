@@ -10,15 +10,28 @@ export interface SiteProfile {
   bio: string;
   email: string;
   phone?: string;
+  location?: string;
+  website_url?: string;
   resume_url: string;
   github_url: string;
   linkedin_url: string;
   twitter_url: string;
+  hero_primary_cta?: string;
+  hero_secondary_cta?: string;
+  experience_heading?: string;
+  projects_heading?: string;
+  projects_subtitle?: string;
+  stack_heading?: string;
+  blog_heading?: string;
+  blog_subtitle?: string;
+  footer_heading?: string;
   footer_tagline: string;
+  updated_at?: string;
 }
 
 export interface RightNow {
   id?: string;
+  card_title?: string;
   building_title: string;
   building_desc: string;
   learning: string;
@@ -35,6 +48,17 @@ export interface Experience {
   description: string;
   period: string;
   order_index: number;
+  created_at?: string;
+}
+
+export interface Education {
+  id?: string;
+  degree: string;
+  institution: string;
+  period: string;
+  description: string;
+  order_index: number;
+  created_at?: string;
 }
 
 export interface TechStackGroup {
@@ -88,4 +112,22 @@ export interface BlogPost {
   published_at: string;
   published: boolean;
   cover_image?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface TableDiagnostic {
+  table: string;
+  ok: boolean;
+  count: number | null;
+  error?: string;
+}
+
+export interface SupabaseDiagnostics {
+  configured: boolean;
+  hasUrl: boolean;
+  hasAnonKey: boolean;
+  needsMigration: boolean;
+  migrationWarnings: string[];
+  tables: TableDiagnostic[];
 }

@@ -1,22 +1,38 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 
-  process.env.NEXT_PUBLIC_SUPABASE_URL || 
-  process.env.SUPABASE_URL || 
+const supabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  process.env.SUPABASE_URL ||
   '';
 
-const supabaseAnonKey = 
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
-  process.env.SUPABASE_ANON_KEY || 
-  process.env.SUPABASE_KEY || 
+const supabaseAnonKey =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_KEY ||
   '';
 
 export const isSupabaseConfigured = Boolean(
-  supabaseUrl && 
-  supabaseAnonKey && 
-  supabaseUrl.startsWith('http')
+  supabaseUrl &&
+    supabaseAnonKey &&
+    supabaseUrl.startsWith('http')
 );
 
 export const supabase = isSupabaseConfigured
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      global: {
+        fetch: (input, init) =>
+          fetch(input, {
+            ...init,
+            cache: 'no-store',
+          }),
+      },
+    })
   : null;
+
+export function getPublicSupabaseConfig() {
+  return {
+    url: supabaseUrl,
+    anonKey: supabaseAnonKey,
+    isConfigured: isSupabaseConfigured,
+  };
+}

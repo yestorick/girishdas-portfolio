@@ -15,8 +15,8 @@ import {
   getPosts,
 } from '@/lib/data';
 
-// Revalidate every 60 seconds (ISR) so edits in Supabase automatically appear live
-export const revalidate = 60;
+// Always read latest edits from Supabase immediately on request
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const [profile, rightNow, experiences, techStack, projects, posts] =
@@ -37,12 +37,25 @@ export default async function HomePage() {
         statusBadge={profile.status_badge}
       />
 
-      <main id="main-content" tabIndex={-1} className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 focus:outline-none">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 focus:outline-none"
+      >
         <Hero profile={profile} rightNow={rightNow} />
-        <Experience experiences={experiences} resumeUrl={profile.resume_url} />
-        <RecentWork projects={projects} />
-        <TechStack techStack={techStack} />
-        <FromBlog posts={posts.slice(0, 3)} />
+        <Experience
+          experiences={experiences}
+          resumeUrl={profile.resume_url}
+          heading={profile.experience_heading}
+        />
+        <RecentWork
+          projects={projects}
+          heading={profile.projects_heading}
+          subtitle={profile.projects_subtitle}
+          websiteUrl={profile.website_url}
+        />
+        <TechStack techStack={techStack} heading={profile.stack_heading} />
+        <FromBlog posts={posts.slice(0, 3)} heading={profile.blog_heading} />
       </main>
 
       <Footer profile={profile} />

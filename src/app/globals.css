@@ -92,9 +92,61 @@ p {
 }
 
 /* Accessible focus indicator */
-:where(a:any-link, button, summary):focus-visible {
+:where(a:any-link, button, summary, input, textarea, select):focus-visible {
   outline: 2.5px solid var(--accent-coral);
-  outline-offset: 3px;
+  outline-offset: 2px;
+}
+
+/* Accessible Admin Form Inputs & Tabs (prevents iOS zoom and premature errors) */
+.admin-input {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  line-height: 1.5;
+  min-height: 48px;
+  width: 100%;
+  background-color: #FFFFFF;
+  color: var(--ink-primary);
+  border: 1.5px solid #767676;
+  border-radius: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.admin-input:hover {
+  border-color: var(--border-ink);
+}
+
+.admin-input:user-invalid {
+  border-color: #B91C1C;
+  background-color: #FEF2F2;
+}
+
+textarea.admin-input {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.admin-tablist {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.admin-tablist::-webkit-scrollbar {
+  display: none;
+}
+
+.admin-tab {
+  position: relative;
+  flex: none;
+  min-height: 44px;
+}
+
+.admin-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  border-block-end: 3px solid var(--accent-coral);
 }
 
 /* Skip link for keyboard navigation */

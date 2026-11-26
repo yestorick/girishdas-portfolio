@@ -3,6 +3,7 @@ import { Layers } from 'lucide-react';
 
 interface TechStackProps {
   techStack: TechStackGroup[];
+  heading?: string;
 }
 
 const colorMap: Record<string, string> = {
@@ -12,7 +13,10 @@ const colorMap: Record<string, string> = {
   purple: 'bg-[#F1EEF7]',
 };
 
-export default function TechStack({ techStack }: TechStackProps) {
+export default function TechStack({
+  techStack,
+  heading = 'Tech & marketing stacks',
+}: TechStackProps) {
   return (
     <section id="stack" className="scroll-mt-24 py-10 border-t border-[#1C1917]/10">
       {/* Section Header */}
@@ -21,7 +25,7 @@ export default function TechStack({ techStack }: TechStackProps) {
           <Layers className="w-4 h-4 text-[#1C1917]" aria-hidden="true" />
         </div>
         <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1C1917] font-display">
-          Tech &amp; marketing stacks
+          {heading}
         </h2>
       </div>
 
@@ -29,6 +33,7 @@ export default function TechStack({ techStack }: TechStackProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {techStack.map((group, index) => {
           const bgClass = colorMap[group.color] || 'bg-[#F5F2EB]';
+          const skills = group.skills || [];
           return (
             <div
               key={group.id || index}
@@ -40,7 +45,7 @@ export default function TechStack({ techStack }: TechStackProps) {
                 </h3>
 
                 <ul className="flex flex-wrap gap-1.5" role="list">
-                  {group.skills.map((skill, sIdx) => (
+                  {skills.map((skill, sIdx) => (
                     <li
                       key={sIdx}
                       className="neo-pill bg-white text-[#292524] px-2.5 py-1 text-xs font-medium rounded-md"

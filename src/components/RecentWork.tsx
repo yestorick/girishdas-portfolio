@@ -4,6 +4,9 @@ import { Star, ArrowRight, ExternalLink, TrendingUp } from 'lucide-react';
 
 interface RecentWorkProps {
   projects: Project[];
+  heading?: string;
+  subtitle?: string;
+  websiteUrl?: string;
 }
 
 const headerColorMap: Record<string, string> = {
@@ -12,16 +15,28 @@ const headerColorMap: Record<string, string> = {
   purple: 'bg-[#F1EEF7]',
 };
 
-const isSelfPortfolioUrl = (url?: string) => {
+const isSelfPortfolioUrl = (url?: string, websiteUrl?: string) => {
   if (!url) return true;
-  return (
+  if (
     url === '#' ||
     url.includes('girishdas.vercel.app') ||
     url.includes('hellorick.vercel.app')
-  );
+  ) {
+    return true;
+  }
+  if (websiteUrl) {
+    const cleanHost = websiteUrl.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+    if (cleanHost && url.includes(cleanHost)) return true;
+  }
+  return false;
 };
 
-export default function RecentWork({ projects }: RecentWorkProps) {
+export default function RecentWork({
+  projects,
+  heading = 'My projects',
+  subtitle = "Campaigns, content systems, and digital projects I've built and managed",
+  websiteUrl,
+}: RecentWorkProps) {
   return (
     <section id="work" className="scroll-mt-24 py-10 border-t border-[#1C1917]/10">
       {/* Section Header */}
@@ -31,11 +46,11 @@ export default function RecentWork({ projects }: RecentWorkProps) {
         </div>
         <div>
           <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1C1917] font-display">
-            My projects
+            {heading}
           </h2>
-          <p className="text-xs sm:text-sm text-[#57534E]">
-            Campaigns, content systems, and digital projects I&apos;ve built and managed
-          </p>
+          {subtitle && (
+            <p className="text-xs sm:text-sm text-[#57534E]">{subtitle}</p>
+          )}
         </div>
       </div>
 
@@ -43,7 +58,10 @@ export default function RecentWork({ projects }: RecentWorkProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {projects.map((project, index) => {
           const headerBg = headerColorMap[project.color] || 'bg-[#F9F3DF]';
-          const showExternal = project.live_url && !isSelfPortfolioUrl(project.live_url);
+          const showExternal =
+            project.live_url && !isSelfPortfolioUrl(project.live_url, websiteUrl);
+          const tags = project.tags || [];
+          const metrics = project.metrics || [];
 
           return (
             <article
@@ -87,10 +105,9 @@ export default function RecentWork({ projects }: RecentWorkProps) {
                     {project.description}
                   </p>
 
-                  {/* Outcome Metrics */}
-                  {project.metrics && project.metrics.length > 0 && (
+                  {metrics.length > 0 && (
                     <div className="pt-1 flex flex-wrap gap-1.5">
-                      {project.metrics.slice(0, 2).map((metric, mIdx) => (
+                      {metrics.slice(0, 2).map((metric, mIdx) => (
                         <span
                           key={mIdx}
                           className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-[#E4F1E7]/75 border border-[#1E5631]/20 text-[#1E5631]"
@@ -102,17 +119,18 @@ export default function RecentWork({ projects }: RecentWorkProps) {
                     </div>
                   )}
 
-                  {/* Tool Tags */}
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {project.tags.slice(0, 3).map((tag, tIdx) => (
-                      <span
-                        key={tIdx}
-                        className="neo-pill bg-[#FBF9F5] text-[#57534E] px-2.5 py-0.5 text-[11px] font-medium rounded-md"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                  {tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {tags.slice(0, 3).map((tag, tIdx) => (
+                        <span
+                          key={tIdx}
+                          className="neo-pill bg-[#FBF9F5] text-[#57534E] px-2.5 py-0.5 text-[11px] font-medium rounded-md"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 
