@@ -84,9 +84,14 @@ export default async function ResumePage() {
               {experiences.map((exp, idx) => (
                 <div key={exp.id || idx} className="space-y-1">
                   <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                    <h3 className="font-bold text-sm sm:text-base text-[#1C1917]">
-                      {exp.role} <span className="font-normal text-[#57534E]">• {exp.company}</span>
-                    </h3>
+                    <div>
+                      <h3 className="font-bold text-sm sm:text-base text-[#1C1917]">
+                        {exp.role}
+                      </h3>
+                      <p className="text-xs font-semibold text-[#A93B24]">
+                        {exp.company}
+                      </p>
+                    </div>
                     <span className="text-xs font-semibold text-[#78716C] shrink-0">
                       {exp.period}
                     </span>
@@ -140,10 +145,14 @@ export default async function ResumePage() {
               Education &amp; Learning
             </h2>
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-              <h3 className="font-bold text-sm text-[#1C1917]">
-                B.Sc. (Honours), Chemistry{' '}
-                <span className="font-normal text-[#57534E]">• Taki Government College, West Bengal</span>
-              </h3>
+              <div>
+                <h3 className="font-bold text-sm text-[#1C1917]">
+                  B.Sc. (Honours), Chemistry
+                </h3>
+                <p className="text-xs font-medium text-[#57534E]">
+                  Taki Government College, West Bengal
+                </p>
+              </div>
               <span className="text-xs font-semibold text-[#78716C] shrink-0">
                 Dropout (2nd year)
               </span>
