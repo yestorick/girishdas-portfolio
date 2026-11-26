@@ -680,19 +680,22 @@ export async function getSupabaseDiagnostics(): Promise<SupabaseDiagnostics> {
 
   const columnChecks = [
     {
-      label: 'site_profile extended fields (location, website_url, hero_primary_cta, footer_heading)',
-      query: supabase
+      label:
+        'site_profile extended fields (nickname, avatar_url, phone, location, website_url, hero_primary_cta, footer_heading)',
+      query: sb
         .from('site_profile')
-        .select('location, website_url, hero_primary_cta, footer_heading')
+        .select(
+          'nickname, avatar_url, phone, location, website_url, hero_primary_cta, footer_heading'
+        )
         .limit(1),
     },
     {
-      label: 'right_now.card_title column',
-      query: supabase.from('right_now').select('card_title').limit(1),
+      label: 'right_now extended columns (card_title, current_projects)',
+      query: sb.from('right_now').select('card_title, current_projects').limit(1),
     },
     {
       label: 'projects simplified fields (completion_date, made_by, screenshots)',
-      query: supabase
+      query: sb
         .from('projects')
         .select('completion_date, made_by, screenshots')
         .limit(1),

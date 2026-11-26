@@ -5,10 +5,7 @@
 --       supabase/migrations_update.sql instead!
 -- ==============================================================================
 
--- 1. Enable UUID Extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
--- 2. Drop existing tables if re-running (safe clean setup)
+-- 1. Drop existing tables if re-running (safe clean setup)
 DROP TABLE IF EXISTS favorites CASCADE;
 DROP TABLE IF EXISTS projects CASCADE;
 DROP TABLE IF EXISTS tech_stack CASCADE;
@@ -22,7 +19,7 @@ DROP TABLE IF EXISTS posts CASCADE;
 -- TABLE: site_profile (Profile, Hero Copy, Section Titles, Socials, SEO, Footer)
 -- -----------------------------------------------------------------------------
 CREATE TABLE site_profile (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL DEFAULT 'Girish Das',
     nickname TEXT DEFAULT 'Rick',
     avatar_url TEXT DEFAULT '',
@@ -56,7 +53,7 @@ CREATE TABLE site_profile (
 -- TABLE: right_now (Building, Learning, Current Projects, Based in)
 -- -----------------------------------------------------------------------------
 CREATE TABLE right_now (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     card_title TEXT NOT NULL DEFAULT 'Right now',
     building_title TEXT NOT NULL DEFAULT 'Google & Meta Lead Gen Funnels',
     building_desc TEXT NOT NULL DEFAULT 'Managing ₹60K/mo ad spend and high-converting healthcare campaigns',
@@ -70,7 +67,7 @@ CREATE TABLE right_now (
 -- TABLE: experiences (Career Track Record)
 -- -----------------------------------------------------------------------------
 CREATE TABLE experiences (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     role TEXT NOT NULL,
     company TEXT NOT NULL,
     description TEXT NOT NULL,
@@ -83,7 +80,7 @@ CREATE TABLE experiences (
 -- TABLE: education (Education & Self-Learning for Résumé)
 -- -----------------------------------------------------------------------------
 CREATE TABLE education (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     degree TEXT NOT NULL,
     institution TEXT NOT NULL,
     period TEXT NOT NULL,
@@ -96,7 +93,7 @@ CREATE TABLE education (
 -- TABLE: tech_stack (Tech & Marketing Stacks)
 -- -----------------------------------------------------------------------------
 CREATE TABLE tech_stack (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     category TEXT NOT NULL,
     color TEXT NOT NULL DEFAULT 'blue',
     skills TEXT[] NOT NULL DEFAULT '{}',
@@ -107,7 +104,7 @@ CREATE TABLE tech_stack (
 -- TABLE: projects (My Projects & Detailed Case Studies)
 -- -----------------------------------------------------------------------------
 CREATE TABLE projects (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     slug TEXT NOT NULL UNIQUE,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
@@ -133,7 +130,7 @@ CREATE TABLE projects (
 -- TABLE: posts (Blog Articles with Markdown Content)
 -- -----------------------------------------------------------------------------
 CREATE TABLE posts (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title TEXT NOT NULL,
     slug TEXT NOT NULL UNIQUE,
     excerpt TEXT NOT NULL,
@@ -176,21 +173,27 @@ CREATE POLICY "Admins have full access to posts" ON posts FOR ALL TO authenticat
 -- -----------------------------------------------------------------------------
 -- SUPABASE STORAGE BUCKET (Profile Photo, Thumbnails, Screenshots, Blog Images)
 -- -----------------------------------------------------------------------------
-INSERT INTO storage.buckets (id, name, public)
-VALUES ('portfolio-media', 'portfolio-media', true)
-ON CONFLICT (id) DO UPDATE SET public = true;
+DO $$
+BEGIN
+  INSERT INTO storage.buckets (id, name, public)
+  VALUES ('portfolio-media', 'portfolio-media', true)
+  ON CONFLICT (id) DO UPDATE SET public = true;
 
-DROP POLICY IF EXISTS "Public read access for portfolio-media" ON storage.objects;
-CREATE POLICY "Public read access for portfolio-media"
-ON storage.objects FOR SELECT
-USING (bucket_id = 'portfolio-media');
+  DROP POLICY IF EXISTS "Public read access for portfolio-media" ON storage.objects;
+  CREATE POLICY "Public read access for portfolio-media"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'portfolio-media');
 
-DROP POLICY IF EXISTS "Authenticated manage access for portfolio-media" ON storage.objects;
-CREATE POLICY "Authenticated manage access for portfolio-media"
-ON storage.objects FOR ALL
-TO authenticated
-USING (bucket_id = 'portfolio-media')
-WITH CHECK (bucket_id = 'portfolio-media');
+  DROP POLICY IF EXISTS "Authenticated manage access for portfolio-media" ON storage.objects;
+  CREATE POLICY "Authenticated manage access for portfolio-media"
+  ON storage.objects FOR ALL
+  TO authenticated
+  USING (bucket_id = 'portfolio-media')
+  WITH CHECK (bucket_id = 'portfolio-media');
+EXCEPTION
+  WHEN OTHERS THEN
+    RAISE NOTICE 'Storage bucket or policy skipped (%). You can create the public "portfolio-media" bucket in Supabase Dashboard -> Storage.', SQLERRM;
+END $$;
 
 -- -----------------------------------------------------------------------------
 -- SEED DATA (Authentic Personal Details for Girish Das / Rick)

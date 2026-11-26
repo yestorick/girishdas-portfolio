@@ -4,10 +4,11 @@
 -- Run in Supabase SQL Editor: https://supabase.com/dashboard/project/_/sql
 -- ==============================================================================
 
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
--- 1. Extend site_profile with all editable site copy, headings, SEO & contact fields
+-- 1. Extend site_profile with all editable profile, copy, headings, SEO & contact fields
 ALTER TABLE site_profile
+  ADD COLUMN IF NOT EXISTS nickname TEXT DEFAULT 'Rick',
+  ADD COLUMN IF NOT EXISTS avatar_url TEXT DEFAULT '',
+  ADD COLUMN IF NOT EXISTS phone TEXT DEFAULT '+91 81012 03353',
   ADD COLUMN IF NOT EXISTS location TEXT DEFAULT 'Kolkata, India',
   ADD COLUMN IF NOT EXISTS website_url TEXT DEFAULT 'https://hellorick.vercel.app',
   ADD COLUMN IF NOT EXISTS hero_primary_cta TEXT DEFAULT 'Contact me',
@@ -20,9 +21,10 @@ ALTER TABLE site_profile
   ADD COLUMN IF NOT EXISTS blog_subtitle TEXT DEFAULT 'Personal notes on Google Ads, Meta Ads creatives, conversion tracking, and digital content strategy.',
   ADD COLUMN IF NOT EXISTS footer_heading TEXT DEFAULT 'Let''s connect.';
 
--- 2. Extend right_now card title
+-- 2. Extend right_now card fields
 ALTER TABLE right_now
-  ADD COLUMN IF NOT EXISTS card_title TEXT NOT NULL DEFAULT 'Right now';
+  ADD COLUMN IF NOT EXISTS card_title TEXT NOT NULL DEFAULT 'Right now',
+  ADD COLUMN IF NOT EXISTS current_projects TEXT DEFAULT 'NCD Immunocare Ads + Dr Saibal Moitra Authority Website';
 
 -- 3. Extend projects with simplified project page fields & screenshots array
 ALTER TABLE projects
@@ -40,7 +42,7 @@ WHERE completion_date IS NULL AND duration IS NOT NULL;
 
 -- 4. Create education table (editable on /resume) if not present yet
 CREATE TABLE IF NOT EXISTS education (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     degree TEXT NOT NULL,
     institution TEXT NOT NULL,
     period TEXT NOT NULL,
@@ -73,19 +75,25 @@ WHERE NOT EXISTS (SELECT 1 FROM education);
 -- 5. Remove deprecated My favourites table (safe if absent)
 DROP TABLE IF EXISTS favorites CASCADE;
 
--- 6. Ensure Storage bucket + public read / authenticated write policies exist
-INSERT INTO storage.buckets (id, name, public)
-VALUES ('portfolio-media', 'portfolio-media', true)
-ON CONFLICT (id) DO UPDATE SET public = true;
+-- 6. Ensure Storage bucket + public read / authenticated write policies exist safely
+DO $$
+BEGIN
+  INSERT INTO storage.buckets (id, name, public)
+  VALUES ('portfolio-media', 'portfolio-media', true)
+  ON CONFLICT (id) DO UPDATE SET public = true;
 
-DROP POLICY IF EXISTS "Public read access for portfolio-media" ON storage.objects;
-CREATE POLICY "Public read access for portfolio-media"
-ON storage.objects FOR SELECT
-USING (bucket_id = 'portfolio-media');
+  DROP POLICY IF EXISTS "Public read access for portfolio-media" ON storage.objects;
+  CREATE POLICY "Public read access for portfolio-media"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'portfolio-media');
 
-DROP POLICY IF EXISTS "Authenticated manage access for portfolio-media" ON storage.objects;
-CREATE POLICY "Authenticated manage access for portfolio-media"
-ON storage.objects FOR ALL
-TO authenticated
-USING (bucket_id = 'portfolio-media')
-WITH CHECK (bucket_id = 'portfolio-media');
+  DROP POLICY IF EXISTS "Authenticated manage access for portfolio-media" ON storage.objects;
+  CREATE POLICY "Authenticated manage access for portfolio-media"
+  ON storage.objects FOR ALL
+  TO authenticated
+  USING (bucket_id = 'portfolio-media')
+  WITH CHECK (bucket_id = 'portfolio-media');
+EXCEPTION
+  WHEN OTHERS THEN
+    RAISE NOTICE 'Storage bucket or policy skipped (%). You can create the public "portfolio-media" bucket in Supabase Dashboard -> Storage.', SQLERRM;
+END $$;
