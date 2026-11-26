@@ -42,8 +42,8 @@ export default async function HomePage() {
       <main id="main-content" tabIndex={-1} className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 focus:outline-none">
         <Hero profile={profile} rightNow={rightNow} />
         <Experience experiences={experiences} resumeUrl={profile.resume_url} />
-        <TechStack techStack={techStack} />
         <RecentWork projects={projects} />
+        <TechStack techStack={techStack} />
         <FromBlog posts={posts.slice(0, 3)} />
         <MyFavourites favorites={favorites} />
       </main>

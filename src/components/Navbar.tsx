@@ -26,8 +26,8 @@ export default function Navbar({
   const navLinks = [
     { label: 'Now', href: '/#now' },
     { label: 'Experience', href: '/#experience' },
-    { label: 'Stack', href: '/#stack' },
     { label: 'Projects', href: '/#work' },
+    { label: 'Stack', href: '/#stack' },
     { label: 'Blog', href: '/#blog' },
     { label: 'Favourites', href: '/#favourites' },
   ];

@@ -51,21 +51,16 @@ export default function Experience({ experiences, resumeUrl }: ExperienceProps) 
           return (
             <div
               key={exp.id || index}
-              className="neo-card bg-white rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              className="neo-card bg-white rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-start justify-between gap-4"
             >
-              <div className="space-y-1 max-w-2xl min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="font-bold text-base sm:text-lg text-[#1C1917] font-display">
-                    {exp.role}
-                  </h3>
-                  <span className="text-xs text-[#78716C] hidden sm:inline" aria-hidden="true">
-                    •
-                  </span>
-                  <span className="text-sm font-medium text-[#57534E]">
-                    {exp.company}
-                  </span>
-                </div>
-                <p className="text-xs sm:text-sm text-[#57534E] leading-relaxed">
+              <div className="max-w-2xl min-w-0">
+                <h3 className="font-bold text-base sm:text-lg text-[#1C1917] font-display leading-snug">
+                  {exp.role}
+                </h3>
+                <p className="text-xs sm:text-sm font-semibold text-[#A93B24] mt-0.5">
+                  {exp.company}
+                </p>
+                <p className="text-xs sm:text-sm text-[#57534E] leading-relaxed mt-2">
                   {exp.description}
                 </p>
               </div>
