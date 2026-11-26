@@ -2,7 +2,7 @@
 
 A fast, responsive, neo-brutalist personal portfolio and blog designed for **Girish Das**, built with **Next.js 15 (App Router)**, **Tailwind CSS**, and **Supabase (PostgreSQL & Storage)**.
 
-Deployed live on Vercel at [girishdas.vercel.app](https://girishdas.vercel.app).
+Deployed live on Vercel at [hellorick.vercel.app](https://hellorick.vercel.app).
 
 ---
 

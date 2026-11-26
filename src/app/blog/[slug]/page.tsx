@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { getProfile, getPostBySlug, getPosts } from '@/lib/data';
 import { ArrowLeft, Clock, Calendar } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export const revalidate = 60;
 
@@ -31,89 +32,90 @@ export default async function BlogPostPage({ params }: PostPageProps) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5]">
-      <Navbar logoText={profile.nav_logo || `[${profile.name.toUpperCase()}]`} />
+    <div className="min-h-dvh flex flex-col bg-[#FBF9F5]">
+      <Navbar logoText={profile.nav_logo || profile.name.toUpperCase()} />
 
-      <main className="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 py-12">
+      <main id="main-content" tabIndex={-1} className="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-12 focus:outline-none">
         {/* Back Link */}
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-xs font-bold text-black mb-8 hover:underline"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-[#57534E] hover:text-[#1C1917] mb-8 transition-colors"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
           <span>Back to All Articles</span>
         </Link>
 
-        {/* Post Header Card */}
-        <div className="neo-card-static bg-[#BBF7D0] rounded-2xl p-6 sm:p-8 mb-8 text-black">
-          <div className="flex items-center gap-4 text-xs font-semibold mb-3">
-            <span className="inline-flex items-center gap-1.5 bg-white border border-black/30 px-2.5 py-0.5 rounded-full">
-              <Calendar className="w-3.5 h-3.5" />
+        {/* Post Header Card (Calm Mist Sage) */}
+        <div className="neo-card-static bg-[#EDF4EF] rounded-2xl p-6 sm:p-8 mb-8 text-[#1C1917]">
+          <div className="flex items-center gap-3 flex-wrap text-xs font-semibold mb-3">
+            <span className="inline-flex items-center gap-1.5 bg-white border border-[#1C1917]/20 px-3 py-0.5 rounded-full">
+              <Calendar className="w-3.5 h-3.5 text-[#57534E]" aria-hidden="true" />
               {post.published_at}
             </span>
-            <span className="inline-flex items-center gap-1.5 bg-white border border-black/30 px-2.5 py-0.5 rounded-full">
-              <Clock className="w-3.5 h-3.5" />
+            <span className="inline-flex items-center gap-1.5 bg-white border border-[#1C1917]/20 px-3 py-0.5 rounded-full">
+              <Clock className="w-3.5 h-3.5 text-[#57534E]" aria-hidden="true" />
               {post.read_time}
             </span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-black leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#1C1917] leading-tight font-display">
             {post.title}
           </h1>
 
           {post.excerpt && (
-            <p className="mt-3 text-sm sm:text-base text-black/80 font-medium">
+            <p className="mt-3 text-sm sm:text-base text-[#44403C]">
               {post.excerpt}
             </p>
           )}
         </div>
 
         {/* Post Markdown Body */}
-        <article className="neo-card bg-white rounded-2xl p-6 sm:p-10 prose prose-slate max-w-none text-[#222] leading-relaxed">
+        <article className="neo-card-static bg-white rounded-2xl p-6 sm:p-10 text-[#1C1917] leading-relaxed">
           <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
             components={{
               h1: ({ children }) => (
-                <h1 className="text-2xl font-extrabold text-black mt-8 mb-4 border-b-2 border-black/10 pb-2">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-[#1C1917] mt-6 first:mt-0 mb-4 border-b border-[#1C1917]/10 pb-2 font-display">
                   {children}
-                </h1>
+                </h2>
               ),
               h2: ({ children }) => (
-                <h2 className="text-xl font-bold text-black mt-6 mb-3">
+                <h2 className="text-lg sm:text-xl font-bold text-[#1C1917] mt-7 mb-3 font-display">
                   {children}
                 </h2>
               ),
               h3: ({ children }) => (
-                <h3 className="text-lg font-bold text-black mt-4 mb-2">
+                <h3 className="text-base sm:text-lg font-bold text-[#1C1917] mt-5 mb-2 font-display">
                   {children}
                 </h3>
               ),
               p: ({ children }) => (
-                <p className="text-sm sm:text-base text-[#333] my-4 leading-relaxed">
+                <p className="text-sm sm:text-base text-[#44403C] my-4 leading-relaxed max-w-[65ch]">
                   {children}
                 </p>
               ),
               ul: ({ children }) => (
-                <ul className="list-disc list-inside space-y-1.5 my-4 text-sm sm:text-base text-[#333]">
+                <ul className="list-disc list-inside space-y-1.5 my-4 text-sm sm:text-base text-[#44403C]">
                   {children}
                 </ul>
               ),
               ol: ({ children }) => (
-                <ol className="list-decimal list-inside space-y-1.5 my-4 text-sm sm:text-base text-[#333]">
+                <ol className="list-decimal list-inside space-y-1.5 my-4 text-sm sm:text-base text-[#44403C]">
                   {children}
                 </ol>
               ),
               code: ({ children }) => (
-                <code className="bg-slate-100 text-black px-1.5 py-0.5 rounded text-xs sm:text-sm font-mono border border-black/10">
+                <code className="bg-[#F5F2EB] text-[#1C1917] px-1.5 py-0.5 rounded text-xs sm:text-sm font-mono border border-[#1C1917]/10">
                   {children}
                 </code>
               ),
               pre: ({ children }) => (
-                <pre className="bg-[#141416] text-white p-4 rounded-xl overflow-x-auto text-xs sm:text-sm font-mono my-4 border-2 border-black">
+                <pre className="bg-[#18181B] text-stone-100 p-4 rounded-xl overflow-x-auto text-xs sm:text-sm font-mono my-4 border border-[#292524]">
                   {children}
                 </pre>
               ),
               blockquote: ({ children }) => (
-                <blockquote className="border-l-4 border-black bg-[#FAF8F5] p-3 rounded-r-lg italic my-4 text-sm text-[#333]">
+                <blockquote className="border-l-4 border-[#C84B31] bg-[#FBF9F5] p-3.5 rounded-r-lg italic my-4 text-sm text-[#44403C]">
                   {children}
                 </blockquote>
               ),
@@ -124,18 +126,18 @@ export default async function BlogPostPage({ params }: PostPageProps) {
         </article>
 
         {/* Share / Back to portfolio */}
-        <div className="mt-8 flex items-center justify-between">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
           <Link
             href="/"
-            className="neo-btn inline-flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-full text-xs font-bold"
+            className="neo-btn inline-flex items-center gap-2 bg-white hover:bg-[#F5F2EB] text-[#1C1917] px-5 py-2.5 rounded-full text-xs font-semibold"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
+            <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Return to Portfolio</span>
           </Link>
 
           <a
             href={`mailto:${profile.email}?subject=Question regarding: ${encodeURIComponent(post.title)}`}
-            className="neo-btn inline-flex items-center gap-2 bg-[#FFC4B0] text-black px-5 py-2.5 rounded-full text-xs font-bold"
+            className="neo-btn inline-flex items-center gap-2 bg-[#F7ECE6] hover:bg-[#F0DFD5] text-[#1C1917] px-5 py-2.5 rounded-full text-xs font-semibold"
           >
             <span>Discuss this post</span>
           </a>

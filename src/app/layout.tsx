@@ -20,11 +20,11 @@ export const metadata: Metadata = {
   title: 'Girish Das — Performance Marketer & Digital Growth Strategist',
   description: 'Personal portfolio, paid media case studies, growth funnels, and marketing notes of Girish Das.',
   authors: [{ name: 'Girish Das' }],
-  metadataBase: new URL('https://girishdas.vercel.app'),
+  metadataBase: new URL('https://hellorick.vercel.app'),
   openGraph: {
     title: 'Girish Das — Performance Marketer & Digital Growth Strategist',
     description: 'Personal portfolio, paid media case studies, growth funnels, and marketing notes of Girish Das.',
-    url: 'https://girishdas.vercel.app',
+    url: 'https://hellorick.vercel.app',
     siteName: 'Girish Das Portfolio',
     locale: 'en_US',
     type: 'website',
@@ -49,7 +49,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`scroll-smooth ${plusJakarta.variable} ${spaceGrotesk.variable}`}>
-      <body className="bg-[#FAF8F5] text-[#0F0F10] font-sans antialiased selection:bg-[#FDE68A] selection:text-black">
+      <body className="bg-[#FBF9F5] text-[#1C1917] font-sans antialiased selection:bg-[#F6E2A5] selection:text-[#1C1917]">
         {children}
       </body>
     </html>

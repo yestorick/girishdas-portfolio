@@ -10,61 +10,61 @@ export default async function BlogIndexPage() {
   const [profile, posts] = await Promise.all([getProfile(), getPosts()]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5]">
-      <Navbar logoText={profile.nav_logo || `[${profile.name.toUpperCase()}]`} />
+    <div className="min-h-dvh flex flex-col bg-[#FBF9F5]">
+      <Navbar logoText={profile.nav_logo || profile.name.toUpperCase()} />
 
-      <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-12">
+      <main id="main-content" tabIndex={-1} className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-12 focus:outline-none">
         {/* Back link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-bold text-black mb-8 hover:underline"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-[#57534E] hover:text-[#1C1917] mb-8 transition-colors"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
           <span>Back to Portfolio</span>
         </Link>
 
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-8 h-8 rounded-lg bg-[#BBF7D0] border-2 border-black flex items-center justify-center shadow-brutal-sm">
-            <PenTool className="w-4 h-4 text-black" />
+          <div className="w-8 h-8 rounded-lg bg-[#F5F2EB] border-[1.5px] border-[#292524] flex items-center justify-center">
+            <PenTool className="w-4 h-4 text-[#1C1917]" aria-hidden="true" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-black">
-            Articles & Notes
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#1C1917] font-display">
+            Articles &amp; Notes
           </h1>
         </div>
 
-        <p className="text-sm sm:text-base text-[#444] mb-10 max-w-xl">
-          Thoughts on software engineering, distributed architecture, design systems, and building AI agents.
+        <p className="text-sm sm:text-base text-[#57534E] mb-10 max-w-xl">
+          Playbooks and notes on performance marketing, paid social scaling, landing page CRO, and cookieless attribution.
         </p>
 
         {/* Blog Posts */}
-        <div className="space-y-6">
+        <div className="space-y-5">
           {posts.map((post) => (
             <article
               key={post.slug}
-              className="neo-card bg-white rounded-2xl p-6 transition-all"
+              className="neo-card bg-white rounded-2xl p-6"
             >
               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-2">
                 <Link href={`/blog/${post.slug}`}>
-                  <h2 className="text-lg sm:text-xl font-extrabold text-black hover:underline underline-offset-4 decoration-2">
+                  <h2 className="text-lg sm:text-xl font-bold text-[#1C1917] hover:underline underline-offset-4 decoration-[#C84B31] font-display">
                     {post.title}
                   </h2>
                 </Link>
-                <span className="text-xs font-semibold text-slate-500 shrink-0">
+                <span className="text-xs font-medium text-[#78716C] shrink-0">
                   {post.published_at} • {post.read_time}
                 </span>
               </div>
 
-              <p className="text-xs sm:text-sm text-[#444] leading-relaxed mb-4">
+              <p className="text-xs sm:text-sm text-[#57534E] leading-relaxed mb-4">
                 {post.excerpt}
               </p>
 
               <Link
                 href={`/blog/${post.slug}`}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-black hover:underline"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#1C1917] hover:text-[#C84B31] transition-colors"
               >
                 <span>Read article</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
               </Link>
             </article>
           ))}

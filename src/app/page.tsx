@@ -33,10 +33,10 @@ export default async function HomePage() {
     ]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5]">
-      <Navbar logoText={profile.nav_logo || `[${profile.name.toUpperCase()}]`} />
+    <div className="min-h-dvh flex flex-col bg-[#FBF9F5]">
+      <Navbar logoText={profile.nav_logo || profile.name.toUpperCase()} />
 
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6">
+      <main id="main-content" tabIndex={-1} className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 focus:outline-none">
         <Hero profile={profile} rightNow={rightNow} />
         <Experience experiences={experiences} />
         <TechStack techStack={techStack} />

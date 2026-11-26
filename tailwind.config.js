@@ -12,27 +12,34 @@ module.exports = {
         display: ['var(--font-display)', 'var(--font-sans)', 'sans-serif'],
       },
       colors: {
-        cream: {
-          50: '#FCFBF9',
-          100: '#FAF8F5',
-          200: '#F3EFEA',
+        canvas: '#FBF9F5',
+        surface: '#FFFFFF',
+        ink: {
+          DEFAULT: '#1C1917',
+          muted: '#57534E',
+          subtle: '#78716C',
         },
-        neo: {
-          peach: '#FFC4B0',
-          blue: '#BAE6FD',
-          mint: '#BBF7D0',
-          yellow: '#FDE68A',
-          purple: '#DDD6FE',
-          dark: '#141416',
-          coral: '#E54830',
-        }
+        accent: {
+          coral: '#C84B31',
+          coralHover: '#B03E26',
+          amber: '#F6E2A5',
+          sage: '#E4F1E7',
+          sageInk: '#1E5631',
+        },
+        tint: {
+          blush: '#F7ECE6',
+          mistBlue: '#EDF3F7',
+          mistSage: '#EDF4EF',
+          mistAmber: '#F9F3DF',
+          mistLavender: '#F1EEF7',
+          warmSand: '#F5F2EB',
+        },
       },
       boxShadow: {
-        'brutal-sm': '2px 2px 0px #000000',
-        'brutal': '3px 3px 0px #000000',
-        'brutal-lg': '4px 4px 0px #000000',
-        'brutal-xl': '6px 6px 0px #000000',
-      }
+        'card': '2px 2px 0px #1C1917',
+        'card-hover': '3px 3px 0px #1C1917',
+        'pill': '1px 1px 0px #1C1917',
+      },
     },
   },
   plugins: [],

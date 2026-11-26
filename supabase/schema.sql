@@ -25,7 +25,7 @@ CREATE TABLE site_profile (
     nav_logo TEXT NOT NULL DEFAULT 'GIRISH DAS',
     status_badge TEXT NOT NULL DEFAULT 'Open to opportunities',
     headline_intro TEXT NOT NULL DEFAULT 'Hi, I''m Girish Das. I build',
-    headline_highlight TEXT NOT NULL DEFAULT 'HIGH-ROI DIGITAL GROWTH & PAID ADS',
+    headline_highlight TEXT NOT NULL DEFAULT 'high-ROI digital growth & paid ads',
     bio TEXT NOT NULL DEFAULT 'Performance Marketer & Digital Growth Strategist scaling multi-channel paid acquisition across Meta, Google, and TikTok. I engineer high-converting landing pages, optimize ROAS, and scale ad budgets profitably.',
     email TEXT NOT NULL DEFAULT 'girishdas@gmail.com',
     resume_url TEXT DEFAULT '#',
@@ -166,7 +166,7 @@ VALUES (
     'GIRISH DAS',
     'Open to opportunities',
     'Hi, I''m Girish Das. I build',
-    'HIGH-ROI DIGITAL GROWTH & PAID ADS',
+    'high-ROI digital growth & paid ads',
     'Performance Marketer & Digital Growth Strategist scaling multi-channel paid acquisition across Meta, Google, and TikTok. I engineer high-converting landing pages, optimize ROAS, and scale ad budgets profitably.',
     'girishdas@gmail.com',
     '#',
@@ -246,7 +246,7 @@ Instead of relying on static product mockups, we deployed a structured creative 
         ARRAY['4.8x Blended ROAS', '-38% Customer CAC', '+310% Net Monthly Revenue'],
         ARRAY['Meta Ads', 'TikTok Ads', 'Shopify CRO', 'Triple Whale'],
         'yellow',
-        'https://girishdas.vercel.app',
+        '',
         true,
         1
     ),
@@ -278,7 +278,7 @@ A Series A B2B software company was burning $25,000/month on Google Ads with lit
         ARRAY['+190% Qualified Leads', '3.4x Pipeline Value', '62% Lower Cost Per Demo'],
         ARRAY['Google Search', 'High-Intent Keywords', 'Unbounce CRO', 'GA4'],
         'mint',
-        'https://girishdas.vercel.app',
+        '',
         true,
         2
     ),
@@ -301,7 +301,7 @@ Engineered an omnichannel paid acquisition engine synchronizing YouTube Ads, Met
         ARRAY['$500K+ Ad Spend Managed', '28 Winning Creative Hooks', '4.1x Blended ROAS'],
         ARRAY['Omnichannel', 'A/B Testing', 'CAPI & GTM', 'Klaviyo'],
         'purple',
-        'https://girishdas.vercel.app',
+        '',
         true,
         3
     );

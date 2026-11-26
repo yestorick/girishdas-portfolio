@@ -3,74 +3,154 @@
 @tailwind utilities;
 
 :root {
-  --bg-cream: #FAF8F5;
-  --neo-black: #0F0F10;
+  --bg-canvas: #FBF9F5;
+  --ink-primary: #1C1917;
+  --ink-secondary: #57534E;
+  --border-ink: #292524;
+  --accent-coral: #C84B31;
+  --accent-amber: #F6E2A5;
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--bg-cream);
-  color: var(--neo-black);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
   font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  overflow-x: clip;
 }
 
 body {
-  background-color: #FAF8F5;
-  color: #0F0F10;
-  min-height: 100vh;
-  overflow-x: hidden;
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  min-height: 100dvh;
+  overflow-x: clip;
+  text-align: start;
 }
 
-/* Neo-Brutalist Utility Classes */
+/* Typographic ergonomics */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Calm, Tactile Editorial Card & Button Surfaces */
 .neo-card {
-  border: 2px solid #000000;
-  box-shadow: 3px 3px 0px #000000;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border: 1.5px solid var(--border-ink);
+  box-shadow: 2px 2px 0px var(--border-ink);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
 }
 
 .neo-card:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0px #000000;
+  box-shadow: 3px 3px 0px var(--border-ink);
 }
 
 .neo-card-static {
-  border: 2px solid #000000;
-  box-shadow: 3px 3px 0px #000000;
+  border: 1.5px solid var(--border-ink);
+  box-shadow: 2px 2px 0px var(--border-ink);
 }
 
 .neo-btn {
-  border: 2px solid #000000;
-  box-shadow: 3px 3px 0px #000000;
-  transition: all 0.12s ease;
+  border: 1.5px solid var(--border-ink);
+  box-shadow: 2px 2px 0px var(--border-ink);
+  min-block-size: 2.5rem;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
 }
 
 .neo-btn:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0px #000000;
+  box-shadow: 3px 3px 0px var(--border-ink);
 }
 
 .neo-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 0px 0px 0px #000000;
+  transform: translate(1px, 1px);
+  box-shadow: 0px 0px 0px var(--border-ink);
 }
 
+/* Quiet tag pills without heavy clutter shadows */
 .neo-pill {
-  border: 1.5px solid #000000;
-  box-shadow: 1.5px 1.5px 0px #000000;
+  border: 1px solid rgba(28, 25, 23, 0.25);
 }
 
-/* Custom subtle scrollbar */
+/* Multi-line marker highlight with zero vertical overlap */
+.headline-highlight {
+  background: linear-gradient(
+    to top,
+    rgba(246, 226, 165, 0.92) 0%,
+    rgba(246, 226, 165, 0.92) 62%,
+    transparent 62%
+  );
+  padding-inline-start: 0.2em;
+  padding-inline-end: 0.12em;
+  border-radius: 0.2em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Accessible focus indicator */
+:where(a:any-link, button, summary):focus-visible {
+  outline: 2.5px solid var(--accent-coral);
+  outline-offset: 3px;
+}
+
+/* Skip link for keyboard navigation */
+.skip-link {
+  position: fixed;
+  inset-block-start: -100%;
+  inset-inline-start: 1rem;
+  z-index: 100;
+  background: var(--ink-primary);
+  color: #FFFFFF;
+  padding: 0.625rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  inset-block-start: 1rem;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .neo-card,
+  .neo-btn,
+  .animate-pulse {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Windows High Contrast / Forced Colors fallback */
+@media (forced-colors: active) {
+  .neo-card,
+  .neo-card-static,
+  .neo-btn,
+  .neo-pill {
+    border: 1px solid CanvasText;
+    box-shadow: none;
+  }
+}
+
+/* Subtle scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF8F5;
+  background: var(--bg-canvas);
 }
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: #D6D3CD;
   border-radius: 4px;
-  border: 2px solid #FAF8F5;
+  border: 2px solid var(--bg-canvas);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: #A8A29E;
 }

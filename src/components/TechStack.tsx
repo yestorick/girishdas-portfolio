@@ -1,54 +1,54 @@
 import { TechStackGroup } from '@/lib/types';
-import { Code2 } from 'lucide-react';
+import { Layers } from 'lucide-react';
 
 interface TechStackProps {
   techStack: TechStackGroup[];
 }
 
 const colorMap: Record<string, string> = {
-  blue: 'bg-[#BAE6FD]',
-  mint: 'bg-[#BBF7D0]',
-  yellow: 'bg-[#FDE68A]',
-  purple: 'bg-[#DDD6FE]',
+  blue: 'bg-[#EDF3F7]',
+  mint: 'bg-[#EDF4EF]',
+  yellow: 'bg-[#F9F3DF]',
+  purple: 'bg-[#F1EEF7]',
 };
 
 export default function TechStack({ techStack }: TechStackProps) {
   return (
-    <section id="stack" className="py-10 border-t-2 border-black/10">
+    <section id="stack" className="scroll-mt-24 py-10 border-t border-[#1C1917]/10">
       {/* Section Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-8 h-8 rounded-lg bg-[#BAE6FD] border-2 border-black flex items-center justify-center shadow-brutal-sm">
-          <Code2 className="w-4 h-4 text-black" />
+        <div className="w-8 h-8 rounded-lg bg-[#F5F2EB] border-[1.5px] border-[#292524] flex items-center justify-center">
+          <Layers className="w-4 h-4 text-[#1C1917]" aria-hidden="true" />
         </div>
-        <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-black">
-          Tech stack
+        <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1C1917] font-display">
+          Growth & Marketing Stack
         </h2>
       </div>
 
-      {/* 4 Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+      {/* 4 Cards Grid: calm muted editorial tints */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {techStack.map((group, index) => {
-          const bgClass = colorMap[group.color] || 'bg-[#BAE6FD]';
+          const bgClass = colorMap[group.color] || 'bg-[#F5F2EB]';
           return (
             <div
               key={group.id || index}
-              className={`neo-card ${bgClass} rounded-2xl p-5 flex flex-col justify-between`}
+              className={`neo-card ${bgClass} rounded-2xl p-5 flex flex-col justify-between min-w-0`}
             >
               <div>
-                <h3 className="font-extrabold text-sm sm:text-base text-black mb-3">
+                <h3 className="font-bold text-sm sm:text-base text-[#1C1917] mb-3.5 font-display">
                   {group.category}
                 </h3>
 
-                <div className="flex flex-wrap gap-1.5">
+                <ul className="flex flex-wrap gap-1.5" role="list">
                   {group.skills.map((skill, sIdx) => (
-                    <span
+                    <li
                       key={sIdx}
-                      className="neo-pill bg-white text-black px-2.5 py-1 text-xs font-semibold rounded-md"
+                      className="neo-pill bg-white text-[#292524] px-2.5 py-1 text-xs font-medium rounded-md"
                     >
                       {skill}
-                    </span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </div>
           );

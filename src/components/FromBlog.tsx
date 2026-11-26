@@ -8,49 +8,49 @@ interface FromBlogProps {
 
 export default function FromBlog({ posts }: FromBlogProps) {
   return (
-    <section id="blog" className="py-10 border-t-2 border-black/10">
+    <section id="blog" className="scroll-mt-24 py-10 border-t border-[#1C1917]/10">
       {/* Section Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-8 h-8 rounded-lg bg-[#BBF7D0] border-2 border-black flex items-center justify-center shadow-brutal-sm">
-          <PenTool className="w-4 h-4 text-black" />
+        <div className="w-8 h-8 rounded-lg bg-[#F5F2EB] border-[1.5px] border-[#292524] flex items-center justify-center">
+          <PenTool className="w-4 h-4 text-[#1C1917]" aria-hidden="true" />
         </div>
-        <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-black">
+        <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1C1917] font-display">
           From my blog
         </h2>
       </div>
 
       {/* Blog Posts List */}
-      <div className="divide-y-2 divide-black/10">
+      <div className="divide-y divide-[#1C1917]/10">
         {posts.map((post) => (
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="group flex items-center justify-between py-4 sm:py-5 hover:bg-black/[0.02] px-2 rounded-xl transition-all"
+            className="group flex items-center justify-between gap-4 py-4 sm:py-5 hover:bg-[#F5F2EB]/70 px-3 -mx-3 rounded-xl transition-colors"
           >
-            <div className="space-y-1 pr-4">
-              <h3 className="font-extrabold text-sm sm:text-base text-black group-hover:underline underline-offset-4 decoration-2">
+            <div className="space-y-1 min-w-0">
+              <h3 className="font-bold text-sm sm:text-base text-[#1C1917] group-hover:underline underline-offset-4 decoration-[#C84B31] font-display">
                 {post.title}
               </h3>
-              <p className="text-xs text-[#555]">
+              <p className="text-xs text-[#57534E]">
                 {post.published_at} • {post.read_time}
               </p>
             </div>
 
-            <div className="shrink-0 p-2 rounded-lg border-2 border-black bg-white shadow-brutal-sm group-hover:translate-x-1 transition-transform">
-              <ArrowRight className="w-4 h-4 text-black" />
+            <div className="shrink-0 w-9 h-9 rounded-lg border border-[#1C1917]/25 bg-white flex items-center justify-center group-hover:border-[#1C1917] group-hover:translate-x-0.5 transition-all">
+              <ArrowRight className="w-4 h-4 text-[#1C1917]" aria-hidden="true" />
             </div>
           </Link>
         ))}
       </div>
 
       {/* Read all posts link */}
-      <div className="mt-6 pt-4 border-t border-black/5">
+      <div className="mt-5 pt-4 border-t border-[#1C1917]/10">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-sm font-bold text-black hover:underline underline-offset-4"
+          className="inline-flex items-center gap-2 text-sm font-bold text-[#1C1917] hover:text-[#C84B31] transition-colors"
         >
           <span>Read all posts</span>
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4" aria-hidden="true" />
         </Link>
       </div>
     </section>
