@@ -6,22 +6,18 @@ import { Menu, X } from 'lucide-react';
 
 interface NavbarProps {
   logoText?: string;
-  nickname?: string;
+  avatarUrl?: string;
+  statusBadge?: string;
 }
 
 export default function Navbar({
   logoText = 'Girish Das',
-  nickname = 'Rick',
+  avatarUrl = '',
+  statusBadge = 'Open to opportunities',
 }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const rawName = logoText.replace(/^\[|\]$/g, '').trim() || 'Girish Das';
-  const displayName =
-    rawName === rawName.toUpperCase()
-      ? rawName
-          .toLowerCase()
-          .replace(/\b\w/g, (char) => char.toUpperCase())
-      : rawName;
+  const displayName = logoText.replace(/^\[|\]$/g, '').trim() || 'Girish Das';
 
   const navLinks = [
     { label: 'Now', href: '/#now' },
@@ -29,7 +25,6 @@ export default function Navbar({
     { label: 'Projects', href: '/#work' },
     { label: 'Stack', href: '/#stack' },
     { label: 'Blog', href: '/#blog' },
-    { label: 'Favourites', href: '/#favourites' },
   ];
 
   return (
@@ -39,25 +34,33 @@ export default function Navbar({
       </a>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
-        {/* Brand / Logo with Highlighted Nickname ("Rick") */}
+        {/* Left Header: Round Profile Picture + "Open to opportunities" Pill */}
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 sm:gap-2 font-display text-[#1C1917] hover:opacity-85 transition-opacity shrink-0 whitespace-nowrap"
-          aria-label={`${displayName}, nickname ${nickname}`}
+          className="inline-flex items-center gap-2.5 shrink-0 hover:opacity-90 transition-opacity"
+          aria-label={`${displayName} — ${statusBadge}`}
         >
-          <span className="font-bold tracking-tight text-sm sm:text-base">
-            {displayName}
-          </span>
-          {nickname && (
-            <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium text-[#57534E]">
-              <mark className="bg-[#F6E2A5] text-[#1C1917] px-1.5 py-0.5 rounded border border-[#292524]/25 font-bold not-italic">
-                {nickname}
-              </mark>
-              <span className="text-[10px] sm:text-[11px] text-[#78716C] hidden min-[360px]:inline">
-                (nickname)
+          <div className="w-9 h-9 rounded-full border-[1.5px] border-[#292524] bg-[#F5F2EB] overflow-hidden shrink-0 flex items-center justify-center">
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt={displayName}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="font-display font-bold text-xs text-[#1C1917] tracking-tight">
+                GD
               </span>
-            </span>
-          )}
+            )}
+          </div>
+
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#E4F1E7] border border-[#292524]/40 text-[#1E5631] whitespace-nowrap">
+            <span
+              className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse shrink-0"
+              aria-hidden="true"
+            />
+            <span>{statusBadge || 'Open to opportunities'}</span>
+          </span>
         </Link>
 
         {/* Desktop Semantic Navigation */}

@@ -20,7 +20,8 @@ export default async function ResumePage() {
       <div className="print:hidden">
         <Navbar
           logoText={profile.nav_logo || profile.name}
-          nickname={profile.nickname || 'Rick'}
+          avatarUrl={profile.avatar_url}
+          statusBadge={profile.status_badge}
         />
       </div>
 

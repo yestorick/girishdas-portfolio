@@ -13,7 +13,8 @@ export default async function BlogIndexPage() {
     <div className="min-h-dvh flex flex-col bg-[#FBF9F5]">
       <Navbar
         logoText={profile.nav_logo || profile.name}
-        nickname={profile.nickname || 'Rick'}
+        avatarUrl={profile.avatar_url}
+        statusBadge={profile.status_badge}
       />
 
       <main id="main-content" tabIndex={-1} className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-12 focus:outline-none">

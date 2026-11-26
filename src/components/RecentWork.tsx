@@ -60,6 +60,7 @@ export default function RecentWork({ projects }: RecentWorkProps) {
                     <img
                       src={project.image_url}
                       alt={project.title}
+                      loading="lazy"
                       className="w-full h-full object-cover rounded-lg border border-[#1C1917]/15"
                     />
                   ) : (

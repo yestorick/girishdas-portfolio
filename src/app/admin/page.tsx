@@ -30,7 +30,7 @@ export default function AdminGuidePage() {
 
   return (
     <div className="min-h-dvh flex flex-col bg-[#FBF9F5]">
-      <Navbar logoText="Girish Das" nickname="Rick" />
+      <Navbar logoText="Girish Das" statusBadge="Open to opportunities" />
 
       <main id="main-content" tabIndex={-1} className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-12 focus:outline-none">
         <Link
@@ -132,10 +132,10 @@ export default function AdminGuidePage() {
               <div className="p-4 rounded-xl border border-[#1C1917]/20 bg-[#F9F3DF]">
                 <div className="flex items-center gap-2 font-bold text-xs sm:text-sm mb-1.5 text-[#1C1917]">
                   <Layers className="w-4 h-4 text-[#78350F]" aria-hidden="true" />
-                  <span>Upload New Project</span>
+                  <span>Upload New Project &amp; Screenshots</span>
                 </div>
                 <p className="text-xs text-[#44403C]">
-                  Go to <strong>projects</strong> table &gt; Click <strong>Insert Row</strong>. Fill <code>slug</code>, <code>title</code>, <code>description</code>, <code>metrics</code>, <code>tags</code>, and full Markdown details in <code>content</code>.
+                  Go to <strong>projects</strong> table &gt; Insert or edit row. Set <code>title</code>, <code>completion_date</code>, <code>made_by</code> (e.g. <code>Made by me</code>), cover <code>image_url</code>, <code>screenshots</code> URLs, and how you completed it in <code>content</code> (supports <code>![caption](url)</code>).
                 </p>
               </div>
 

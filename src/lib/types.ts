@@ -50,10 +50,13 @@ export interface Project {
   slug: string;
   title: string;
   description: string;
-  content: string; // Full Case Study in Markdown
+  content: string;
   client?: string;
   role?: string;
   duration?: string;
+  completion_date?: string;
+  made_by?: string;
+  screenshots?: string[];
   metrics?: string[];
   tags: string[];
   color: 'yellow' | 'mint' | 'purple' | string;

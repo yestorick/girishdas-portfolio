@@ -12,35 +12,10 @@ export default function Hero({ profile, rightNow }: HeroProps) {
   return (
     <section id="now" className="scroll-mt-24 py-10 sm:py-14">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-start">
-        {/* Left Column: Round Photo (No Shadow) + Status + Clean Hero Intro */}
+        {/* Left Column: Clean Professional Intro Headline */}
         <div className="md:col-span-7 space-y-5 min-w-0">
-          {/* Plain Circular Photo Shape on the Left of "Open to opportunities" — zero shadow */}
-          <div className="inline-flex items-center gap-3 flex-wrap">
-            <div className="w-12 h-12 rounded-full border-[1.5px] border-[#292524] bg-[#F5F2EB] overflow-hidden shrink-0 flex items-center justify-center">
-              {profile.avatar_url ? (
-                <img
-                  src={profile.avatar_url}
-                  alt={profile.name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <span className="font-display font-bold text-sm text-[#1C1917] tracking-tight">
-                  GD
-                </span>
-              )}
-            </div>
-
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#E4F1E7] border-[1.5px] border-[#292524] text-[#1E5631]">
-              <span
-                className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse shrink-0"
-                aria-hidden="true"
-              />
-              <span>{profile.status_badge || 'Open to opportunities'}</span>
-            </span>
-          </div>
-
           {/* Clean Professional Hero H1 — No Highlighted Background */}
-          <h1 className="text-[clamp(1.85rem,3.4vw,2.7rem)] font-extrabold tracking-[-0.025em] text-[#1C1917] leading-[1.25] font-display">
+          <h1 className="text-[clamp(1.85rem,3.4vw,2.75rem)] font-extrabold tracking-[-0.025em] text-[#1C1917] leading-[1.22] font-display">
             {profile.headline_intro} {profile.headline_highlight}.
           </h1>
 
