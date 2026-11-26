@@ -34,15 +34,18 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-dvh flex flex-col bg-[#FBF9F5]">
-      <Navbar logoText={profile.nav_logo || profile.name.toUpperCase()} />
+      <Navbar
+        logoText={profile.nav_logo || profile.name}
+        nickname={profile.nickname || 'Rick'}
+      />
 
       <main id="main-content" tabIndex={-1} className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 focus:outline-none">
         <Hero profile={profile} rightNow={rightNow} />
-        <Experience experiences={experiences} />
+        <Experience experiences={experiences} resumeUrl={profile.resume_url} />
         <TechStack techStack={techStack} />
         <RecentWork projects={projects} />
-        <MyFavourites favorites={favorites} />
         <FromBlog posts={posts.slice(0, 3)} />
+        <MyFavourites favorites={favorites} />
       </main>
 
       <Footer profile={profile} />

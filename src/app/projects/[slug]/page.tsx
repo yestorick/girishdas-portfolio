@@ -51,7 +51,10 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
   return (
     <div className="min-h-dvh flex flex-col bg-[#FBF9F5]">
-      <Navbar logoText={profile.nav_logo || profile.name.toUpperCase()} />
+      <Navbar
+        logoText={profile.nav_logo || profile.name}
+        nickname={profile.nickname || 'Rick'}
+      />
 
       <main id="main-content" tabIndex={-1} className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-12 focus:outline-none">
         {/* Breadcrumb Back Link */}
@@ -60,15 +63,15 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           className="inline-flex items-center gap-2 text-xs font-semibold text-[#57534E] hover:text-[#1C1917] mb-8 transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
-          <span>Back to Recent Work &amp; Case Studies</span>
+          <span>Back to My Projects</span>
         </Link>
 
-        {/* Case Study Header Banner */}
+        {/* Project Detail Header */}
         <div className={`neo-card-static ${headerBg} rounded-2xl p-6 sm:p-10 mb-8 text-[#1C1917]`}>
           <div className="flex items-center gap-2.5 flex-wrap text-xs font-semibold mb-4">
             {project.client && (
               <span className="bg-white border border-[#1C1917]/20 px-3 py-1 rounded-full">
-                Client: {project.client}
+                {project.client}
               </span>
             )}
             {project.role && (
@@ -101,7 +104,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 rel="noopener noreferrer"
                 className="neo-btn inline-flex items-center gap-1.5 bg-white hover:bg-[#F5F2EB] text-[#1C1917] px-4 py-2 rounded-full text-xs font-semibold"
               >
-                <span>View live campaign</span>
+                <span>Visit project link</span>
                 <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
             </div>
@@ -120,7 +123,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                     <span>{metric}</span>
                   </div>
                   <span className="text-[11px] font-medium text-[#78716C] uppercase tracking-wider block mt-0.5">
-                    Verified Result
+                    Outcome
                   </span>
                 </div>
               ))}
@@ -132,7 +135,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         <div className="flex items-center gap-2 flex-wrap mb-8">
           <span className="text-xs font-semibold text-[#57534E] uppercase tracking-wider inline-flex items-center gap-1.5 mr-1">
             <Tag className="w-3.5 h-3.5" aria-hidden="true" />
-            Channels &amp; Tools:
+            Channels &amp; Stack:
           </span>
           {project.tags.map((tag, tIdx) => (
             <span
@@ -144,7 +147,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           ))}
         </div>
 
-        {/* Markdown Case Study Body */}
+        {/* Markdown Project Write-Up */}
         <article className="neo-card-static bg-white rounded-2xl p-6 sm:p-10 text-[#1C1917] leading-relaxed">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -183,7 +186,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 <div
                   tabIndex={0}
                   role="region"
-                  aria-label="Campaign metrics and results table"
+                  aria-label="Project metrics and outcomes table"
                   className="overflow-x-auto my-6 border border-[#292524] rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#C84B31]"
                 >
                   <table className="w-full min-w-[460px] text-left text-xs sm:text-sm border-collapse">
@@ -227,23 +230,23 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </ReactMarkdown>
         </article>
 
-        {/* CTA Callout: Discuss Strategy / Hire */}
+        {/* Personal Contact Callout */}
         <div className="mt-10 neo-card-static bg-[#F7ECE6] rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-1 max-w-lg text-center sm:text-left">
             <h2 className="font-extrabold text-lg sm:text-xl text-[#1C1917] font-display">
-              Want similar growth results for your business?
+              Want to talk about this project?
             </h2>
             <p className="text-xs sm:text-sm text-[#57534E]">
-              Let&apos;s audit your paid media campaigns, optimize your landing pages, and scale your ROAS.
+              Feel free to write directly if you&apos;d like more context on how I structured the campaigns or content.
             </p>
           </div>
 
           <a
-            href={`mailto:${profile.email}?subject=Growth Inquiry regarding ${encodeURIComponent(project.title)}`}
+            href={`mailto:${profile.email}?subject=Regarding: ${encodeURIComponent(project.title)}`}
             className="neo-btn shrink-0 inline-flex items-center gap-2 bg-[#C84B31] hover:bg-[#B03E26] text-white px-6 py-3 rounded-full text-sm font-semibold"
           >
             <Mail className="w-4 h-4" aria-hidden="true" />
-            <span>Book Growth Call</span>
+            <span>Contact me</span>
           </a>
         </div>
       </main>

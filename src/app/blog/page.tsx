@@ -11,7 +11,10 @@ export default async function BlogIndexPage() {
 
   return (
     <div className="min-h-dvh flex flex-col bg-[#FBF9F5]">
-      <Navbar logoText={profile.nav_logo || profile.name.toUpperCase()} />
+      <Navbar
+        logoText={profile.nav_logo || profile.name}
+        nickname={profile.nickname || 'Rick'}
+      />
 
       <main id="main-content" tabIndex={-1} className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-12 focus:outline-none">
         {/* Back link */}
@@ -20,7 +23,7 @@ export default async function BlogIndexPage() {
           className="inline-flex items-center gap-2 text-xs font-semibold text-[#57534E] hover:text-[#1C1917] mb-8 transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
-          <span>Back to Portfolio</span>
+          <span>Back to Home</span>
         </Link>
 
         {/* Header */}
@@ -29,12 +32,12 @@ export default async function BlogIndexPage() {
             <PenTool className="w-4 h-4 text-[#1C1917]" aria-hidden="true" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#1C1917] font-display">
-            Articles &amp; Notes
+            Notes &amp; Articles
           </h1>
         </div>
 
         <p className="text-sm sm:text-base text-[#57534E] mb-10 max-w-xl">
-          Playbooks and notes on performance marketing, paid social scaling, landing page CRO, and cookieless attribution.
+          Personal notes on Google Ads, Meta Ads creatives, conversion tracking, and digital content strategy.
         </p>
 
         {/* Blog Posts */}

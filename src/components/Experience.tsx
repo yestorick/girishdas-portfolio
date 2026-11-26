@@ -1,21 +1,47 @@
+import Link from 'next/link';
 import { Experience as ExperienceType } from '@/lib/types';
-import { Briefcase } from 'lucide-react';
+import { Briefcase, FileText } from 'lucide-react';
 
 interface ExperienceProps {
   experiences: ExperienceType[];
+  resumeUrl?: string;
 }
 
-export default function Experience({ experiences }: ExperienceProps) {
+export default function Experience({ experiences, resumeUrl }: ExperienceProps) {
+  const hasExternalResume = Boolean(resumeUrl && resumeUrl !== '#');
+
   return (
     <section id="experience" className="scroll-mt-24 py-10 border-t border-[#1C1917]/10">
-      {/* Section Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-8 h-8 rounded-lg bg-[#F5F2EB] border-[1.5px] border-[#292524] flex items-center justify-center">
-          <Briefcase className="w-4 h-4 text-[#1C1917]" aria-hidden="true" />
+      {/* Section Header + Subtle Résumé Link */}
+      <div className="flex items-center justify-between gap-4 mb-6 flex-wrap">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-[#F5F2EB] border-[1.5px] border-[#292524] flex items-center justify-center">
+            <Briefcase className="w-4 h-4 text-[#1C1917]" aria-hidden="true" />
+          </div>
+          <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1C1917] font-display">
+            Experience
+          </h2>
         </div>
-        <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1C1917] font-display">
-          Experience
-        </h2>
+
+        {hasExternalResume ? (
+          <a
+            href={resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#57534E] hover:text-[#C84B31] transition-colors"
+          >
+            <FileText className="w-3.5 h-3.5" aria-hidden="true" />
+            <span>Full résumé →</span>
+          </a>
+        ) : (
+          <Link
+            href="/resume"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#57534E] hover:text-[#C84B31] transition-colors"
+          >
+            <FileText className="w-3.5 h-3.5" aria-hidden="true" />
+            <span>View full résumé →</span>
+          </Link>
+        )}
       </div>
 
       {/* Experience Cards */}
@@ -44,7 +70,7 @@ export default function Experience({ experiences }: ExperienceProps) {
                 </p>
               </div>
 
-              {/* Date Pill: Highlight ONLY current role to stay calm & match wireframe */}
+              {/* Date Pill: Highlight current role cleanly */}
               <div className="self-start sm:self-center shrink-0">
                 <span
                   className={`inline-block px-3.5 py-1 text-xs font-semibold rounded-full border ${

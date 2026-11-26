@@ -1,5 +1,6 @@
+import Link from 'next/link';
 import { SiteProfile } from '@/lib/types';
-import { Mail, Github, Linkedin, Twitter, ArrowUp } from 'lucide-react';
+import { Mail, Github, Linkedin, Twitter, ArrowUp, FileText } from 'lucide-react';
 
 interface FooterProps {
   profile: SiteProfile;
@@ -14,12 +15,12 @@ export default function Footer({ profile }: FooterProps) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="space-y-5 max-w-2xl">
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight font-display">
-            Let&apos;s build something together.
+            Let&apos;s connect.
           </h2>
 
           <p className="text-sm sm:text-base text-stone-300 leading-relaxed">
             {profile.footer_tagline ||
-              'Available for full-time growth leadership roles, performance marketing contracts, or paid acquisition audits.'}
+              'Always open to connecting with hiring teams, marketers, and founders about performance marketing roles and digital projects.'}
           </p>
 
           {/* Highlighted Email CTA Button */}
@@ -34,20 +35,9 @@ export default function Footer({ profile }: FooterProps) {
           </div>
         </div>
 
-        {/* Bottom Socials & Copyright (High Contrast on Dark Charcoal) */}
+        {/* Bottom Socials, Resume & Copyright */}
         <div className="mt-14 pt-8 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-300">
           <div className="flex items-center flex-wrap gap-6">
-            {profile.github_url && (
-              <a
-                href={profile.github_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors inline-flex items-center gap-1.5 py-1"
-              >
-                <Github className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>GitHub</span>
-              </a>
-            )}
             {profile.linkedin_url && (
               <a
                 href={profile.linkedin_url}
@@ -57,6 +47,17 @@ export default function Footer({ profile }: FooterProps) {
               >
                 <Linkedin className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>LinkedIn</span>
+              </a>
+            )}
+            {profile.github_url && (
+              <a
+                href={profile.github_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors inline-flex items-center gap-1.5 py-1"
+              >
+                <Github className="w-3.5 h-3.5" aria-hidden="true" />
+                <span>GitHub</span>
               </a>
             )}
             {profile.twitter_url && (
@@ -70,10 +71,20 @@ export default function Footer({ profile }: FooterProps) {
                 <span>X / Twitter</span>
               </a>
             )}
+            <Link
+              href="/resume"
+              className="hover:text-white transition-colors inline-flex items-center gap-1.5 py-1"
+            >
+              <FileText className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>Résumé</span>
+            </Link>
           </div>
 
           <div className="flex items-center gap-4">
-            <span>© {new Date().getFullYear()} {profile.name}. All rights reserved.</span>
+            <span>
+              © {new Date().getFullYear()} {profile.name}
+              {profile.nickname ? ` (${profile.nickname})` : ''}. All rights reserved.
+            </span>
             <a
               href="#now"
               aria-label="Back to top"

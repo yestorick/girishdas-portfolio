@@ -31,15 +31,15 @@ export default function RecentWork({ projects }: RecentWorkProps) {
         </div>
         <div>
           <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1C1917] font-display">
-            Recent work & Case studies
+            My projects
           </h2>
           <p className="text-xs sm:text-sm text-[#57534E]">
-            Detailed campaign breakdowns covering strategy, CRO, and verified ROAS outcomes
+            Campaigns, content systems, and digital projects I&apos;ve built and managed
           </p>
         </div>
       </div>
 
-      {/* 3-Column Balanced Grid from md+ so laptop viewports avoid orphan rows */}
+      {/* 3-Column Balanced Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {projects.map((project, index) => {
           const headerBg = headerColorMap[project.color] || 'bg-[#F9F3DF]';
@@ -51,7 +51,7 @@ export default function RecentWork({ projects }: RecentWorkProps) {
               className="neo-card bg-white rounded-2xl overflow-hidden flex flex-col justify-between group min-w-0"
             >
               <div className="flex flex-col flex-1">
-                {/* Clean Banner Area (zero overlapping corner pills) */}
+                {/* Clean Banner Header */}
                 <Link
                   href={`/projects/${project.slug}`}
                   className={`block h-32 sm:h-36 ${headerBg} border-b border-[#292524]/25 p-4 transition-colors`}
@@ -65,10 +65,10 @@ export default function RecentWork({ projects }: RecentWorkProps) {
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-center gap-1.5">
                       <span className="font-mono text-[11px] font-semibold text-[#57534E] tracking-wider uppercase px-2.5 py-0.5 bg-white/80 rounded-full border border-[#1C1917]/15">
-                        Case Study
+                        Project Write-Up
                       </span>
                       <p className="text-xs sm:text-sm font-bold text-[#1C1917] font-display">
-                        {project.client || 'Campaign Breakdown'}
+                        {project.client || 'Personal Project'}
                       </p>
                     </div>
                   )}
@@ -86,7 +86,7 @@ export default function RecentWork({ projects }: RecentWorkProps) {
                     {project.description}
                   </p>
 
-                  {/* Single Quiet Metric Highlight Strip */}
+                  {/* Outcome Metrics */}
                   {project.metrics && project.metrics.length > 0 && (
                     <div className="pt-1 flex flex-wrap gap-1.5">
                       {project.metrics.slice(0, 2).map((metric, mIdx) => (
@@ -101,7 +101,7 @@ export default function RecentWork({ projects }: RecentWorkProps) {
                     </div>
                   )}
 
-                  {/* Flat Quiet Tool Tags */}
+                  {/* Tool Tags */}
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {project.tags.slice(0, 3).map((tag, tIdx) => (
                       <span
@@ -115,13 +115,13 @@ export default function RecentWork({ projects }: RecentWorkProps) {
                 </div>
               </div>
 
-              {/* Card Footer: Aligned Case Study Link */}
+              {/* Card Footer */}
               <div className="px-5 py-3.5 border-t border-[#1C1917]/10 flex items-center justify-between bg-[#FCFBF8]">
                 <Link
                   href={`/projects/${project.slug}`}
                   className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#1C1917] hover:text-[#C84B31] transition-colors"
                 >
-                  <span>Read case study</span>
+                  <span>View project details</span>
                   <ArrowRight
                     className="w-4 h-4 group-hover:translate-x-0.5 transition-transform"
                     aria-hidden="true"

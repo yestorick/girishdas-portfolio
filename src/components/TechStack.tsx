@@ -21,7 +21,7 @@ export default function TechStack({ techStack }: TechStackProps) {
           <Layers className="w-4 h-4 text-[#1C1917]" aria-hidden="true" />
         </div>
         <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1C1917] font-display">
-          Growth & Marketing Stack
+          Tech &amp; marketing stacks
         </h2>
       </div>
 

@@ -1,6 +1,7 @@
 export interface SiteProfile {
   id?: string;
   name: string;
+  nickname?: string;
   avatar_url?: string;
   nav_logo: string;
   status_badge: string;
@@ -8,6 +9,7 @@ export interface SiteProfile {
   headline_highlight: string;
   bio: string;
   email: string;
+  phone?: string;
   resume_url: string;
   github_url: string;
   linkedin_url: string;
@@ -20,7 +22,8 @@ export interface RightNow {
   building_title: string;
   building_desc: string;
   learning: string;
-  reading: string;
+  current_projects?: string;
+  reading?: string;
   based_in: string;
   updated_at?: string;
 }
@@ -51,7 +54,7 @@ export interface Project {
   client?: string;
   role?: string;
   duration?: string;
-  metrics?: string[]; // e.g. ["4.8x ROAS", "-38% CAC", "+310% Revenue"]
+  metrics?: string[];
   tags: string[];
   color: 'yellow' | 'mint' | 'purple' | string;
   image_url?: string;

@@ -6,21 +6,30 @@ import { Menu, X } from 'lucide-react';
 
 interface NavbarProps {
   logoText?: string;
+  nickname?: string;
 }
 
-export default function Navbar({ logoText = 'GIRISH DAS' }: NavbarProps) {
+export default function Navbar({
+  logoText = 'Girish Das',
+  nickname = 'Rick',
+}: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Strip surrounding brackets if present in older DB seed so logo reads calmly
-  const cleanLogo = logoText.replace(/^\[|\]$/g, '').trim() || 'GIRISH DAS';
+  const rawName = logoText.replace(/^\[|\]$/g, '').trim() || 'Girish Das';
+  const displayName =
+    rawName === rawName.toUpperCase()
+      ? rawName
+          .toLowerCase()
+          .replace(/\b\w/g, (char) => char.toUpperCase())
+      : rawName;
 
   const navLinks = [
     { label: 'Now', href: '/#now' },
     { label: 'Experience', href: '/#experience' },
     { label: 'Stack', href: '/#stack' },
-    { label: 'Work', href: '/#work' },
-    { label: 'Favourites', href: '/#favourites' },
+    { label: 'Projects', href: '/#work' },
     { label: 'Blog', href: '/#blog' },
+    { label: 'Favourites', href: '/#favourites' },
   ];
 
   return (
@@ -29,14 +38,26 @@ export default function Navbar({ logoText = 'GIRISH DAS' }: NavbarProps) {
         Skip to content
       </a>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-        {/* Brand / Logo matching wireframe "[YOUR NAME]." with single subtle accent dot */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+        {/* Brand / Logo with Highlighted Nickname ("Rick") */}
         <Link
           href="/"
-          className="font-display font-bold tracking-tight text-base sm:text-lg text-[#1C1917] hover:opacity-80 transition-opacity shrink-0"
+          className="inline-flex items-center gap-1.5 sm:gap-2 font-display text-[#1C1917] hover:opacity-85 transition-opacity shrink-0 whitespace-nowrap"
+          aria-label={`${displayName}, nickname ${nickname}`}
         >
-          <span>{cleanLogo}</span>
-          <span className="text-[#C84B31]" aria-hidden="true">.</span>
+          <span className="font-bold tracking-tight text-sm sm:text-base">
+            {displayName}
+          </span>
+          {nickname && (
+            <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium text-[#57534E]">
+              <mark className="bg-[#F6E2A5] text-[#1C1917] px-1.5 py-0.5 rounded border border-[#292524]/25 font-bold not-italic">
+                {nickname}
+              </mark>
+              <span className="text-[10px] sm:text-[11px] text-[#78716C] hidden min-[360px]:inline">
+                (nickname)
+              </span>
+            </span>
+          )}
         </Link>
 
         {/* Desktop Semantic Navigation */}
@@ -55,14 +76,14 @@ export default function Navbar({ logoText = 'GIRISH DAS' }: NavbarProps) {
           </ul>
         </nav>
 
-        {/* Mobile Menu Trigger (Accessible >= 40x40 target) */}
+        {/* Mobile Menu Trigger */}
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
           aria-controls="mobile-nav-drawer"
           aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          className="md:hidden min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg border border-[#1C1917]/30 bg-white text-[#1C1917] hover:bg-[#F5F2EB] transition-colors"
+          className="md:hidden min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg border border-[#1C1917]/30 bg-white text-[#1C1917] hover:bg-[#F5F2EB] transition-colors shrink-0"
         >
           {isOpen ? (
             <X className="w-5 h-5" aria-hidden="true" />
@@ -98,7 +119,7 @@ export default function Navbar({ logoText = 'GIRISH DAS' }: NavbarProps) {
               onClick={() => setIsOpen(false)}
               className="block text-center neo-btn bg-[#C84B31] text-white py-2.5 rounded-full text-sm font-semibold"
             >
-              Say hello
+              Contact me
             </Link>
           </div>
         </nav>

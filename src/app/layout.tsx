@@ -17,22 +17,22 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: 'Girish Das — Performance Marketer & Digital Growth Strategist',
-  description: 'Personal portfolio, paid media case studies, growth funnels, and marketing notes of Girish Das.',
+  title: 'Girish Das (Rick) — Performance & Digital Marketing Executive',
+  description: 'Personal website, paid media projects, digital marketing notes, and résumé of Girish Das (Rick).',
   authors: [{ name: 'Girish Das' }],
   metadataBase: new URL('https://hellorick.vercel.app'),
   openGraph: {
-    title: 'Girish Das — Performance Marketer & Digital Growth Strategist',
-    description: 'Personal portfolio, paid media case studies, growth funnels, and marketing notes of Girish Das.',
+    title: 'Girish Das (Rick) — Performance & Digital Marketing Executive',
+    description: 'Personal website, paid media projects, digital marketing notes, and résumé of Girish Das (Rick).',
     url: 'https://hellorick.vercel.app',
-    siteName: 'Girish Das Portfolio',
+    siteName: 'Girish Das (Rick)',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Girish Das — Performance Marketer & Digital Growth Strategist',
-    description: 'Personal portfolio, paid media case studies, growth funnels, and marketing notes of Girish Das.',
+    title: 'Girish Das (Rick) — Performance & Digital Marketing Executive',
+    description: 'Personal website, paid media projects, digital marketing notes, and résumé of Girish Das (Rick).',
   },
 };
 

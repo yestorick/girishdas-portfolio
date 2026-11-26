@@ -33,7 +33,10 @@ export default async function BlogPostPage({ params }: PostPageProps) {
 
   return (
     <div className="min-h-dvh flex flex-col bg-[#FBF9F5]">
-      <Navbar logoText={profile.nav_logo || profile.name.toUpperCase()} />
+      <Navbar
+        logoText={profile.nav_logo || profile.name}
+        nickname={profile.nickname || 'Rick'}
+      />
 
       <main id="main-content" tabIndex={-1} className="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-12 focus:outline-none">
         {/* Back Link */}
@@ -125,21 +128,21 @@ export default async function BlogPostPage({ params }: PostPageProps) {
           </ReactMarkdown>
         </article>
 
-        {/* Share / Back to portfolio */}
+        {/* Bottom links */}
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
           <Link
             href="/"
             className="neo-btn inline-flex items-center gap-2 bg-white hover:bg-[#F5F2EB] text-[#1C1917] px-5 py-2.5 rounded-full text-xs font-semibold"
           >
             <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" />
-            <span>Return to Portfolio</span>
+            <span>Back to Home</span>
           </Link>
 
           <a
             href={`mailto:${profile.email}?subject=Question regarding: ${encodeURIComponent(post.title)}`}
             className="neo-btn inline-flex items-center gap-2 bg-[#F7ECE6] hover:bg-[#F0DFD5] text-[#1C1917] px-5 py-2.5 rounded-full text-xs font-semibold"
           >
-            <span>Discuss this post</span>
+            <span>Discuss with me</span>
           </a>
         </div>
       </main>
