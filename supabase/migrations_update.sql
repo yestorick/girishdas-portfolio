@@ -76,7 +76,13 @@ WHERE NOT EXISTS (SELECT 1 FROM education);
 -- 5. Remove deprecated My favourites table (safe if absent)
 DROP TABLE IF EXISTS favorites CASCADE;
 
--- 6. Ensure Storage bucket + public read / authenticated write policies exist safely
+-- 6. Grant PostgREST schema & table privileges (fixes "permission denied for table ..." when tables are created via SQL)
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT SELECT ON site_profile, right_now, experiences, education, tech_stack, projects, posts TO anon;
+GRANT ALL ON site_profile, right_now, experiences, education, tech_stack, projects, posts TO authenticated, service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
+
+-- 7. Ensure Storage bucket + public read / authenticated write policies exist safely
 DO $$
 BEGIN
   INSERT INTO storage.buckets (id, name, public)

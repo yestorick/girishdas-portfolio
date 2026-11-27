@@ -172,6 +172,12 @@ CREATE POLICY "Admins have full access to tech_stack" ON tech_stack FOR ALL TO a
 CREATE POLICY "Admins have full access to projects" ON projects FOR ALL TO authenticated USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
 CREATE POLICY "Admins have full access to posts" ON posts FOR ALL TO authenticated USING (auth.role() = 'authenticated') WITH CHECK (auth.role() = 'authenticated');
 
+-- Grant PostgREST schema & table privileges (anon read-only, server service_role/authenticated full write)
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT SELECT ON site_profile, right_now, experiences, education, tech_stack, projects, posts TO anon;
+GRANT ALL ON site_profile, right_now, experiences, education, tech_stack, projects, posts TO authenticated, service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
+
 -- -----------------------------------------------------------------------------
 -- SUPABASE STORAGE BUCKET (Profile Photo, Thumbnails, Screenshots, Blog Images)
 -- -----------------------------------------------------------------------------
