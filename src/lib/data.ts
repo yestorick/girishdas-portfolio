@@ -18,8 +18,9 @@ export const DEFAULT_PROFILE: SiteProfile = {
   nav_logo: 'Girish Das',
   status_badge: 'Open to opportunities',
   headline_intro: "Hi, I'm Girish Das.",
-  headline_highlight: 'Performance & Digital Marketing Executive',
-  bio: 'Performance and digital marketer with 2.5 years of experience managing Google Ads and Meta Ads, delivering 3x ROAS, 30% lower CPC, and authoritative healthcare content that earns patient trust.',
+  headline_highlight:
+    'Performance & Digital Marketing | Meta Ads, Google Ads and AI-Powered Creative Workflows',
+  bio: 'Performance and digital marketer managing ₹60K per month across Meta Ads and Google Ads: 3x ROAS, 30% lower CPC and up to 40% higher appointment enquiry rate. Uses AI videos and agents to replace costly shoots and speed up ad analysis. Driven by quick testing and killing losing ads so budget goes to winners; seeks full ownership and challenges that help me grow and learn more.',
   email: 'hellorick73@gmail.com',
   phone: '+91 81012 03353',
   location: 'Kolkata, India',
@@ -33,22 +34,25 @@ export const DEFAULT_PROFILE: SiteProfile = {
   experience_heading: 'Experience',
   projects_heading: 'My projects',
   projects_subtitle:
-    "Campaigns, content systems, and digital projects I've built and managed",
+    "Paid media campaigns, AI creative workflows, and healthcare content systems I've built and managed",
   stack_heading: 'Tech & marketing stacks',
   blog_heading: 'From my blog',
   blog_subtitle:
-    'Personal notes on Google Ads, Meta Ads creatives, conversion tracking, and digital content strategy.',
+    'Personal notes on Meta Ads, Google Ads, AI creative workflows, conversion tracking, and digital content strategy.',
   footer_heading: "Let's connect.",
   footer_tagline:
-    'Always open to connecting with hiring teams, marketers, and founders about performance marketing roles and digital projects.',
+    'Always open to connecting with hiring teams, marketers, and founders about performance marketing roles and AI-powered creative workflows.',
 };
 
 export const DEFAULT_RIGHT_NOW: RightNow = {
   card_title: 'Right now',
-  building_title: 'Google & Meta Lead Gen Funnels',
-  building_desc: 'Managing ₹60K/mo ad spend and high-converting healthcare campaigns',
-  learning: 'Post-Andromeda creative testing workflows & GA4 conversion attribution',
-  current_projects: 'NCD Immunocare Ads + Dr Saibal Moitra Authority Website',
+  building_title: 'AI Video Ads & Creative Agents',
+  building_desc:
+    'Google Flow, Higgsfield, ElevenLabs & Claude Code ad-analysis workflows',
+  learning:
+    'Rapid creative testing, flagging ad fatigue early & scaling winning ads',
+  current_projects:
+    'NCD Immunocare (₹60K/mo Ads), Dr Saibal Moitra Clone & Meta Ads Analysis Agent',
   based_in: 'Kolkata, India',
 };
 
@@ -56,8 +60,12 @@ export const DEFAULT_EXPERIENCES: Experience[] = [
   {
     role: 'Performance Marketing Executive',
     company: 'NCD Immunocare Pvt Ltd (AATC), Kolkata',
-    description:
-      'Managing ₹60K/month across Google Ads & Meta Ads; delivered 3x ROAS on Google Ads, 30% lower CPC, and up to 40% higher appointment enquiry rate on Meta Ads.',
+    description: [
+      'Manage ₹60K per month in ad spend across Meta Ads and Google Ads.',
+      'Achieved 3x ROAS on Google Ads and a 30% lower cost per click (CPC).',
+      "Increased appointment enquiry rate by up to 40% on Meta Ads, with 80% of focus on high-winning creatives after Meta's Andromeda update.",
+      'Joined through a referral from one of my clients.',
+    ].join('\n'),
     period: 'May 2025 - Present',
     order_index: 1,
   },
@@ -65,16 +73,18 @@ export const DEFAULT_EXPERIENCES: Experience[] = [
     role: 'Personal Healthcare Content and Website Manager',
     company: 'Dr Saibal Moitra, Allergy Specialist',
     description:
-      'Established Dr Saibal Moitra as a trusted allergy specialist online through authoritative medical content and a dedicated patient-focused website.',
+      "Built Dr Saibal Moitra's online presence as a trusted allergy specialist, giving patients reliable allergy information through authoritative content and a dedicated website.",
     period: 'Mar 2025 - Present',
     order_index: 2,
   },
   {
     role: 'Organic Social Media Manager',
     company: 'Freelance',
-    description:
-      'Acquired 4 freelance clients independently and delivered 1.3 years of consistent organic social media content before taking a full-time marketing role.',
-    period: 'Sep 2023 - Jan 2025',
+    description: [
+      'Managed organic social media content and content calendars for 3 client accounts over 1.3 years.',
+      'Wound down freelance work in January 2025 after receiving a full-time job offer.',
+    ].join('\n'),
+    period: 'Sep 2023 - Jan 2025 (1.3 years)',
     order_index: 3,
   },
 ];
@@ -83,9 +93,9 @@ export const DEFAULT_EDUCATION: Education[] = [
   {
     degree: 'B.Sc. (Honours), Chemistry',
     institution: 'Taki Government College, West Bengal',
-    period: 'Dropout (2nd year)',
+    period: 'Dropped out (2nd year)',
     description:
-      'Dropped out to pursue a full-time career in digital marketing. Self-taught performance marketing and content strategy through YouTube and X (Twitter), applied on live campaigns.',
+      'Dropped out in 2nd year to pursue a full-time career in digital marketing. Self-taught performance marketing and content strategy through YouTube and X (Twitter), applied on live campaigns.',
     order_index: 1,
   },
 ];
@@ -95,47 +105,53 @@ export const DEFAULT_TECH_STACK: TechStackGroup[] = [
     category: 'Paid Media',
     color: 'blue',
     skills: [
-      'Google Ads (Search, Display)',
       'Meta Ads',
-      'Keyword Research',
-      'Audience Targeting',
+      'Google Ads',
+      'Creative Testing',
       'A/B Testing',
-      'Budget Optimisation',
+      'Audience Targeting',
+      'Budget Scaling',
     ],
     order_index: 1,
   },
   {
-    category: 'Analytics & Tracking',
+    category: 'Analytics',
     color: 'mint',
     skills: [
       'Google Analytics 4',
       'Google Tag Manager',
       'Conversion Tracking',
-      'CPC / CPL / CTR',
+      'CPC',
+      'CPL',
+      'CTR',
       'ROAS Reporting',
     ],
     order_index: 2,
   },
   {
-    category: 'Content & Creative',
+    category: 'Content',
     color: 'yellow',
     skills: [
       'Organic Social Media',
       'Content Calendars',
       'Copywriting',
+      'Video Storytelling',
       'Authority Content',
       'Canva',
     ],
     order_index: 3,
   },
   {
-    category: 'Tech & Outreach',
+    category: 'AI Automation',
     color: 'purple',
     skills: [
-      'Next.js & Vercel',
-      'Supabase',
-      'Healthcare Websites',
-      'Cold Outreach (Phone & Email)',
+      'Google Flow',
+      'Higgsfield',
+      'ElevenLabs',
+      'Claude Code',
+      'Antigravity',
+      'AI Agents',
+      'AI Video Production',
     ],
     order_index: 4,
   },
@@ -143,10 +159,124 @@ export const DEFAULT_TECH_STACK: TechStackGroup[] = [
 
 export const DEFAULT_PROJECTS: Project[] = [
   {
+    slug: 'ai-video-ad-production',
+    title: 'AI Video Ad Production',
+    category: 'ai-creative',
+    description:
+      'Storytelling and ad-style videos made with AI, replacing costly shoots and recordings.',
+    client: 'AI Creative Workflow',
+    role: 'Performance & Creative Marketer',
+    duration: '2025 – Ongoing',
+    completion_date: '2025 – Ongoing',
+    made_by: 'Made by me',
+    image_url: '',
+    screenshots: [],
+    metrics: ['Zero Shoot Cost', 'Faster Ad Variations'],
+    tags: ['Google Flow', 'Higgsfield', 'ElevenLabs'],
+    color: 'yellow',
+    live_url: '',
+    featured: true,
+    order_index: 1,
+    content: `# AI Video Ad Production
+
+## Overview & Why I Built This
+Traditional video shoots slow down ad testing and inflate creative production costs. I built an end-to-end AI video production workflow using **Google Flow**, **Higgsfield**, and **ElevenLabs** so I can test more hooks and ad angles quickly.
+
+## How I Completed It
+- Scripted patient-first and direct-response ad hooks tailored to real audience objections.
+- Generated realistic visual scenes with **Google Flow** and **Higgsfield** to replace expensive physical studio shoots.
+- Produced natural voiceovers in **ElevenLabs** and assembled variations for rapid Meta Ads creative testing.`,
+  },
+  {
+    slug: 'ai-creative-editing-agent',
+    title: 'AI Creative Editing Agent',
+    category: 'ai-creative',
+    description:
+      'Agent that edits my ad and social creative videos faster, so more variations get tested.',
+    client: 'AI Creative Workflow',
+    role: 'Builder & Marketer',
+    duration: '2025 – Ongoing',
+    completion_date: '2025 – Ongoing',
+    made_by: 'Made by me',
+    image_url: '',
+    screenshots: [],
+    metrics: ['Faster Turnaround', 'More Creative Tests'],
+    tags: ['Antigravity', 'AI Agents', 'Video Editing'],
+    color: 'mint',
+    live_url: '',
+    featured: true,
+    order_index: 2,
+    content: `# AI Creative Editing Agent
+
+## Overview & Objective
+Post-Andromeda Meta Ads reward rapid creative iteration. Manual editing became a bottleneck when preparing multiple hooks, aspect ratios, and cuts for testing.
+
+## How I Completed It
+- Built an **AI Creative Editing Agent** in **Antigravity** to automate repetitive cutting, pacing, and formatting tasks across ad and social videos.
+- Standardized edit templates so raw AI scenes turn into ready-to-launch ad variations fast enough to feed weekly tests.`,
+  },
+  {
+    slug: 'digital-clone-dr-saibal-moitra',
+    title: 'Digital Clone of Dr Saibal Moitra',
+    category: 'ai-creative',
+    description:
+      'Full digital clone that grows his online presence without him recording.',
+    client: 'Dr Saibal Moitra, Allergy Specialist',
+    role: 'Digital & AI Workflow Manager',
+    duration: '2025 – Ongoing',
+    completion_date: '2025 – Ongoing',
+    made_by: 'Made by me',
+    image_url: '',
+    screenshots: [],
+    metrics: ['Zero Recording Time', 'Consistent Presence'],
+    tags: ['AI', 'Digital Clone', 'Video Storytelling'],
+    color: 'purple',
+    live_url: '',
+    featured: true,
+    order_index: 3,
+    content: `# Digital Clone of Dr Saibal Moitra
+
+## Overview & Objective
+Busy medical specialists rarely have time to sit in front of a camera every week, even though patients look for trustworthy doctor-led video education.
+
+## How I Completed It
+- Created a full AI digital clone workflow for **Dr Saibal Moitra** so educational allergy videos and social explainers ship consistently without taking up his clinical schedule.
+- Combined clinically accurate scripts with natural AI voice and video synthesis to grow patient trust on social platforms.`,
+  },
+  {
+    slug: 'meta-ads-analysis-agent',
+    title: 'Meta Ads Analysis Agent (in progress)',
+    category: 'ai-creative',
+    description:
+      'Agent that flags ad fatigue and which creatives to stop or scale, so budget goes to winners.',
+    client: 'Paid Media Automation',
+    role: 'Builder & Performance Marketer',
+    duration: 'In Progress',
+    completion_date: 'In Progress',
+    made_by: 'Made by me',
+    image_url: '',
+    screenshots: [],
+    metrics: ['Flags Ad Fatigue', 'Stop vs Scale Rules'],
+    tags: ['Claude Code', 'Meta Ads', 'AI Agents'],
+    color: 'yellow',
+    live_url: '',
+    featured: true,
+    order_index: 4,
+    content: `# Meta Ads Analysis Agent (in progress)
+
+## Overview & Objective
+Managing ₹60K/month across live ad sets means catching creative fatigue fast and shifting spend away from underperforming ads before budget is wasted.
+
+## How I Am Building It
+- Developing an analysis agent using **Claude Code** to inspect Meta Ads performance trends, flag rising CPA / falling CTR fatigue signals, and highlight which creatives to pause or scale.
+- Built around one operating rule: kill losing ads quickly so budget goes to winners.`,
+  },
+  {
     slug: 'google-ads-meta-ads-performance',
     title: 'Google Ads & Meta Ads Performance at NCD Immunocare',
+    category: 'marketing',
     description:
-      'Managed ₹60K/month across Google and Meta Ads, delivering 3x ROAS, 30% lower CPC, and up to 40% more appointment enquiries.',
+      'Manage ₹60K/month across Meta and Google Ads: 3x ROAS on Google Ads, 30% lower CPC, and up to 40% higher appointment enquiry rate.',
     client: 'NCD Immunocare Pvt Ltd (AATC)',
     role: 'Performance Marketing Executive',
     duration: 'May 2025 - Present',
@@ -155,15 +285,15 @@ export const DEFAULT_PROJECTS: Project[] = [
     image_url: '',
     screenshots: [],
     metrics: ['3x Google Ads ROAS', '30% Lower CPC', '+40% Enquiry Rate'],
-    tags: ['Google Ads', 'Meta Ads', 'GA4 & GTM'],
-    color: 'yellow',
+    tags: ['Meta Ads', 'Google Ads', 'GA4 & GTM'],
+    color: 'mint',
     live_url: '',
     featured: true,
-    order_index: 1,
+    order_index: 5,
     content: `# Google Ads & Meta Ads Performance at NCD Immunocare
 
 ## Overview & Objective
-As the Performance Marketing Executive at NCD Immunocare Pvt Ltd (AATC) in Kolkata, I manage a monthly paid media budget of ₹60,000 across Google Ads and Meta Ads with one core goal: driving qualified patient appointment enquiries efficiently.
+As the Performance Marketing Executive at NCD Immunocare Pvt Ltd (AATC) in Kolkata, I manage ₹60,000 per month across Meta Ads and Google Ads to generate qualified patient appointment enquiries efficiently.
 
 ---
 
@@ -171,30 +301,19 @@ As the Performance Marketing Executive at NCD Immunocare Pvt Ltd (AATC) in Kolka
 
 ### 1. Google Ads Search & Display Restructuring
 - Performed granular **keyword research** focused strictly on high-intent patient search queries rather than broad informational terms.
-- Tightened match types and curated negative keyword lists to eliminate irrelevant ad clicks.
-- Implemented clean **conversion tracking** via Google Tag Manager (GTM) and Google Analytics 4 (GA4) to measure true enquiry completions instead of vanity clicks.
+- Tightened match types and curated negative keyword lists to achieve a **30% lower CPC** and **3x ROAS**.
+- Implemented clean **conversion tracking** via Google Tag Manager (GTM) and Google Analytics 4 (GA4).
 
 ### 2. Creative-First Meta Ads (Post-Andromeda Update)
-- Following Meta's Andromeda retrieval update, shifted **80% of optimization focus toward high-winning creatives** and clearer patient hooks rather than over-segmenting ad sets.
-- Ran structured A/B tests comparing educational healthcare creatives against direct appointment booking formats.
-- Aligned landing expectations closely with the ad copy so visitors could enquire quickly.
-
----
-
-## Verified Results
-
-| Metric | Channel | Result Achieved |
-| :--- | :--- | :--- |
-| **Return on Ad Spend (ROAS)** | Google Ads | **3x ROAS** |
-| **Cost Per Click (CPC)** | Google & Meta Ads | **30% Reduction** |
-| **Appointment Enquiry Rate** | Meta Ads | **Up to 40% Increase** |
-| **Monthly Ad Spend Managed** | Multi-Channel | **₹60,000 / month** |`,
+- Shifted **80% of optimization focus toward high-winning creatives** after Meta's Andromeda update.
+- Killed losing ads quickly so budget stayed concentrated on winning variations, driving up to **40% higher appointment enquiry rate**.`,
   },
   {
     slug: 'doctor-authority-content-system',
     title: 'Doctor Authority Content System — Dr Saibal Moitra',
+    category: 'marketing',
     description:
-      'Built a dedicated healthcare website and authoritative allergy content hub positioning Dr Saibal Moitra as a trusted specialist online.',
+      "Built Dr Saibal Moitra's online presence as a trusted allergy specialist with authoritative patient content and a dedicated website.",
     client: 'Dr Saibal Moitra, Allergy Specialist',
     role: 'Healthcare Content & Website Manager',
     duration: 'Mar 2025 - Present',
@@ -202,76 +321,22 @@ As the Performance Marketing Executive at NCD Immunocare Pvt Ltd (AATC) in Kolka
     made_by: 'Made by me',
     image_url: '',
     screenshots: [],
-    metrics: [
-      'Trusted Online Authority',
-      'Dedicated Medical Hub',
-      'Clear Patient Education',
-    ],
-    tags: ['Content Marketing', 'Copywriting', 'Healthcare Web'],
-    color: 'mint',
+    metrics: ['Trusted Online Authority', 'Dedicated Website'],
+    tags: ['Content Strategy', 'Authority Content', 'Healthcare Web'],
+    color: 'purple',
     live_url: '',
     featured: true,
-    order_index: 2,
+    order_index: 6,
     content: `# Doctor Authority Content System — Dr Saibal Moitra
 
 ## Overview & Objective
-Patients searching for allergy diagnosis and specialist care often encounter confusing or unreliable advice online. My goal was to establish Dr Saibal Moitra as a credible, approachable allergy specialist with authoritative digital content patients can trust.
+Patients searching for allergy diagnosis and specialist care need accurate, reassuring guidance. I built Dr Saibal Moitra's online presence as a trusted allergy specialist through authoritative content and a dedicated website.
 
 ---
 
 ## How I Executed It
-
-### 1. Dedicated Website Experience
-- Structured a clean, dedicated web presence explaining diagnostic services, allergy triggers, and appointment booking steps clearly.
-- Removed visual clutter so patients on mobile devices can read information comfortably and reach out without friction.
-
-### 2. Authoritative Patient-First Copywriting
-- Translated complex clinical allergy concepts into calm, accurate, easy-to-understand articles and guides.
-- Maintained a structured **content calendar** covering seasonal allergies, testing clarity, and preventive education.
-
----
-
-## Key Outcome
-Established a reliable, trusted online presence that serves both existing patients seeking clear follow-up resources and new patients evaluating an allergy specialist.`,
-  },
-  {
-    slug: 'personal-portfolio-website',
-    title: 'Personal Portfolio Website (hellorick.vercel.app)',
-    description:
-      'Designed and launched my personal site powered by Next.js, Tailwind CSS, and Supabase to present my paid ads and content work.',
-    client: 'Personal Brand & Career',
-    role: 'Creator & Marketer',
-    duration: 'Ongoing',
-    completion_date: 'Nov 2026',
-    made_by: 'Made by me',
-    image_url: '',
-    screenshots: [],
-    metrics: [
-      'Mobile-First Design',
-      'Supabase Dynamic CMS',
-      'Custom Case Studies',
-    ],
-    tags: ['Next.js', 'Supabase', 'Vercel'],
-    color: 'purple',
-    live_url: '',
-    featured: true,
-    order_index: 3,
-    content: `# Personal Portfolio Website (hellorick.vercel.app)
-
-## Why I Built This Site
-As a performance and digital marketer, I wanted a personal home on the internet—not a generic template or agency clone—where hiring teams, recruiters, and founders can clearly read how I approach Google Ads, Meta Ads, conversion tracking, and content strategy.
-
----
-
-## Technical & Content Architecture
-
-### 1. Structured Supabase Backend
-- Organized all career data—experience, tech & marketing stacks, projects, blog notes, and education—into clean PostgreSQL tables on **Supabase**.
-- Allows adding new campaign breakdowns or marketing articles quickly in Markdown without touching application code.
-
-### 2. Calm, Eye-Soothing Personal UI
-- Focused on readable typography, muted neutral tones with selective warm highlights, and responsive single-column mobile formatting.
-- Includes an integrated printable résumé page tailored for recruiters.`,
+- Structured a dedicated patient-focused website presenting allergy services clearly on mobile and desktop.
+- Produced authoritative medical content and content calendars giving patients reliable allergy information they can trust.`,
   },
 ];
 
@@ -280,14 +345,14 @@ export const DEFAULT_POSTS: BlogPost[] = [
     title: "Focusing on High-Winning Creatives After Meta's Andromeda Update",
     slug: 'meta-ads-andromeda-creative-strategy',
     excerpt:
-      'Why shifting 80% of optimization energy from micro-targeting toward ad creatives increased appointment enquiry rates by up to 40%.',
+      'Why shifting 80% of optimization energy toward high-winning creatives and killing losing ads fast lifted appointment enquiries by up to 40%.',
     content: `# Focusing on High-Winning Creatives After Meta's Andromeda Update
 
 Media buying on Meta has evolved significantly. With deeper machine-learning retrieval models like Andromeda, creative relevance does the heavy lifting that granular interest targeting used to handle.
 
 ## What Changed in Practice
-- Instead of splitting small budgets across dozens of narrow audience pockets, consolidating campaigns lets delivery algorithms learn faster.
-- Testing distinct **hook angles and clear patient/customer value propositions** yields dramatically stronger enquiry quality.
+- Instead of splitting ₹60K/mo budgets across narrow audience pockets, consolidating campaigns lets delivery algorithms learn faster.
+- Combining **AI Video Ad Production** (\`Google Flow\`, \`Higgsfield\`, \`ElevenLabs\`) with faster AI-assisted editing helps ship fresh hooks every week and kill losing ads early.
 
 ## Measuring What Actually Matters
 Pairing creative testing with clean **GTM & GA4 conversion tracking** ensures optimization chases real enquiries rather than cheap clicks.`,
@@ -315,18 +380,18 @@ Managing a focused monthly budget (such as ₹60K/mo) leaves zero room for waste
     cover_image: '',
   },
   {
-    title: 'Why Trusted Content Matters More Than Ever in Healthcare Marketing',
-    slug: 'healthcare-authority-content-trust',
+    title: 'Replacing Expensive Video Shoots With AI Creative Workflows',
+    slug: 'ai-creative-workflows-for-performance-ads',
     excerpt:
-      'Lessons from managing online authority and patient education websites for medical specialists.',
-    content: `# Why Trusted Content Matters More Than Ever in Healthcare Marketing
+      'How Google Flow, Higgsfield, ElevenLabs, and custom AI agents help performance marketers test more variations without studio budgets.',
+    content: `# Replacing Expensive Video Shoots With AI Creative Workflows
 
-In medical and healthcare categories, aggressive sales copy backfires. Patients are looking for clarity, empathy, and accuracy.
+In performance marketing, the team that tests more winning variations wins. Waiting weeks for studio shoots bottlenecks everything.
 
-## Building Lasting Authority
-- Explain conditions, triggers, and next steps in plain, accurate language.
-- Keep the dedicated website calm, uncluttered, and easy to read on a smartphone.
-- Consistency across website copy and organic content compounds credibility over months.`,
+## My AI Creative Stack
+- **Google Flow + Higgsfield + ElevenLabs** for ad-style storytelling videos.
+- **Antigravity** creative editing workflows to assemble variations faster.
+- **Claude Code** ad-analysis workflows to spot fatigue early and move budget straight to winners.`,
     read_time: '4 min read',
     published_at: '2026-11-04',
     published: true,
@@ -348,7 +413,7 @@ function nonEmpty(value: unknown, fallback: string): string {
   return fallback;
 }
 
-function normalizeProfile(row: Record<string, unknown>): SiteProfile {
+export function normalizeProfile(row: Record<string, unknown>): SiteProfile {
   return {
     id: typeof row.id === 'string' ? row.id : undefined,
     name: nonEmpty(row.name, DEFAULT_PROFILE.name),
@@ -412,11 +477,15 @@ function normalizeProfile(row: Record<string, unknown>): SiteProfile {
   };
 }
 
-function normalizeProject(row: Record<string, unknown>): Project {
+export function normalizeProject(row: Record<string, unknown>): Project {
   return {
     id: typeof row.id === 'string' ? row.id : undefined,
     slug: String(row.slug || ''),
     title: String(row.title || 'Untitled Project'),
+    category:
+      typeof row.category === 'string' && row.category.trim()
+        ? row.category
+        : 'marketing',
     description: String(row.description || ''),
     content: String(row.content || ''),
     client: typeof row.client === 'string' ? row.client : '',
@@ -438,7 +507,7 @@ function normalizeProject(row: Record<string, unknown>): Project {
   };
 }
 
-function normalizePost(row: Record<string, unknown>): BlogPost {
+export function normalizePost(row: Record<string, unknown>): BlogPost {
   return {
     id: typeof row.id === 'string' ? row.id : undefined,
     title: String(row.title || 'Untitled Post'),
@@ -454,7 +523,7 @@ function normalizePost(row: Record<string, unknown>): BlogPost {
   };
 }
 
-// Data Fetchers with graceful fallback
+// Public Data Fetchers with graceful fallback
 export async function getProfile(): Promise<SiteProfile> {
   if (!isSupabaseConfigured || !supabase) return DEFAULT_PROFILE;
   try {
@@ -642,7 +711,7 @@ export async function getSupabaseDiagnostics(): Promise<SupabaseDiagnostics> {
       hasAnonKey: Boolean(cfg.anonKey),
       needsMigration: false,
       migrationWarnings: [
-        'Supabase environment variables (NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY) are not set yet. Site is serving fallback defaults.',
+        'Supabase environment variables (NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY) are not configured on the server yet.',
       ],
       tables: tableNames.map((table) => ({
         table,
@@ -694,10 +763,11 @@ export async function getSupabaseDiagnostics(): Promise<SupabaseDiagnostics> {
       query: sb.from('right_now').select('card_title, current_projects').limit(1),
     },
     {
-      label: 'projects simplified fields (completion_date, made_by, screenshots)',
+      label:
+        'projects fields (category, completion_date, made_by, screenshots)',
       query: sb
         .from('projects')
-        .select('completion_date, made_by, screenshots')
+        .select('category, completion_date, made_by, screenshots')
         .limit(1),
     },
   ];

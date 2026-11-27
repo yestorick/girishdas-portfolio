@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useRef, FormEvent, ChangeEvent } from 'react';
-import { SupabaseClient } from '@supabase/supabase-js';
 import { Project, BlogPost } from '@/lib/types';
 import MediaUploadField from './MediaUploadField';
 import {
   ActionFeedback,
+  adminDelete,
+  adminUploadFile,
+  adminUpsert,
   slugify,
   parseCommaList,
   parseLineList,
@@ -24,7 +26,6 @@ import {
 
 interface ProjectsEditorProps {
   projects: Project[];
-  supabaseClient: SupabaseClient | null;
   canEdit: boolean;
   onChange: (next: Project[]) => void;
 }
@@ -32,6 +33,7 @@ interface ProjectsEditorProps {
 const EMPTY_PROJECT: Project = {
   slug: '',
   title: '',
+  category: 'ai-creative',
   description: '',
   content: '',
   client: '',
@@ -55,9 +57,13 @@ const PROJECT_COLORS = [
   { id: 'purple', label: 'Soft Lavender' },
 ];
 
+const PROJECT_CATEGORIES = [
+  { id: 'ai-creative', label: 'AI Creative Project (also on Résumé)' },
+  { id: 'marketing', label: 'Paid Media / Content Project' },
+];
+
 export function ProjectsEditor({
   projects,
-  supabaseClient,
   canEdit,
   onChange,
 }: ProjectsEditorProps) {
@@ -70,7 +76,10 @@ export function ProjectsEditor({
   const inlineShotInputRef = useRef<HTMLInputElement | null>(null);
 
   const openEditor = (p: Project) => {
-    setEditing(p);
+    setEditing({
+      ...p,
+      category: p.category || 'marketing',
+    });
     setTagsText((p.tags || []).join(', '));
     setMetricsText((p.metrics || []).join(', '));
     setScreenshotsText((p.screenshots || []).join('\n'));
@@ -78,21 +87,14 @@ export function ProjectsEditor({
 
   const handleUploadInlineScreenshot = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !supabaseClient || !editing) return;
+    if (!file || !editing) return;
     setFeedback(null);
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-    const path = `projects/screenshots/${Date.now()}-${safeName}`;
-    const { error } = await supabaseClient.storage
-      .from('portfolio-media')
-      .upload(path, file, { upsert: true });
+    const res = await adminUploadFile(file, 'projects/screenshots');
 
-    if (error) {
-      setFeedback({ type: 'err', text: `Upload failed: ${error.message}` });
+    if (res.error || !res.url) {
+      setFeedback({ type: 'err', text: res.error || 'Upload failed.' });
     } else {
-      const { data } = supabaseClient.storage
-        .from('portfolio-media')
-        .getPublicUrl(path);
-      const url = data.publicUrl;
+      const url = res.url;
       setScreenshotsText((prev) => (prev.trim() ? `${prev.trim()}\n${url}` : url));
       setEditing((prev) =>
         prev
@@ -112,7 +114,7 @@ export function ProjectsEditor({
 
   const handleSave = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!supabaseClient || !canEdit || !editing) return;
+    if (!canEdit || !editing) return;
     setSaving(true);
     setFeedback(null);
 
@@ -122,6 +124,7 @@ export function ProjectsEditor({
       const payload = {
         title: editing.title.trim(),
         slug: cleanSlug,
+        category: editing.category || 'marketing',
         description: editing.description.trim(),
         content: editing.content.trim() || `# ${editing.title.trim()}\n`,
         client: (editing.client || '').trim(),
@@ -139,23 +142,12 @@ export function ProjectsEditor({
         order_index: Number(editing.order_index) || 0,
       };
 
-      const { data, error } = editing.id
-        ? await supabaseClient
-            .from('projects')
-            .update(payload)
-            .eq('id', editing.id)
-            .select()
-            .single()
-        : await supabaseClient
-            .from('projects')
-            .insert(payload)
-            .select()
-            .single();
+      const res = await adminUpsert<Project>('projects', payload, editing.id);
 
-      if (error) {
-        setFeedback({ type: 'err', text: error.message });
-      } else if (data) {
-        const saved = data as Project;
+      if (res.error) {
+        setFeedback({ type: 'err', text: res.error });
+      } else if (res.data) {
+        const saved = res.data;
         const nextList = editing.id
           ? projects.map((item) => (item.id === saved.id ? saved : item))
           : [...projects.filter((item) => item.id), saved];
@@ -178,11 +170,11 @@ export function ProjectsEditor({
   };
 
   const handleDelete = async (id?: string) => {
-    if (!supabaseClient || !canEdit || !id) return;
+    if (!canEdit || !id) return;
     if (!window.confirm('Delete this project?')) return;
-    const { error } = await supabaseClient.from('projects').delete().eq('id', id);
-    if (error) {
-      setFeedback({ type: 'err', text: error.message });
+    const res = await adminDelete('projects', id);
+    if (res.error) {
+      setFeedback({ type: 'err', text: res.error });
     } else {
       onChange(projects.filter((p) => p.id !== id));
       setFeedback({ type: 'ok', text: 'Project deleted.' });
@@ -194,7 +186,7 @@ export function ProjectsEditor({
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
           <h2 className="text-lg sm:text-xl font-bold text-[#1C1917] font-display">
-            My Projects &amp; Write-Ups
+            My Projects &amp; AI Creative Work
           </h2>
           <p className="text-xs text-[#57534E]">
             Manage project name, completion date, &quot;Made by me&quot; tag, thumbnail, screenshots gallery, and Markdown story.
@@ -329,7 +321,7 @@ export function ProjectsEditor({
                 id="proj-date"
                 name="completion_date"
                 type="text"
-                placeholder="Nov 2026"
+                placeholder="2025 – Ongoing"
                 value={editing.completion_date || ''}
                 onChange={(e) =>
                   setEditing({ ...editing, completion_date: e.target.value })
@@ -400,6 +392,32 @@ export function ProjectsEditor({
             </div>
           </div>
 
+          <fieldset className="space-y-1.5">
+            <legend className="text-sm font-semibold text-[#1C1917]">
+              Project group
+            </legend>
+            <div className="flex flex-wrap gap-5 pt-1">
+              {PROJECT_CATEGORIES.map((c) => (
+                <label
+                  key={c.id}
+                  className="inline-flex items-center gap-2 text-sm text-[#1C1917] cursor-pointer py-1"
+                >
+                  <input
+                    type="radio"
+                    name="project_category"
+                    value={c.id}
+                    checked={(editing.category || 'marketing') === c.id}
+                    onChange={() =>
+                      setEditing({ ...editing, category: c.id })
+                    }
+                    className="w-4 h-4 accent-[#C84B31]"
+                  />
+                  <span>{c.label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
           <div>
             <label
               htmlFor="proj-desc"
@@ -425,7 +443,6 @@ export function ProjectsEditor({
             label="Thumbnail image URL"
             value={editing.image_url || ''}
             onChange={(url) => setEditing({ ...editing, image_url: url })}
-            supabaseClient={supabaseClient}
             canUpload={canEdit}
             folder="projects"
             helpText="Appears on the project card and right below the project title."
@@ -440,7 +457,7 @@ export function ProjectsEditor({
                 How I completed this project (Markdown write-up){' '}
                 <span aria-hidden="true">*</span>
               </label>
-              {canEdit && supabaseClient && (
+              {canEdit && (
                 <>
                   <input
                     ref={inlineShotInputRef}
@@ -510,7 +527,7 @@ export function ProjectsEditor({
                 type="text"
                 value={tagsText}
                 onChange={(e) => setTagsText(e.target.value)}
-                placeholder="Google Ads, Meta Ads, GA4"
+                placeholder="Google Flow, Higgsfield, ElevenLabs"
                 className="admin-input"
               />
             </div>
@@ -603,7 +620,8 @@ export function ProjectsEditor({
               <p className="font-bold text-sm sm:text-base text-[#1C1917]">
                 {p.title}{' '}
                 <span className="font-normal text-xs text-[#78716C]">
-                  (#{p.order_index})
+                  (#{p.order_index} ·{' '}
+                  {p.category === 'ai-creative' ? 'AI Creative' : 'Marketing'})
                 </span>
               </p>
               <p className="text-xs text-[#57534E]">
@@ -653,19 +671,13 @@ export function ProjectsEditor({
 
 interface BlogEditorProps {
   posts: BlogPost[];
-  supabaseClient: SupabaseClient | null;
   canEdit: boolean;
   onChange: (next: BlogPost[]) => void;
 }
 
 const getTodayIso = () => new Date().toISOString().slice(0, 10);
 
-export function BlogEditor({
-  posts,
-  supabaseClient,
-  canEdit,
-  onChange,
-}: BlogEditorProps) {
+export function BlogEditor({ posts, canEdit, onChange }: BlogEditorProps) {
   const [editing, setEditing] = useState<BlogPost | null>(null);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState<ActionFeedback | null>(null);
@@ -673,24 +685,17 @@ export function BlogEditor({
 
   const handleUploadInlineImage = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !supabaseClient || !editing) return;
+    if (!file || !editing) return;
     setFeedback(null);
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-    const path = `posts/inline/${Date.now()}-${safeName}`;
-    const { error } = await supabaseClient.storage
-      .from('portfolio-media')
-      .upload(path, file, { upsert: true });
-    if (error) {
-      setFeedback({ type: 'err', text: `Upload failed: ${error.message}` });
+    const res = await adminUploadFile(file, 'posts/inline');
+    if (res.error || !res.url) {
+      setFeedback({ type: 'err', text: res.error || 'Upload failed.' });
     } else {
-      const { data } = supabaseClient.storage
-        .from('portfolio-media')
-        .getPublicUrl(path);
       setEditing((prev) =>
         prev
           ? {
               ...prev,
-              content: `${prev.content.trimEnd()}\n\n![Article image](${data.publicUrl})\n`,
+              content: `${prev.content.trimEnd()}\n\n![Article image](${res.url})\n`,
             }
           : prev
       );
@@ -704,7 +709,7 @@ export function BlogEditor({
 
   const handleSave = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!supabaseClient || !canEdit || !editing) return;
+    if (!canEdit || !editing) return;
     setSaving(true);
     setFeedback(null);
 
@@ -720,26 +725,14 @@ export function BlogEditor({
         published_at: editing.published_at || getTodayIso(),
         published: Boolean(editing.published),
         cover_image: (editing.cover_image || '').trim(),
-        updated_at: new Date().toISOString(),
       };
 
-      const { data, error } = editing.id
-        ? await supabaseClient
-            .from('posts')
-            .update(payload)
-            .eq('id', editing.id)
-            .select()
-            .single()
-        : await supabaseClient
-            .from('posts')
-            .insert(payload)
-            .select()
-            .single();
+      const res = await adminUpsert<BlogPost>('posts', payload, editing.id);
 
-      if (error) {
-        setFeedback({ type: 'err', text: error.message });
-      } else if (data) {
-        const saved = data as BlogPost;
+      if (res.error) {
+        setFeedback({ type: 'err', text: res.error });
+      } else if (res.data) {
+        const saved = res.data;
         const nextList = editing.id
           ? posts.map((item) => (item.id === saved.id ? saved : item))
           : [saved, ...posts.filter((item) => item.id)];
@@ -750,7 +743,7 @@ export function BlogEditor({
         setEditing(null);
         setFeedback({
           type: 'ok',
-          text: `Blog post "${saved.title}" saved.`,
+          text: `Blog post "${saved.title}" saved cleanly.`,
         });
       }
     } catch (err) {
@@ -764,11 +757,11 @@ export function BlogEditor({
   };
 
   const handleDelete = async (id?: string) => {
-    if (!supabaseClient || !canEdit || !id) return;
+    if (!canEdit || !id) return;
     if (!window.confirm('Delete this blog post?')) return;
-    const { error } = await supabaseClient.from('posts').delete().eq('id', id);
-    if (error) {
-      setFeedback({ type: 'err', text: error.message });
+    const res = await adminDelete('posts', id);
+    if (res.error) {
+      setFeedback({ type: 'err', text: res.error });
     } else {
       onChange(posts.filter((p) => p.id !== id));
       setFeedback({ type: 'ok', text: 'Blog post deleted.' });
@@ -976,7 +969,6 @@ export function BlogEditor({
             label="Cover image URL (optional)"
             value={editing.cover_image || ''}
             onChange={(url) => setEditing({ ...editing, cover_image: url })}
-            supabaseClient={supabaseClient}
             canUpload={canEdit}
             folder="posts"
           />
@@ -989,7 +981,7 @@ export function BlogEditor({
               >
                 Article body (Markdown) <span aria-hidden="true">*</span>
               </label>
-              {canEdit && supabaseClient && (
+              {canEdit && (
                 <>
                   <input
                     ref={inlineImgRef}

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef, KeyboardEvent } from 'react';
+import { useState, useRef, KeyboardEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { createClient } from '@supabase/supabase-js';
 import {
   SiteProfile,
   RightNow,
@@ -11,15 +11,13 @@ import {
   TechStackGroup,
   Project,
   BlogPost,
-  SupabaseDiagnostics,
 } from '@/lib/types';
-import AdminAuthCard from './AdminAuthCard';
 import { ProfileEditor, RightNowEditor } from './ProfileAndNowEditors';
 import { ExperienceAndEduEditor, TechStackEditor } from './CareerAndStackEditors';
 import { ProjectsEditor, BlogEditor } from './ProjectsAndBlogEditors';
-import DatabaseSetupPanel from './DatabaseSetupPanel';
+import DatabaseSetupPanel, { AdminDiagnostics } from './DatabaseSetupPanel';
 import {
-  Database,
+  ShieldCheck,
   CheckCircle2,
   AlertTriangle,
   LogOut,
@@ -28,9 +26,7 @@ import {
 } from 'lucide-react';
 
 interface AdminStudioProps {
-  supabaseUrl: string;
-  supabaseAnonKey: string;
-  diagnostics: SupabaseDiagnostics;
+  diagnostics: AdminDiagnostics;
   migrationSql: string;
   schemaSql: string;
   initialProfile: SiteProfile;
@@ -62,8 +58,6 @@ const TABS: { id: TabId; label: string }[] = [
 ];
 
 export default function AdminStudio({
-  supabaseUrl,
-  supabaseAnonKey,
   diagnostics,
   migrationSql,
   schemaSql,
@@ -75,15 +69,10 @@ export default function AdminStudio({
   initialProjects,
   initialPosts,
 }: AdminStudioProps) {
-  const client = useMemo(() => {
-    if (!diagnostics.configured || !supabaseUrl || !supabaseAnonKey) return null;
-    return createClient(supabaseUrl, supabaseAnonKey);
-  }, [diagnostics.configured, supabaseUrl, supabaseAnonKey]);
-
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabId>(
     diagnostics.needsMigration ? 'setup' : 'profile'
   );
-  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [profile, setProfile] = useState<SiteProfile>(initialProfile);
   const [rightNow, setRightNow] = useState<RightNow>(initialRightNow);
   const [experiences, setExperiences] =
@@ -97,91 +86,42 @@ export default function AdminStudio({
 
   const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
-  const loadAllFromSupabase = async () => {
-    if (!client) return;
+  const canEdit = diagnostics.configured && diagnostics.hasServiceRoleKey;
+
+  const loadAllFromServer = async () => {
     setRefreshing(true);
     try {
-      const [pRes, rnRes, expRes, eduRes, stackRes, projRes, postRes] =
-        await Promise.all([
-          client
-            .from('site_profile')
-            .select('*')
-            .order('updated_at', { ascending: false })
-            .limit(1)
-            .maybeSingle(),
-          client
-            .from('right_now')
-            .select('*')
-            .order('updated_at', { ascending: false })
-            .limit(1)
-            .maybeSingle(),
-          client
-            .from('experiences')
-            .select('*')
-            .order('order_index', { ascending: true }),
-          client
-            .from('education')
-            .select('*')
-            .order('order_index', { ascending: true }),
-          client
-            .from('tech_stack')
-            .select('*')
-            .order('order_index', { ascending: true }),
-          client
-            .from('projects')
-            .select('*')
-            .order('order_index', { ascending: true }),
-          client
-            .from('posts')
-            .select('*')
-            .order('published_at', { ascending: false }),
-        ]);
-
-      if (!pRes.error && pRes.data) setProfile(pRes.data as SiteProfile);
-      if (!rnRes.error && rnRes.data) setRightNow(rnRes.data as RightNow);
-      if (!expRes.error && expRes.data && expRes.data.length > 0) {
-        setExperiences(expRes.data as Experience[]);
+      const res = await fetch('/api/admin/content', { cache: 'no-store' });
+      if (res.status === 401) {
+        router.refresh();
+        return;
       }
-      if (!eduRes.error && eduRes.data && eduRes.data.length > 0) {
-        setEducationList(eduRes.data as Education[]);
-      }
-      if (!stackRes.error && stackRes.data && stackRes.data.length > 0) {
-        setTechStack(stackRes.data as TechStackGroup[]);
-      }
-      if (!projRes.error && projRes.data && projRes.data.length > 0) {
-        setProjects(projRes.data as Project[]);
-      }
-      if (!postRes.error && postRes.data && postRes.data.length > 0) {
-        setPosts(postRes.data as BlogPost[]);
-      }
+      if (!res.ok) return;
+      const data = (await res.json()) as {
+        profile?: SiteProfile;
+        rightNow?: RightNow;
+        experiences?: Experience[];
+        education?: Education[];
+        techStack?: TechStackGroup[];
+        projects?: Project[];
+        posts?: BlogPost[];
+      };
+      if (data.profile) setProfile(data.profile);
+      if (data.rightNow) setRightNow(data.rightNow);
+      if (data.experiences) setExperiences(data.experiences);
+      if (data.education) setEducationList(data.education);
+      if (data.techStack) setTechStack(data.techStack);
+      if (data.projects) setProjects(data.projects);
+      if (data.posts) setPosts(data.posts);
     } finally {
       setRefreshing(false);
     }
   };
 
-  useEffect(() => {
-    if (!client) return;
-    client.auth.getSession().then(({ data }) => {
-      const email = data.session?.user?.email || null;
-      setUserEmail(email);
-      if (email) {
-        loadAllFromSupabase();
-      }
-    });
-
-    const { data: sub } = client.auth.onAuthStateChange((_event, session) => {
-      const email = session?.user?.email || null;
-      setUserEmail(email);
-      if (email) {
-        loadAllFromSupabase();
-      }
-    });
-
-    return () => {
-      sub.subscription.unsubscribe();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [client]);
+  const handleLogout = async () => {
+    await fetch('/api/admin/logout', { method: 'POST' });
+    router.refresh();
+  };
 
   const selectTab = (id: TabId, el?: HTMLButtonElement | null) => {
     setActiveTab(id);
@@ -207,8 +147,6 @@ export default function AdminStudio({
     }
   };
 
-  const canEdit = Boolean(client && userEmail);
-
   return (
     <div className="space-y-6">
       {/* Studio Header Card */}
@@ -217,43 +155,41 @@ export default function AdminStudio({
           <div className="space-y-1">
             <div className="flex items-center gap-2.5 flex-wrap">
               <div className="w-8 h-8 rounded-lg bg-white border-[1.5px] border-[#292524] flex items-center justify-center">
-                <Database className="w-4 h-4 text-[#1C1917]" aria-hidden="true" />
+                <ShieldCheck className="w-4 h-4 text-[#1E5631]" aria-hidden="true" />
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-display">
-                Supabase CMS Studio
+                Admin Dashboard
               </h1>
-              {diagnostics.configured ? (
+              {canEdit ? (
                 <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-[#E4F1E7] border border-[#1E5631]/30 text-[#1E5631]">
                   <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
-                  <span>Supabase Connected</span>
+                  <span>Unlocked &amp; Connected</span>
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-amber-100 border border-amber-400 text-amber-950">
                   <AlertTriangle className="w-3.5 h-3.5" aria-hidden="true" />
-                  <span>Fallback Defaults Active</span>
+                  <span>Read-Only (Server Write Key Needed)</span>
                 </span>
               )}
             </div>
             <p className="text-xs sm:text-sm text-[#44403C]">
-              Every text block, heading, project write-up, stack card, résumé item, and blog post on your website is backed by Supabase PostgreSQL + Storage.
+              Edit every part of your portfolio, résumé, AI Creative projects, skills, and blog posts. All writes are verified server-side.
             </p>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap shrink-0">
-            {canEdit && (
-              <button
-                type="button"
-                disabled={refreshing}
-                onClick={loadAllFromSupabase}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white border border-[#292524]/40 text-xs font-semibold text-[#1C1917] hover:bg-[#FBF9F5] min-h-[40px] whitespace-nowrap"
-              >
-                <RefreshCw
-                  className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`}
-                  aria-hidden="true"
-                />
-                <span>Refresh</span>
-              </button>
-            )}
+            <button
+              type="button"
+              disabled={refreshing}
+              onClick={loadAllFromServer}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white border border-[#292524]/40 text-xs font-semibold text-[#1C1917] hover:bg-[#FBF9F5] min-h-[40px] whitespace-nowrap"
+            >
+              <RefreshCw
+                className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`}
+                aria-hidden="true"
+              />
+              <span>Refresh</span>
+            </button>
             <Link
               href="/"
               target="_blank"
@@ -262,24 +198,42 @@ export default function AdminStudio({
               <span>View Live Site</span>
               <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
             </Link>
-            {userEmail && client && (
-              <button
-                type="button"
-                onClick={() => client.auth.signOut()}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#1C1917] text-white text-xs font-semibold hover:opacity-90 min-h-[40px] whitespace-nowrap"
-              >
-                <LogOut className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>Sign Out ({userEmail})</span>
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#1C1917] text-white text-xs font-semibold hover:opacity-90 min-h-[40px] whitespace-nowrap"
+            >
+              <LogOut className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>Sign Out</span>
+            </button>
           </div>
         </div>
 
+        {!diagnostics.hasServiceRoleKey && (
+          <div className="rounded-xl border border-amber-400 bg-amber-50 p-3.5 text-xs sm:text-sm text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <span className="inline-flex items-start gap-2 font-medium">
+              <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
+              <span>
+                Add <code>SUPABASE_SERVICE_ROLE_KEY</code> in Vercel Environment Variables (Server Secret) to save changes and upload screenshots from this page.
+              </span>
+            </span>
+            <button
+              type="button"
+              onClick={() => selectTab('setup', tabRefs.current['setup'])}
+              className="px-3.5 py-1.5 rounded-full bg-amber-900 text-white text-xs font-semibold shrink-0"
+            >
+              Check Setup →
+            </button>
+          </div>
+        )}
+
         {diagnostics.needsMigration && (
           <div className="rounded-xl border border-amber-400 bg-amber-50 p-3.5 text-xs sm:text-sm text-amber-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <span className="inline-flex items-center gap-2 font-medium">
-              <AlertTriangle className="w-4 h-4 shrink-0" aria-hidden="true" />
-              Your connected Supabase database is missing new columns or tables. Run the non-destructive migration script to unlock every field cleanly.
+            <span className="inline-flex items-start gap-2 font-medium">
+              <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
+              <span>
+                Your connected Supabase database is missing newer columns or tables. Run the migration SQL once to enable all fields cleanly.
+              </span>
             </span>
             <button
               type="button"
@@ -292,18 +246,10 @@ export default function AdminStudio({
         )}
       </section>
 
-      {/* Sign In Card (if configured and not authenticated yet) */}
-      {client && !userEmail && activeTab !== 'setup' && (
-        <AdminAuthCard
-          supabaseClient={client}
-          onSignedIn={loadAllFromSupabase}
-        />
-      )}
-
       {/* Single-Row Scrollable Tablist (per tabs guide) */}
       <div
         role="tablist"
-        aria-label="Supabase content sections"
+        aria-label="Website content sections"
         className="admin-tablist flex flex-nowrap items-center gap-1 overflow-x-auto border-b border-[#1C1917]/15 bg-[#FBF9F5]"
       >
         {TABS.map((tab, idx) => {
@@ -341,7 +287,6 @@ export default function AdminStudio({
       >
         <ProfileEditor
           initialProfile={profile}
-          supabaseClient={client}
           canEdit={canEdit}
           onSaved={setProfile}
         />
@@ -354,7 +299,6 @@ export default function AdminStudio({
       >
         <RightNowEditor
           initialRightNow={rightNow}
-          supabaseClient={client}
           canEdit={canEdit}
           onSaved={setRightNow}
         />
@@ -368,7 +312,6 @@ export default function AdminStudio({
         <ExperienceAndEduEditor
           experiences={experiences}
           educationList={educationList}
-          supabaseClient={client}
           canEdit={canEdit}
           onExperiencesChange={setExperiences}
           onEducationChange={setEducationList}
@@ -382,7 +325,6 @@ export default function AdminStudio({
       >
         <ProjectsEditor
           projects={projects}
-          supabaseClient={client}
           canEdit={canEdit}
           onChange={setProjects}
         />
@@ -395,7 +337,6 @@ export default function AdminStudio({
       >
         <TechStackEditor
           stackGroups={techStack}
-          supabaseClient={client}
           canEdit={canEdit}
           onChange={setTechStack}
         />
@@ -406,12 +347,7 @@ export default function AdminStudio({
         aria-labelledby="tab-blog"
         hidden={activeTab !== 'blog'}
       >
-        <BlogEditor
-          posts={posts}
-          supabaseClient={client}
-          canEdit={canEdit}
-          onChange={setPosts}
-        />
+        <BlogEditor posts={posts} canEdit={canEdit} onChange={setPosts} />
       </div>
 
       <div

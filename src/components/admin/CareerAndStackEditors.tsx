@@ -1,9 +1,13 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { SupabaseClient } from '@supabase/supabase-js';
 import { Experience, Education, TechStackGroup } from '@/lib/types';
-import { ActionFeedback, parseCommaList } from './helpers';
+import {
+  ActionFeedback,
+  adminDelete,
+  adminUpsert,
+  parseCommaList,
+} from './helpers';
 import {
   Plus,
   Pencil,
@@ -17,7 +21,6 @@ import {
 interface ExperienceAndEduEditorProps {
   experiences: Experience[];
   educationList: Education[];
-  supabaseClient: SupabaseClient | null;
   canEdit: boolean;
   onExperiencesChange: (next: Experience[]) => void;
   onEducationChange: (next: Education[]) => void;
@@ -42,7 +45,6 @@ const EMPTY_EDU: Education = {
 export function ExperienceAndEduEditor({
   experiences,
   educationList,
-  supabaseClient,
   canEdit,
   onExperiencesChange,
   onEducationChange,
@@ -54,43 +56,28 @@ export function ExperienceAndEduEditor({
 
   const saveExperience = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!supabaseClient || !canEdit || !editingExp) return;
+    if (!canEdit || !editingExp) return;
     setSaving(true);
     setFeedback(null);
 
     try {
-      const payload = {
-        role: editingExp.role.trim(),
-        company: editingExp.company.trim(),
-        description: editingExp.description.trim(),
-        period: editingExp.period.trim(),
-        order_index: Number(editingExp.order_index) || 0,
-      };
+      const res = await adminUpsert<Experience>(
+        'experiences',
+        editingExp as unknown as Record<string, unknown>,
+        editingExp.id
+      );
 
-      const { data, error } = editingExp.id
-        ? await supabaseClient
-            .from('experiences')
-            .update(payload)
-            .eq('id', editingExp.id)
-            .select()
-            .single()
-        : await supabaseClient
-            .from('experiences')
-            .insert(payload)
-            .select()
-            .single();
-
-      if (error) {
-        setFeedback({ type: 'err', text: error.message });
-      } else if (data) {
-        const saved = data as Experience;
+      if (res.error) {
+        setFeedback({ type: 'err', text: res.error });
+      } else if (res.data) {
+        const saved = res.data;
         const nextList = editingExp.id
           ? experiences.map((item) => (item.id === saved.id ? saved : item))
           : [...experiences.filter((item) => item.id), saved];
         nextList.sort((a, b) => a.order_index - b.order_index);
         onExperiencesChange(nextList);
         setEditingExp(null);
-        setFeedback({ type: 'ok', text: 'Experience saved to Supabase.' });
+        setFeedback({ type: 'ok', text: 'Experience saved cleanly.' });
       }
     } catch (err) {
       setFeedback({
@@ -103,14 +90,11 @@ export function ExperienceAndEduEditor({
   };
 
   const deleteExperience = async (id?: string) => {
-    if (!supabaseClient || !canEdit || !id) return;
+    if (!canEdit || !id) return;
     if (!window.confirm('Delete this experience entry?')) return;
-    const { error } = await supabaseClient
-      .from('experiences')
-      .delete()
-      .eq('id', id);
-    if (error) {
-      setFeedback({ type: 'err', text: error.message });
+    const res = await adminDelete('experiences', id);
+    if (res.error) {
+      setFeedback({ type: 'err', text: res.error });
     } else {
       onExperiencesChange(experiences.filter((item) => item.id !== id));
       setFeedback({ type: 'ok', text: 'Experience deleted.' });
@@ -119,43 +103,28 @@ export function ExperienceAndEduEditor({
 
   const saveEducation = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!supabaseClient || !canEdit || !editingEdu) return;
+    if (!canEdit || !editingEdu) return;
     setSaving(true);
     setFeedback(null);
 
     try {
-      const payload = {
-        degree: editingEdu.degree.trim(),
-        institution: editingEdu.institution.trim(),
-        period: editingEdu.period.trim(),
-        description: editingEdu.description.trim(),
-        order_index: Number(editingEdu.order_index) || 0,
-      };
+      const res = await adminUpsert<Education>(
+        'education',
+        editingEdu as unknown as Record<string, unknown>,
+        editingEdu.id
+      );
 
-      const { data, error } = editingEdu.id
-        ? await supabaseClient
-            .from('education')
-            .update(payload)
-            .eq('id', editingEdu.id)
-            .select()
-            .single()
-        : await supabaseClient
-            .from('education')
-            .insert(payload)
-            .select()
-            .single();
-
-      if (error) {
-        setFeedback({ type: 'err', text: error.message });
-      } else if (data) {
-        const saved = data as Education;
+      if (res.error) {
+        setFeedback({ type: 'err', text: res.error });
+      } else if (res.data) {
+        const saved = res.data;
         const nextList = editingEdu.id
           ? educationList.map((item) => (item.id === saved.id ? saved : item))
           : [...educationList.filter((item) => item.id), saved];
         nextList.sort((a, b) => a.order_index - b.order_index);
         onEducationChange(nextList);
         setEditingEdu(null);
-        setFeedback({ type: 'ok', text: 'Education saved to Supabase.' });
+        setFeedback({ type: 'ok', text: 'Education saved cleanly.' });
       }
     } catch (err) {
       setFeedback({
@@ -168,14 +137,11 @@ export function ExperienceAndEduEditor({
   };
 
   const deleteEducation = async (id?: string) => {
-    if (!supabaseClient || !canEdit || !id) return;
+    if (!canEdit || !id) return;
     if (!window.confirm('Delete this education entry?')) return;
-    const { error } = await supabaseClient
-      .from('education')
-      .delete()
-      .eq('id', id);
-    if (error) {
-      setFeedback({ type: 'err', text: error.message });
+    const res = await adminDelete('education', id);
+    if (res.error) {
+      setFeedback({ type: 'err', text: res.error });
     } else {
       onEducationChange(educationList.filter((item) => item.id !== id));
       setFeedback({ type: 'ok', text: 'Education deleted.' });
@@ -335,13 +301,14 @@ export function ExperienceAndEduEditor({
                 htmlFor="exp-desc"
                 className="block text-sm font-semibold text-[#1C1917] mb-1.5"
               >
-                Description <span aria-hidden="true">*</span>
+                Bullets / Description (put each bullet on a new line){' '}
+                <span aria-hidden="true">*</span>
               </label>
               <textarea
                 id="exp-desc"
                 name="description"
                 required
-                rows={3}
+                rows={4}
                 value={editingExp.description}
                 onChange={(e) =>
                   setEditingExp({ ...editingExp, description: e.target.value })
@@ -350,16 +317,14 @@ export function ExperienceAndEduEditor({
               />
             </div>
 
-            <div className="flex items-center gap-3">
-              <button
-                type="submit"
-                disabled={saving}
-                className="neo-btn inline-flex items-center gap-2 bg-[#C84B31] hover:bg-[#B03E26] text-white px-5 py-2.5 rounded-full text-sm font-semibold min-h-[48px]"
-              >
-                <Save className="w-4 h-4" aria-hidden="true" />
-                <span>{saving ? 'Saving…' : 'Save Experience'}</span>
-              </button>
-            </div>
+            <button
+              type="submit"
+              disabled={saving}
+              className="neo-btn inline-flex items-center gap-2 bg-[#C84B31] hover:bg-[#B03E26] text-white px-5 py-2.5 rounded-full text-sm font-semibold min-h-[48px]"
+            >
+              <Save className="w-4 h-4" aria-hidden="true" />
+              <span>{saving ? 'Saving…' : 'Save Experience'}</span>
+            </button>
           </form>
         )}
 
@@ -379,7 +344,9 @@ export function ExperienceAndEduEditor({
                 <p className="text-xs font-semibold text-[#A93B24]">
                   {exp.company} • {exp.period}
                 </p>
-                <p className="text-xs text-[#57534E]">{exp.description}</p>
+                <p className="text-xs text-[#57534E] whitespace-pre-line">
+                  {exp.description}
+                </p>
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
@@ -622,7 +589,6 @@ export function ExperienceAndEduEditor({
 
 interface TechStackEditorProps {
   stackGroups: TechStackGroup[];
-  supabaseClient: SupabaseClient | null;
   canEdit: boolean;
   onChange: (next: TechStackGroup[]) => void;
 }
@@ -636,7 +602,6 @@ const STACK_COLORS = [
 
 export function TechStackEditor({
   stackGroups,
-  supabaseClient,
   canEdit,
   onChange,
 }: TechStackEditorProps) {
@@ -652,7 +617,7 @@ export function TechStackEditor({
 
   const handleSave = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!supabaseClient || !canEdit || !editing) return;
+    if (!canEdit || !editing) return;
     setSaving(true);
     setFeedback(null);
 
@@ -664,30 +629,23 @@ export function TechStackEditor({
         order_index: Number(editing.order_index) || 0,
       };
 
-      const { data, error } = editing.id
-        ? await supabaseClient
-            .from('tech_stack')
-            .update(payload)
-            .eq('id', editing.id)
-            .select()
-            .single()
-        : await supabaseClient
-            .from('tech_stack')
-            .insert(payload)
-            .select()
-            .single();
+      const res = await adminUpsert<TechStackGroup>(
+        'tech_stack',
+        payload,
+        editing.id
+      );
 
-      if (error) {
-        setFeedback({ type: 'err', text: error.message });
-      } else if (data) {
-        const saved = data as TechStackGroup;
+      if (res.error) {
+        setFeedback({ type: 'err', text: res.error });
+      } else if (res.data) {
+        const saved = res.data;
         const nextList = editing.id
           ? stackGroups.map((g) => (g.id === saved.id ? saved : g))
           : [...stackGroups.filter((g) => g.id), saved];
         nextList.sort((a, b) => a.order_index - b.order_index);
         onChange(nextList);
         setEditing(null);
-        setFeedback({ type: 'ok', text: 'Stack category saved to Supabase.' });
+        setFeedback({ type: 'ok', text: 'Stack category saved cleanly.' });
       }
     } catch (err) {
       setFeedback({
@@ -700,11 +658,11 @@ export function TechStackEditor({
   };
 
   const handleDelete = async (id?: string) => {
-    if (!supabaseClient || !canEdit || !id) return;
+    if (!canEdit || !id) return;
     if (!window.confirm('Delete this stack group?')) return;
-    const { error } = await supabaseClient.from('tech_stack').delete().eq('id', id);
-    if (error) {
-      setFeedback({ type: 'err', text: error.message });
+    const res = await adminDelete('tech_stack', id);
+    if (res.error) {
+      setFeedback({ type: 'err', text: res.error });
     } else {
       onChange(stackGroups.filter((g) => g.id !== id));
       setFeedback({ type: 'ok', text: 'Stack group deleted.' });

@@ -10,7 +10,7 @@ import {
   getTechStack,
   getProjects,
 } from '@/lib/data';
-import { ArrowLeft, Mail, MapPin, Phone, Globe } from 'lucide-react';
+import { ArrowLeft, Mail, MapPin, Phone, Globe, Linkedin } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,6 +31,20 @@ export default async function ResumePage() {
     ? rawWebsite
     : `https://${rawWebsite}`;
   const websiteLabel = rawWebsite.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+  const linkedinLabel = (profile.linkedin_url || '')
+    .replace(/^https?:\/\//i, '')
+    .replace(/^www\./i, '')
+    .replace(/\/$/, '');
+
+  const aiCreativeProjects = projects.filter(
+    (p) => p.category === 'ai-creative'
+  );
+  const displayResumeProjects =
+    aiCreativeProjects.length > 0 ? aiCreativeProjects : projects;
+  const resumeProjectsHeading =
+    aiCreativeProjects.length > 0
+      ? 'AI Creative Projects'
+      : profile.projects_heading || 'Projects';
 
   return (
     <div className="min-h-dvh flex flex-col bg-[#FBF9F5]">
@@ -59,9 +73,9 @@ export default async function ResumePage() {
           <PrintResumeButton />
         </div>
 
-        <article className="neo-card-static bg-white rounded-2xl p-6 sm:p-10 space-y-7 print:border-0 print:shadow-none print:p-0">
+        <article className="neo-card-static bg-white rounded-2xl p-6 sm:p-10 space-y-6 print:border-0 print:shadow-none print:p-0">
           {/* Header */}
-          <header className="pb-6 border-b border-[#1C1917]/15 space-y-2">
+          <header className="pb-5 border-b border-[#1C1917]/15 space-y-2">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1C1917] font-display">
               {profile.name}
               {profile.nickname ? ` (${profile.nickname})` : ''}
@@ -102,71 +116,110 @@ export default async function ResumePage() {
                   {websiteLabel}
                 </a>
               )}
+              {profile.linkedin_url && linkedinLabel && (
+                <a
+                  href={profile.linkedin_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-[#1C1917]"
+                >
+                  <Linkedin className="w-3.5 h-3.5" aria-hidden="true" />
+                  {linkedinLabel}
+                </a>
+              )}
             </div>
-            <p className="pt-2 text-xs sm:text-sm text-[#44403C] leading-relaxed">
-              {profile.bio}
-            </p>
           </header>
 
+          {/* Summary */}
+          <section className="space-y-2">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-[#1C1917] font-display">
+              Summary
+            </h2>
+            <p className="text-xs sm:text-sm text-[#44403C] leading-relaxed">
+              {profile.bio}
+            </p>
+          </section>
+
           {/* Experience */}
-          <section className="space-y-4">
+          <section className="space-y-4 pt-4 border-t border-[#1C1917]/10">
             <h2 className="text-xs font-bold uppercase tracking-wider text-[#1C1917] font-display">
               {profile.experience_heading || 'Experience'}
             </h2>
             <div className="space-y-4">
-              {experiences.map((exp, idx) => (
-                <div key={exp.id || idx} className="space-y-1">
-                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-                    <div>
-                      <h3 className="font-bold text-sm sm:text-base text-[#1C1917]">
-                        {exp.role}
-                      </h3>
-                      <p className="text-xs font-semibold text-[#A93B24]">
-                        {exp.company}
-                      </p>
+              {experiences.map((exp, idx) => {
+                const bullets = exp.description
+                  .split('\n')
+                  .map((b) => b.replace(/^[•\-*]\s*/, '').trim())
+                  .filter(Boolean);
+
+                return (
+                  <div key={exp.id || idx} className="space-y-1.5">
+                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                      <div>
+                        <h3 className="font-bold text-sm sm:text-base text-[#1C1917]">
+                          {exp.role}
+                        </h3>
+                        <p className="text-xs font-semibold text-[#A93B24]">
+                          {exp.company}
+                        </p>
+                      </div>
+                      <span className="text-xs font-semibold text-[#78716C] shrink-0">
+                        {exp.period}
+                      </span>
                     </div>
-                    <span className="text-xs font-semibold text-[#78716C] shrink-0">
-                      {exp.period}
-                    </span>
+
+                    {bullets.length > 0 && (
+                      <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm text-[#57534E] leading-relaxed">
+                        {bullets.map((line, bIdx) => (
+                          <li key={bIdx}>{line}</li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-                  <p className="text-xs sm:text-sm text-[#57534E] leading-relaxed">
-                    {exp.description}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
 
-          {/* Projects */}
-          <section className="space-y-4 pt-4 border-t border-[#1C1917]/10">
+          {/* AI Creative Projects */}
+          <section className="space-y-3 pt-4 border-t border-[#1C1917]/10">
             <h2 className="text-xs font-bold uppercase tracking-wider text-[#1C1917] font-display">
-              {profile.projects_heading || 'Projects'}
+              {resumeProjectsHeading}
             </h2>
-            <div className="space-y-3">
-              {projects.map((p, idx) => (
-                <div key={p.slug || idx} className="space-y-1">
-                  <h3 className="font-bold text-sm text-[#1C1917]">{p.title}</h3>
-                  <p className="text-xs text-[#57534E]">{p.description}</p>
-                  {p.metrics && p.metrics.length > 0 && (
-                    <p className="text-xs font-semibold text-[#1E5631]">
-                      Outcomes: {p.metrics.join(' · ')}
-                    </p>
-                  )}
-                </div>
+            <ul className="list-disc list-inside space-y-2 text-xs sm:text-sm text-[#44403C]">
+              {displayResumeProjects.map((p, idx) => (
+                <li key={p.slug || idx} className="leading-relaxed">
+                  <Link
+                    href={`/projects/${p.slug}`}
+                    className="font-bold text-[#1C1917] hover:underline decoration-[#C84B31]"
+                  >
+                    {p.title}
+                  </Link>
+                  {p.tags && p.tags.length > 0 && (
+                    <span className="text-[#57534E]">
+                      {' '}
+                      | {p.tags.join(', ')}.
+                    </span>
+                  )}{' '}
+                  <span className="text-[#57534E]">{p.description}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
 
           {/* Skills */}
           <section className="space-y-3 pt-4 border-t border-[#1C1917]/10">
             <h2 className="text-xs font-bold uppercase tracking-wider text-[#1C1917] font-display">
-              Skills &amp; Tech Stack
+              Skills
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div className="space-y-2 text-xs sm:text-sm">
               {techStack.map((group, idx) => (
-                <div key={group.id || idx}>
+                <div
+                  key={group.id || idx}
+                  className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-1 sm:gap-4"
+                >
                   <span className="font-bold text-[#1C1917]">
-                    {group.category}:{' '}
+                    {group.category}
                   </span>
                   <span className="text-[#57534E]">
                     {(group.skills || []).join(', ')}
@@ -198,7 +251,7 @@ export default async function ResumePage() {
                         {edu.period}
                       </span>
                     </div>
-                    <p className="text-xs text-[#57534E] leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[#57534E] leading-relaxed">
                       {edu.description}
                     </p>
                   </div>

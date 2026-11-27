@@ -84,7 +84,9 @@ export default function RecentWork({
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-center gap-1.5">
                       <span className="font-mono text-[11px] font-semibold text-[#57534E] tracking-wider uppercase px-2.5 py-0.5 bg-white/80 rounded-full border border-[#1C1917]/15">
-                        Project Write-Up
+                        {project.category === 'ai-creative'
+                          ? 'AI Creative Project'
+                          : 'Project Write-Up'}
                       </span>
                       <p className="text-xs sm:text-sm font-bold text-[#1C1917] font-display">
                         {project.client || 'Personal Project'}

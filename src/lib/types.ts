@@ -73,6 +73,7 @@ export interface Project {
   id?: string;
   slug: string;
   title: string;
+  category?: string;
   description: string;
   content: string;
   client?: string;

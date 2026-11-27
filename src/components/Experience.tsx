@@ -53,6 +53,11 @@ export default function Experience({
       <div className="space-y-3.5">
         {experiences.map((exp, index) => {
           const isCurrent = index === 0 || /now|present/i.test(exp.period);
+          const lines = exp.description
+            .split('\n')
+            .map((line) => line.replace(/^[•\-*]\s*/, '').trim())
+            .filter(Boolean);
+
           return (
             <div
               key={exp.id || index}
@@ -65,9 +70,18 @@ export default function Experience({
                 <p className="text-xs sm:text-sm font-semibold text-[#A93B24] mt-0.5">
                   {exp.company}
                 </p>
-                <p className="text-xs sm:text-sm text-[#57534E] leading-relaxed mt-2">
-                  {exp.description}
-                </p>
+
+                {lines.length > 1 ? (
+                  <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm text-[#57534E] leading-relaxed mt-2.5">
+                    {lines.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-xs sm:text-sm text-[#57534E] leading-relaxed mt-2">
+                    {exp.description}
+                  </p>
+                )}
               </div>
 
               <div className="self-start sm:self-center shrink-0">

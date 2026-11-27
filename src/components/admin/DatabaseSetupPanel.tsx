@@ -8,10 +8,16 @@ import {
   Copy,
   ExternalLink,
   Database,
+  ShieldCheck,
 } from 'lucide-react';
 
+export interface AdminDiagnostics extends SupabaseDiagnostics {
+  hasServiceRoleKey: boolean;
+  hasSessionSecret: boolean;
+}
+
 interface DatabaseSetupPanelProps {
-  diagnostics: SupabaseDiagnostics;
+  diagnostics: AdminDiagnostics;
   migrationSql: string;
   schemaSql: string;
 }
@@ -31,7 +37,7 @@ export default function DatabaseSetupPanel({
       setCopiedType(kind);
       setTimeout(() => setCopiedType(null), 2500);
     } catch {
-      // Fallback ignored cleanly
+      // Clipboard fallback ignored
     }
   };
 
@@ -43,7 +49,7 @@ export default function DatabaseSetupPanel({
           <div className="flex items-center gap-2.5">
             <Database className="w-5 h-5 text-[#1C1917]" aria-hidden="true" />
             <h2 className="text-lg font-bold text-[#1C1917] font-display">
-              Live Supabase Connection &amp; Table Health
+              Live Supabase Connection &amp; Server Write Status
             </h2>
           </div>
           <a
@@ -55,6 +61,56 @@ export default function DatabaseSetupPanel({
             <span>Open Supabase Dashboard</span>
             <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
           </a>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div
+            className={`rounded-xl border p-3.5 ${
+              diagnostics.hasServiceRoleKey
+                ? 'bg-[#EDF4EF] border-[#1E5631]/25 text-[#1C1917]'
+                : 'bg-amber-50 border-amber-300 text-amber-950'
+            }`}
+          >
+            <div className="flex items-center justify-between font-bold mb-1">
+              <span className="inline-flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4" aria-hidden="true" />
+                Server Write Key (<code>SUPABASE_SERVICE_ROLE_KEY</code>)
+              </span>
+              {diagnostics.hasServiceRoleKey ? (
+                <CheckCircle2 className="w-4 h-4 text-[#1E5631]" aria-hidden="true" />
+              ) : (
+                <AlertTriangle className="w-4 h-4 text-amber-700" aria-hidden="true" />
+              )}
+            </div>
+            <p>
+              {diagnostics.hasServiceRoleKey
+                ? 'Configured cleanly on the server. Saving & uploads enabled.'
+                : 'Missing in Vercel Environment Variables. Add SUPABASE_SERVICE_ROLE_KEY (Server Secret) to enable saving & image uploads.'}
+            </p>
+          </div>
+
+          <div
+            className={`rounded-xl border p-3.5 ${
+              diagnostics.hasSessionSecret
+                ? 'bg-[#EDF4EF] border-[#1E5631]/25 text-[#1C1917]'
+                : 'bg-[#F5F2EB] border-[#1C1917]/20 text-[#1C1917]'
+            }`}
+          >
+            <div className="flex items-center justify-between font-bold mb-1">
+              <span>
+                Dedicated Cookie Signing Key (<code>ADMIN_SESSION_SECRET</code>)
+              </span>
+              <CheckCircle2
+                className="w-4 h-4 text-[#1E5631]"
+                aria-hidden="true"
+              />
+            </div>
+            <p className="text-[#57534E]">
+              {diagnostics.hasSessionSecret
+                ? 'Dedicated random HMAC key active for HttpOnly cookies.'
+                : 'Active (derived from server secrets). Add optional 32+ char ADMIN_SESSION_SECRET in Vercel for independent key rotation.'}
+            </p>
+          </div>
         </div>
 
         {diagnostics.migrationWarnings.length > 0 && (
@@ -117,7 +173,7 @@ export default function DatabaseSetupPanel({
               Option A: Upgrade Existing Supabase DB (Keeps Your Data Safe)
             </h3>
             <p className="text-xs text-[#57534E]">
-              Runs <code>supabase/migrations_update.sql</code> — adds new columns, <code>education</code> table, and <code>portfolio-media</code> Storage bucket without wiping existing content.
+              Runs <code>supabase/migrations_update.sql</code> — adds new columns (including <code>projects.category</code>), <code>education</code> table, and <code>portfolio-media</code> bucket without wiping existing content.
             </p>
           </div>
           <button
@@ -149,7 +205,7 @@ export default function DatabaseSetupPanel({
               Option B: Fresh Full Setup &amp; Seed Script
             </h3>
             <p className="text-xs text-[#57534E]">
-              Runs <code>supabase/schema.sql</code> — creates all 7 tables from scratch and inserts your initial résumé, projects, and blog posts.
+              Runs <code>supabase/schema.sql</code> — creates all 7 tables from scratch and seeds your updated résumé, AI Creative projects, skills, and blog posts.
             </p>
           </div>
           <button

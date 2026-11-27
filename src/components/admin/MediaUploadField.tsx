@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, ChangeEvent } from 'react';
-import { SupabaseClient } from '@supabase/supabase-js';
+import { adminUploadFile } from './helpers';
 import { Upload, CheckCircle2, AlertCircle } from 'lucide-react';
 
 interface MediaUploadFieldProps {
@@ -9,7 +9,6 @@ interface MediaUploadFieldProps {
   label: string;
   value: string;
   onChange: (nextUrl: string) => void;
-  supabaseClient: SupabaseClient | null;
   canUpload: boolean;
   folder: 'avatars' | 'projects' | 'posts' | 'documents';
   accept?: string;
@@ -22,7 +21,6 @@ export default function MediaUploadField({
   label,
   value,
   onChange,
-  supabaseClient,
   canUpload,
   folder,
   accept = 'image/*',
@@ -37,27 +35,19 @@ export default function MediaUploadField({
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !supabaseClient) return;
+    if (!file) return;
 
     setUploading(true);
     setStatus(null);
     try {
-      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-      const filePath = `${folder}/${Date.now()}-${safeName}`;
-      const { error } = await supabaseClient.storage
-        .from('portfolio-media')
-        .upload(filePath, file, { upsert: true });
-
-      if (error) {
+      const res = await adminUploadFile(file, folder);
+      if (res.error || !res.url) {
         setStatus({
           type: 'err',
-          text: `Upload failed: ${error.message}. Run supabase/migrations_update.sql to create the portfolio-media bucket.`,
+          text: res.error || 'Upload failed.',
         });
       } else {
-        const { data } = supabaseClient.storage
-          .from('portfolio-media')
-          .getPublicUrl(filePath);
-        onChange(data.publicUrl);
+        onChange(res.url);
         setStatus({ type: 'ok', text: 'Uploaded to Supabase Storage.' });
       }
     } catch (err) {
@@ -97,7 +87,7 @@ export default function MediaUploadField({
           className="admin-input flex-1"
         />
 
-        {canUpload && supabaseClient && (
+        {canUpload && (
           <>
             <input
               ref={fileInputRef}

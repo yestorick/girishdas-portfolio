@@ -1,22 +1,19 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { SupabaseClient } from '@supabase/supabase-js';
 import { SiteProfile, RightNow } from '@/lib/types';
 import MediaUploadField from './MediaUploadField';
-import { ActionFeedback } from './helpers';
+import { ActionFeedback, adminUpsert } from './helpers';
 import { Save, CheckCircle2, AlertCircle } from 'lucide-react';
 
 interface ProfileEditorProps {
   initialProfile: SiteProfile;
-  supabaseClient: SupabaseClient | null;
   canEdit: boolean;
   onSaved: (next: SiteProfile) => void;
 }
 
 export function ProfileEditor({
   initialProfile,
-  supabaseClient,
   canEdit,
   onSaved,
 }: ProfileEditorProps) {
@@ -30,64 +27,23 @@ export function ProfileEditor({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!supabaseClient || !canEdit) return;
+    if (!canEdit) return;
     setSaving(true);
     setFeedback(null);
 
     try {
-      const payload = {
-        name: form.name.trim(),
-        nickname: (form.nickname || '').trim(),
-        avatar_url: (form.avatar_url || '').trim(),
-        nav_logo: (form.nav_logo || form.name).trim(),
-        status_badge: (form.status_badge || '').trim(),
-        headline_intro: form.headline_intro.trim(),
-        headline_highlight: (form.headline_highlight || '').trim(),
-        bio: form.bio.trim(),
-        email: form.email.trim(),
-        phone: (form.phone || '').trim(),
-        location: (form.location || '').trim(),
-        website_url: (form.website_url || '').trim(),
-        resume_url: (form.resume_url || '#').trim() || '#',
-        github_url: (form.github_url || '').trim(),
-        linkedin_url: (form.linkedin_url || '').trim(),
-        twitter_url: (form.twitter_url || '').trim(),
-        hero_primary_cta: (form.hero_primary_cta || 'Contact me').trim(),
-        hero_secondary_cta: (
-          form.hero_secondary_cta || 'My project & works'
-        ).trim(),
-        experience_heading: (form.experience_heading || 'Experience').trim(),
-        projects_heading: (form.projects_heading || 'My projects').trim(),
-        projects_subtitle: (form.projects_subtitle || '').trim(),
-        stack_heading: (
-          form.stack_heading || 'Tech & marketing stacks'
-        ).trim(),
-        blog_heading: (form.blog_heading || 'From my blog').trim(),
-        blog_subtitle: (form.blog_subtitle || '').trim(),
-        footer_heading: (form.footer_heading || "Let's connect.").trim(),
-        footer_tagline: form.footer_tagline.trim(),
-        updated_at: new Date().toISOString(),
-      };
+      const res = await adminUpsert<SiteProfile>(
+        'site_profile',
+        form as unknown as Record<string, unknown>,
+        form.id
+      );
 
-      const { data, error } = form.id
-        ? await supabaseClient
-            .from('site_profile')
-            .update(payload)
-            .eq('id', form.id)
-            .select()
-            .single()
-        : await supabaseClient
-            .from('site_profile')
-            .insert(payload)
-            .select()
-            .single();
-
-      if (error) {
-        setFeedback({ type: 'err', text: error.message });
-      } else if (data) {
-        setForm(data as SiteProfile);
-        onSaved(data as SiteProfile);
-        setFeedback({ type: 'ok', text: 'Site profile saved to Supabase.' });
+      if (res.error) {
+        setFeedback({ type: 'err', text: res.error });
+      } else if (res.data) {
+        setForm(res.data);
+        onSaved(res.data);
+        setFeedback({ type: 'ok', text: 'Site profile saved cleanly.' });
       }
     } catch (err) {
       setFeedback({
@@ -189,7 +145,6 @@ export function ProfileEditor({
           label="Header profile photo URL (round icon)"
           value={form.avatar_url || ''}
           onChange={(url) => update('avatar_url', url)}
-          supabaseClient={supabaseClient}
           canUpload={canEdit}
           folder="avatars"
           helpText="Leave blank to show your initials cleanly inside the round header badge."
@@ -236,7 +191,7 @@ export function ProfileEditor({
 
       <fieldset className="neo-card-static bg-white rounded-2xl p-5 sm:p-6 space-y-4">
         <legend className="text-sm font-bold uppercase tracking-wider text-[#1C1917] px-2">
-          Hero Section &amp; Bio
+          Hero Section &amp; Bio Summary
         </legend>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -263,7 +218,7 @@ export function ProfileEditor({
               htmlFor="sp-headline-highlight"
               className="block text-sm font-semibold text-[#1C1917] mb-1.5"
             >
-              Role / title after intro
+              Role / headline subtitle
             </label>
             <input
               id="sp-headline-highlight"
@@ -281,13 +236,13 @@ export function ProfileEditor({
             htmlFor="sp-bio"
             className="block text-sm font-semibold text-[#1C1917] mb-1.5"
           >
-            Bio / intro summary <span aria-hidden="true">*</span>
+            Bio / Résumé Summary <span aria-hidden="true">*</span>
           </label>
           <textarea
             id="sp-bio"
             name="bio"
             required
-            rows={3}
+            rows={4}
             value={form.bio}
             onChange={(e) => update('bio', e.target.value)}
             className="admin-input"
@@ -608,7 +563,6 @@ export function ProfileEditor({
           label="External Résumé PDF URL (set to # to use built-in /resume page)"
           value={form.resume_url || '#'}
           onChange={(url) => update('resume_url', url)}
-          supabaseClient={supabaseClient}
           canUpload={canEdit}
           folder="documents"
           accept=".pdf,application/pdf"
@@ -622,14 +576,12 @@ export function ProfileEditor({
 
 interface RightNowEditorProps {
   initialRightNow: RightNow;
-  supabaseClient: SupabaseClient | null;
   canEdit: boolean;
   onSaved: (next: RightNow) => void;
 }
 
 export function RightNowEditor({
   initialRightNow,
-  supabaseClient,
   canEdit,
   onSaved,
 }: RightNowEditorProps) {
@@ -639,39 +591,21 @@ export function RightNowEditor({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!supabaseClient || !canEdit) return;
+    if (!canEdit) return;
     setSaving(true);
     setFeedback(null);
 
     try {
-      const payload = {
-        card_title: (form.card_title || 'Right now').trim(),
-        building_title: form.building_title.trim(),
-        building_desc: form.building_desc.trim(),
-        learning: form.learning.trim(),
-        current_projects: (form.current_projects || '').trim(),
-        based_in: form.based_in.trim(),
-        updated_at: new Date().toISOString(),
-      };
-
-      const { data, error } = form.id
-        ? await supabaseClient
-            .from('right_now')
-            .update(payload)
-            .eq('id', form.id)
-            .select()
-            .single()
-        : await supabaseClient
-            .from('right_now')
-            .insert(payload)
-            .select()
-            .single();
-
-      if (error) {
-        setFeedback({ type: 'err', text: error.message });
-      } else if (data) {
-        setForm(data as RightNow);
-        onSaved(data as RightNow);
+      const res = await adminUpsert<RightNow>(
+        'right_now',
+        form as unknown as Record<string, unknown>,
+        form.id
+      );
+      if (res.error) {
+        setFeedback({ type: 'err', text: res.error });
+      } else if (res.data) {
+        setForm(res.data);
+        onSaved(res.data);
         setFeedback({ type: 'ok', text: 'Right Now card updated.' });
       }
     } catch (err) {

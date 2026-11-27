@@ -15,19 +15,20 @@ ALTER TABLE site_profile
   ADD COLUMN IF NOT EXISTS hero_secondary_cta TEXT DEFAULT 'My project & works',
   ADD COLUMN IF NOT EXISTS experience_heading TEXT DEFAULT 'Experience',
   ADD COLUMN IF NOT EXISTS projects_heading TEXT DEFAULT 'My projects',
-  ADD COLUMN IF NOT EXISTS projects_subtitle TEXT DEFAULT 'Campaigns, content systems, and digital projects I''ve built and managed',
+  ADD COLUMN IF NOT EXISTS projects_subtitle TEXT DEFAULT 'Paid media campaigns, AI creative workflows, and healthcare content systems I''ve built and managed',
   ADD COLUMN IF NOT EXISTS stack_heading TEXT DEFAULT 'Tech & marketing stacks',
   ADD COLUMN IF NOT EXISTS blog_heading TEXT DEFAULT 'From my blog',
-  ADD COLUMN IF NOT EXISTS blog_subtitle TEXT DEFAULT 'Personal notes on Google Ads, Meta Ads creatives, conversion tracking, and digital content strategy.',
+  ADD COLUMN IF NOT EXISTS blog_subtitle TEXT DEFAULT 'Personal notes on Meta Ads, Google Ads, AI creative workflows, conversion tracking, and digital content strategy.',
   ADD COLUMN IF NOT EXISTS footer_heading TEXT DEFAULT 'Let''s connect.';
 
 -- 2. Extend right_now card fields
 ALTER TABLE right_now
   ADD COLUMN IF NOT EXISTS card_title TEXT NOT NULL DEFAULT 'Right now',
-  ADD COLUMN IF NOT EXISTS current_projects TEXT DEFAULT 'NCD Immunocare Ads + Dr Saibal Moitra Authority Website';
+  ADD COLUMN IF NOT EXISTS current_projects TEXT DEFAULT 'NCD Immunocare (₹60K/mo Ads), Dr Saibal Moitra Clone & Meta Ads Analysis Agent';
 
--- 3. Extend projects with simplified project page fields & screenshots array
+-- 3. Extend projects with category ('ai-creative' vs 'marketing'), completion_date, made_by & screenshots
 ALTER TABLE projects
+  ADD COLUMN IF NOT EXISTS category TEXT NOT NULL DEFAULT 'marketing',
   ADD COLUMN IF NOT EXISTS completion_date TEXT,
   ADD COLUMN IF NOT EXISTS made_by TEXT DEFAULT 'Made by me',
   ADD COLUMN IF NOT EXISTS screenshots TEXT[] NOT NULL DEFAULT '{}';
@@ -67,8 +68,8 @@ INSERT INTO education (degree, institution, period, description, order_index)
 SELECT
     'B.Sc. (Honours), Chemistry',
     'Taki Government College, West Bengal',
-    'Dropout (2nd year)',
-    'Dropped out to pursue a full-time career in digital marketing. Self-taught performance marketing and content strategy through YouTube and X (Twitter), applied on live campaigns.',
+    'Dropped out (2nd year)',
+    'Dropped out in 2nd year to pursue a full-time career in digital marketing. Self-taught performance marketing and content strategy through YouTube and X (Twitter), applied on live campaigns.',
     1
 WHERE NOT EXISTS (SELECT 1 FROM education);
 
